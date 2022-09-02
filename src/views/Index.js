@@ -48,6 +48,7 @@ function Index() {
 
   const handleChange = async (e) => {
     console.log(e.target.value);
+
     await setPieDate((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -58,6 +59,73 @@ function Index() {
         company_code: user?.company_code,
       })
     );
+    brandsegregate();
+  };
+
+  /* BRANDS CALCULATIONS */
+
+  const [showbrand, setShowbrand] = useState([]);
+  const [ratio, setRatio] = useState([]);
+
+  const brandsegregate = () => {
+    const brand = {
+      labels: [],
+      brandtotal: [],
+    };
+    console.log(metrics, "okay");
+    metrics.map((e) => {
+      // console.log(e.brands[1], "brands");
+      for (const key in e.brands) {
+        const d = e.brands[`${key}`];
+        // const fin =
+        if (!brand.labels.includes(d.name)) {
+          brand.labels.push(d.name);
+        }
+
+        if (brand.brandtotal[`${d.name}`] == undefined) {
+          brand.brandtotal[`${d.name}`] = {
+            // ...brand.brandtotal,
+            total_revenue: d.total_revenue,
+            total_transactions: d.total_transactions,
+            total_volume: d.total_volume,
+          };
+        } else {
+          brand.brandtotal[`${d.name}`].total_volume += d.total_volume;
+          brand.brandtotal[`${d.name}`].total_revenue += d.total_revenue;
+          brand.brandtotal[`${d.name}`].total_transactions +=
+            d.total_transactions;
+        }
+        // });
+      }
+      // e.brands.map((d) => {
+      // console.log(d, "each");
+    });
+
+    console.log(brand);
+    const brandData = {
+      label: [],
+      data: { total_transactions: [], total_volume: [], total_revenue: [] },
+    };
+
+    for (let key in brand.brandtotal) {
+      console.log(brand.brandtotal[key]);
+      brandData.label.push(key);
+      brandData.data.total_transactions.push(
+        brand.brandtotal[key].total_transactions
+      );
+      brandData.data.total_volume.push(brand.brandtotal[key].total_volume);
+      brandData.data.total_revenue.push(brand.brandtotal[key].total_revenue);
+    }
+
+    setPieChartData({ ...options1, labels: [...brandData.label] });
+    // options1.labels = ;
+    setSeries1([...brandData.data.total_volume]);
+    console.log(brandData.data.total_volume, "myseries");
+    console.log(series1, "se");
+    console.log(options1, "op");
+    // setShowbrand(brandData);
+    console.log(brandData, "helllo");
+    console.log(brand, "brands");
   };
 
   const getMonths = () => {
@@ -100,7 +168,7 @@ function Index() {
       setMyuser(company_code);
     }
 
-    console.log(myuser);
+    console.log(getTotal());
   }, []);
 
   const key = "updatable";
@@ -163,35 +231,36 @@ function Index() {
     return result;
   };
 
-  const metCount = () => {
-    const data = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+  // const metCount = () => {
+  //   const data = {
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
 
-      body: JSON.stringify({
-        request: {
-          method: "getMetricsByCompanyDate",
-          data: {
-            company_code: metrics,
-          },
-        },
-      }),
-    };
+  //     body: JSON.stringify({
+  //       request: {
+  //         method: "getMetricsByCompanyDate",
+  //         data: {
+  //           company_code: metrics,
+  //         },
+  //       },
+  //     }),
+  //   };
 
-    // console.log(e);
-    const result = fetch(`https://davaam-life.herokuapp.com/metrics`, data)
-      .then((response) => response.json(response))
-      .catch((error) => console.log("error", error));
-    console.log(result);
-    return result;
-  };
-
+  //   // console.log(e);
+  //   const result = fetch(`https://davaam-life.herokuapp.com/metrics`, data)
+  //     .then((response) => response.json(response))
+  //     .catch((error) => console.log("error", error));
+  //   console.log(result);
+  //   return result;
+  // };
+  const [data, SetData] = useState([]);
   const getTotal = () => {
     if (pieEnabled == "Volume") {
       let volume = 0;
+      console.log(metrics);
       if (metrics.length > 0) {
         metrics.map((v) => {
           volume += Number(v.total_volume);
@@ -301,6 +370,7 @@ function Index() {
         ...pieDates,
         company_code: user?.company_code,
       })
+      // brandsegregate()
     );
     dispatch(getAllLocations(user?.company_code));
     dispatch(
@@ -308,6 +378,7 @@ function Index() {
         company_code: user?.company_code,
       })
     );
+    brandsegregate();
   }, []);
   // useEffect(() => {
   //   let tempArr = getCombinedData(pieEnabled);
@@ -733,7 +804,7 @@ function Index() {
                     className="card-title"
                   >
                     Total {pieEnabled} Dispensed
-                  </h4> 
+                  </h4>
                   <h6 className="card-subtitle">{getTotal()}</h6>
                   <br />
                   <div id="chart" className="d-flex justify-content-center">
@@ -870,6 +941,7 @@ function Index() {
                             items.map((item, i) => (
                               <div key={i}>
                                 {/* <h5>{item.brand_name}</h5> */}
+
                                 <p>{item.message}</p>
                               </div>
                             ))}
@@ -942,7 +1014,7 @@ function Index() {
           <br />
           <br />
           <div className="row ">
-            <div className="col-lg-8 col-sm-12 ">
+            <div className="col-lg-8 col-md-12 ">
               <div className="row">
                 <div className="col-lg-4 mt-3 mt-md-2 text-center">
                   <div id="bottlescards" className="card">
@@ -961,7 +1033,7 @@ function Index() {
                             class="fas fa-recycle fa-4x"
                           ></i>{" "}
                         </div>
-                        <h6 className="bottles">Bottles Saved </h6>
+                        <h6 className="bottles">Plastics Saved </h6>
                         <a href="#" className="" target="_blank">
                           {" "}
                           12
@@ -980,12 +1052,12 @@ function Index() {
                     <div className="card-body text-center">
                       <h4 className=" card-title  d-flex align-items-center justify-content-center flex-column">
                         {/* <img
-                      src={require("../assets/images/dawaam/machineCircle.png")}
-                      alt=""
-                      width="97"
-                      height="121"
-                      style={{ borderRadius: "50%" }}
-                    /> */}
+                        src={require("../assets/images/dawaam/machineCircle.png")}
+                        alt=""
+                        width="97"
+                        height="121"
+                        style={{ borderRadius: "50%" }}
+                      /> */}
                         <div className="cardsDashboard mb-3">
                           {" "}
                           <i
@@ -1005,6 +1077,8 @@ function Index() {
                     </div>
                   </div>
                 </div>
+              </div>
+              <div className="row">
                 <div className="col-lg-4  mt-3 mt-md-2 text-center ">
                   <div
                     id="bottlescards"
@@ -1032,6 +1106,41 @@ function Index() {
                         <h6 className="bottles">Total Active Locations </h6>
                         <a href="#" className="" target="_blank">
                           {getAllLocations.length}
+
+                          <span className="text-danger">*</span>
+                        </a>
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-lg-4  mt-3 mt-md-2 text-center ">
+                  <div
+                    id="bottlescards"
+                    className="card"
+                    // style={{ marginTop: "10px" }}
+                  >
+                    <div className="card-body text-center">
+                      <h4 className="card-title  d-flex align-items-center justify-content-center flex-column mb-1">
+                        {/* <img
+                      src={require("../assets/images/dawaam/location.png")}
+                      alt=""
+                      width="97"
+                      height="121"
+                    /> */}
+                        <div className="cardsDashboard mb-3">
+                          {" "}
+                          <i
+                            style={{
+                              color: "#079a87",
+                              fontSize: "60px",
+                            }}
+                            class="fas fa-map-marker-alt fa-4x"
+                          ></i>{" "}
+                        </div>
+                        <h6 className="bottles">Plastics Dispensed </h6>
+                        <a href="#" className="" target="_blank">
+                          {/* {getAllLocations.length} */}
 
                           <span className="text-danger">*</span>
                         </a>
@@ -1104,7 +1213,7 @@ function Index() {
                                 className="row m-2"
                                 style={{ alignItems: "baseline" }}
                               >
-                                <div className="col-md-8">
+                                {/* <div className="col-md-8">
                                   <div className="dateDeployed">
                                     <ul
                                       className="d-flex p-0"
@@ -1125,8 +1234,8 @@ function Index() {
                                       </li>
                                     </ul>
                                   </div>
-                                </div>
-                                <div className="col-md-4">
+                                </div> */}
+                                {/* <div className="col-md-4">
                                   <div className="dateDeployed">
                                     <ul
                                       className="d-flex p-0"
@@ -1158,14 +1267,14 @@ function Index() {
                                           color: "#fff",
                                         }}
                                       >
-                                        <i
+                                          <i
                                           class="fa fa-calendar-o"
                                           aria-hidden="true"
                                         ></i>
                                       </li>
                                     </ul>
                                   </div>
-                                </div>
+                                </div> */}
                               </div>
                             </div>
                           </div>

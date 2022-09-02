@@ -598,7 +598,11 @@ progress {
   margin-top: calc(var(--bs-gutter-y) * -1);
   margin-right: calc(var(--bs-gutter-x) / -2);
   margin-left: calc(var(--bs-gutter-x) / -2);
-}
+  justify-content: center;
+ }
+
+
+
 .row > * {
   flex-shrink: 0;
   width: 100%;
@@ -736,6 +740,7 @@ progress {
 .g-0,
 .gy-0 {
   --bs-gutter-y: 0;
+  margin-top: 3rem;
 }
 .g-1,
 .gx-1 {
@@ -4041,7 +4046,8 @@ fieldset:disabled .btn {
   border-radius: 15px;
   position: inherit;
   height: auto;
-  height: 100%;
+  /* height: 100%; */
+  height: 40rem;
 }
 .firstcard .card-body {
   flex: 1 1 auto;
@@ -4052,7 +4058,7 @@ fieldset:disabled .btn {
   margin: 0.5rem;
   border-radius: 16px;
   position: inherit;
-  height: 97%;
+  /* height: 97%; */
 }
 
 /* machines */
@@ -4073,6 +4079,7 @@ fieldset:disabled .btn {
   height: auto;
   position: inherit;
   /* height: 100%; */
+  height: 40rem;
 }
 .secondcard .card-body {
   flex: 1 1 auto;
@@ -11442,6 +11449,9 @@ html body .waves-notransition {
   filter: drop-shadow(22.9411px 53.5293px 91.7645px rgba(27, 49, 66, 0.13));
   border-radius: 38.2352px;
   margin: 10px;
+  height: 27rem;
+  overflow-y: scroll;
+  line-break: auto  ;
 }
 #recentAlerts ul li {
   list-style: none;
@@ -11483,7 +11493,7 @@ html body .waves-notransition {
   border-radius: 15px;
   position: inherit;
   /* height: fit-content; */
-  height: 100%;
+  /* height: 100%; */
 }
 .unseenNotification .card-body {
   flex: 1 1 auto;

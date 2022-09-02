@@ -4,6 +4,7 @@ let dashboard = RepositoryFactory.get("dashboard");
 let transaction = RepositoryFactory.get("transaction");
 
 export const getAllMetrics = (payload) => async (dispatch) => {
+  console.log(payload);
   try {
     let { data } = await dashboard.get({
       request: {
@@ -11,9 +12,9 @@ export const getAllMetrics = (payload) => async (dispatch) => {
 
         //payload,
         data: {
-          company_code: "4236",
-          start_date: "2022-03-01",
-          end_date: "2022-04-06",
+          company_code: payload.company_code,
+          start_date: payload.start_date,
+          end_date: payload.end_date,
         },
       },
     });
