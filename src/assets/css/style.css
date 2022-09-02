@@ -11443,7 +11443,7 @@ html body .waves-notransition {
   padding: 0;
 }
 #recentAlerts ul {
-  padding: 0;
+  padding: 25px;
   align-items: baseline;
   border: 0.764704px solid #e2e2e2;
   filter: drop-shadow(22.9411px 53.5293px 91.7645px rgba(27, 49, 66, 0.13));

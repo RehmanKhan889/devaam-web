@@ -928,12 +928,12 @@ function Index() {
                       <ul className="d-flex">
                         <li>
                           <div id="bellhead">
-                            <img
+                            {/* <img
                               src={greenIcon}
                               className="img-fluid"
                               alt="bell"
                               text="new notifications"
-                            />
+                            /> */}
                           </div>
                         </li>
                         <li>
@@ -941,7 +941,7 @@ function Index() {
                             items.map((item, i) => (
                               <div key={i}>
                                 {/* <h5>{item.brand_name}</h5> */}
-
+                                
                                 <p>{item.message}</p>
                               </div>
                             ))}
@@ -1011,8 +1011,8 @@ function Index() {
               <br />
             </div>
           </div>
-          <br />
-          <br />
+          {/* <br />
+          <br /> */}
           <div className="row ">
             <div className="col-lg-8 col-md-12 ">
               <div className="row">
