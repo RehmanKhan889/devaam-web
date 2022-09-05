@@ -1077,7 +1077,7 @@ function Index() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>d
               <div className="row">
                 <div className="col-lg-4  mt-3 mt-md-2 text-center ">
                   <div
@@ -1138,7 +1138,7 @@ function Index() {
                             class="fas fa-map-marker-alt fa-4x"
                           ></i>{" "}
                         </div>
-                        <h6 className="bottles">Plastics Dispensed </h6>
+                        <h6 className="bottles">Bottles Dispensed </h6>
                         <a href="#" className="" target="_blank">
                           {/* {getAllLocations.length} */}
 
@@ -1157,7 +1157,7 @@ function Index() {
                     <div className="row">
                       <div className="col-md-12 text-center">
                         <h4 className="card-title pt-3">User Statistics</h4>
-                        <ul
+                          <ul
                           class="nav nav-pills "
                           id="pills-tab"
                           role="tablist"
@@ -1165,7 +1165,7 @@ function Index() {
                             justifyContent: "center",
                           }}
                         >
-                          <li class="nav-item m-1">
+                          {/* <li class="nav-item m-1">
                             <a
                               class="nav-link active"
                               id="pills-sales-tab"
@@ -1191,7 +1191,7 @@ function Index() {
                             >
                               Repeat Users
                             </a>
-                          </li>
+                          </li> */}
                         </ul>
                         {/* <div class="tab-content" id="pills-tabContent">
 										<div class="tab-pane fade show active" id="pills-sales" role="tabpanel" aria-labelledby="pills-sales-tab">
