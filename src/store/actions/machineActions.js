@@ -80,3 +80,23 @@ export const deleteMachine =
       await dispatch(setMachineLoading(false));
     }
   };
+
+
+  export const usermachine =
+  (obj, onSuccess = () => {}) =>
+  async (dispatch) => {
+    await dispatch(setMachineLoading(true));
+    try {
+      let { data } = await machine.get({
+        request: {
+          method: "getMachineUsersByCompany",
+          data: obj,
+        },
+      });
+      await dispatch(setMachineLoading(false));
+      onSuccess();
+      alert("Machine User Added successfully!");
+    } catch (error) {
+      await dispatch(setMachineLoading(false));
+    }
+  };

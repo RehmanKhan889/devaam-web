@@ -64,8 +64,8 @@ function Index() {
 
   /* BRANDS CALCULATIONS */
 
-  const [showbrand, setShowbrand] = useState([]);
-  const [ratio, setRatio] = useState([]);
+  // const [showbrand, setShowbrand] = useState([]);
+  // const [ratio, setRatio] = useState([]);
 
   const brandsegregate = () => {
     const brand = {
@@ -223,6 +223,49 @@ function Index() {
     // console.log(e);
     const result = fetch(
       `https://davaam-life.herokuapp.com/notifications`,
+      data
+    )
+      .then((response) => response.json(response))
+      .catch((error) => console.log("error", error));
+    console.log(result);
+    return result;
+  };
+
+
+
+  const [stats, setStats] = useState([]);
+
+  const showstats = async () => {
+    document.getElementsByClassName("user-statistics");
+    const {
+      response: {
+        data: { machine_users},
+      },
+    } = await userStatistics();
+    setStats(getAllMachines);
+  }
+  const userStatistics = () => {
+    // step 1 get user info from local storage company_code;
+    // step 2 pass company_code into api param.
+
+    const data = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        request: {
+          method: "getMachineUsersByCompany",
+          data: {
+            company_code: myuser,          },
+        },
+      }),
+    };
+    // console.log(e);
+    const result = fetch(
+      `https://davaam-life.herokuapp.com/machines/user`,
       data
     )
       .then((response) => response.json(response))
@@ -941,7 +984,7 @@ function Index() {
                             items.map((item, i) => (
                               <div key={i}>
                                 {/* <h5>{item.brand_name}</h5> */}
-                                
+
                                 <p>{item.message}</p>
                               </div>
                             ))}
@@ -1077,7 +1120,8 @@ function Index() {
                     </div>
                   </div>
                 </div>
-              </div>d
+              </div>
+              d
               <div className="row">
                 <div className="col-lg-4  mt-3 mt-md-2 text-center ">
                   <div
@@ -1157,7 +1201,7 @@ function Index() {
                     <div className="row">
                       <div className="col-md-12 text-center">
                         <h4 className="card-title pt-3">User Statistics</h4>
-                          <ul
+                        <ul
                           class="nav nav-pills "
                           id="pills-tab"
                           role="tablist"
@@ -1294,7 +1338,7 @@ function Index() {
                                     <p>
                                       <strong>Name</strong>
                                       <br />
-                                      Unique ID
+                                      {machines.length}
                                     </p>
                                   </li>
                                 </ul>
