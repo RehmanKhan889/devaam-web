@@ -161,9 +161,11 @@ function Index() {
   const [myuser, setMyuser] = useState([]);
   const [items, setItems] = useState([]);
   useEffect(() => {
+    console.log("yayayayay");
     const {
       user: { company_code },
     } = JSON.parse(localStorage.getItem("auth"));
+    console.log(localStorage.getItem("auth"));
     if (user) {
       setMyuser(company_code);
     }
@@ -231,23 +233,10 @@ function Index() {
     return result;
   };
 
-
-
   const [stats, setStats] = useState([]);
+  const [uniqueone, setUniqueone] = useState([]);
 
-  const showstats = async () => {
-    document.getElementsByClassName("user-statistics");
-    const {
-      response: {
-        data: { machine_users},
-      },
-    } = await userStatistics();
-    setStats(getAllMachines);
-  }
-  const userStatistics = () => {
-    // step 1 get user info from local storage company_code;
-    // step 2 pass company_code into api param.
-
+  useEffect(() => {
     const data = {
       method: "POST",
       headers: {
@@ -259,20 +248,26 @@ function Index() {
         request: {
           method: "getMachineUsersByCompany",
           data: {
-            company_code: myuser,          },
+            company_code: 1234,
+          },
         },
       }),
     };
-    // console.log(e);
+
     const result = fetch(
       `https://davaam-life.herokuapp.com/machines/user`,
       data
     )
       .then((response) => response.json(response))
+      .then((data) => {
+        setStats(data.response.data);
+        console.log(stats, "asdad");
+      })
       .catch((error) => console.log("error", error));
-    console.log(result);
+    console.log(result, "am i receieving response");
+
     return result;
-  };
+  }, []);
 
   // const metCount = () => {
   //   const data = {
@@ -1338,11 +1333,12 @@ function Index() {
                                     <p>
                                       <strong>Name</strong>
                                       <br />
-                                      {machines.length}
+                                      {stats.name}
                                     </p>
                                   </li>
                                 </ul>
                               </div>
+                              ;
                               <div className="col">
                                 <ul>
                                   <li>
