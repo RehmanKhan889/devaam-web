@@ -234,7 +234,6 @@ function Index() {
   };
 
   const [stats, setStats] = useState([]);
-  const [uniqueone, setUniqueone] = useState([]);
 
   useEffect(() => {
     const data = {
@@ -294,6 +293,75 @@ function Index() {
   //   console.log(result);
   //   return result;
   // };
+
+  const [plbottle, setPlbottle] = useState([]);
+
+  useEffect(() => {
+    const data = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        request: {
+          method: "getPlasticSavedByCompany",
+          data: {
+            company_code: 1234,
+          },
+        },
+      }),
+    };
+
+    const result = fetch(
+      `https://davaam-life.herokuapp.com/user/transaction`,
+      data
+    )
+      .then((response) => response.json(response))
+      .then((data) => {
+        setPlbottle(data.response.data);
+        console.log(plbottle, "my plastic bottle");
+      })
+      .catch((error) => console.log("error", error));
+
+    return result;
+  }, []);
+
+  const [dispbottle, setDispbottle] = useState([]);
+
+  useEffect(() => {
+    const data = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        request: {
+          method: "getBottleDetailsByCompany",
+          data: {
+            company_code: 1234,
+          },
+        },
+      }),
+    };
+
+    const result = fetch(
+      `https://davaam-life.herokuapp.com/details/bottle`,
+      data
+    )
+      .then((response) => response.json(response))
+      .then((data) => {
+        setDispbottle(data.response.data);
+        console.log(dispbottle, "my dispense bottle");
+      })
+      .catch((error) => console.log("error", error));
+
+    return result;
+  }, []);
+
   const [data, SetData] = useState([]);
   const getTotal = () => {
     if (pieEnabled == "Volume") {
@@ -1073,8 +1141,7 @@ function Index() {
                         </div>
                         <h6 className="bottles">Plastics Saved </h6>
                         <a href="#" className="" target="_blank">
-                          {" "}
-                          12
+                          {""}
                           <span className="text-danger">*</span>
                         </a>
                       </h4>
@@ -1178,8 +1245,8 @@ function Index() {
                           ></i>{" "}
                         </div>
                         <h6 className="bottles">Bottles Dispensed </h6>
-                        <a href="#" className="" target="_blank">
-                          {/* {getAllLocations.length} */}
+                        <a href="/" className="similar" target="_blank">
+                          {<dispbottle className="length"></dispbottle>}
 
                           <span className="text-danger">*</span>
                         </a>
@@ -1317,6 +1384,7 @@ function Index() {
                               </div>
                             </div>
                           </div>
+
                           <div id="userStatistics">
                             <div
                               className="row"
@@ -1330,11 +1398,16 @@ function Index() {
                                     <img src={users188} className="" alt="" />
                                   </li>
                                   <li>
-                                    <p>
-                                      <strong>Name</strong>
-                                      <br />
-                                      {stats.name}
-                                    </p>
+                                    {/* {stats &&
+                                      stats.machine_users.map((stat, a) => (
+                                        <div key={a}>
+                                          <h2>name</h2>
+                                         
+
+                                          <p>{stat.user_id}</p>
+                                        </div>
+                                      ))} */}
+                                    <h5>Name</h5>
                                   </li>
                                 </ul>
                               </div>
