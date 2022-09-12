@@ -67,12 +67,45 @@ function Index() {
   // const [showbrand, setShowbrand] = useState([]);
   // const [ratio, setRatio] = useState([]);
 
+  const piChartoptions = {
+    colors: ["#D5CFE1", "#09814A"],
+    chart: {
+      id: "mychart",
+      width: 380,
+      type: "pie",
+    },
+    states: {
+      hover: {
+        filter: {
+          type: "darken",
+          value: 0.5,
+          // type: 'none',
+        },
+      },
+    },
+    labels: ["Brand 5", "Brand 6"],
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    ],
+  };
   const brandsegregate = () => {
+    console.log('date selected...');
+    // return;
     const brand = {
       labels: [],
       brandtotal: [],
     };
-    console.log(metrics, "okay");
+    // console.log(metrics, "okay");
     metrics.map((e) => {
       // console.log(e.brands[1], "brands");
       for (const key in e.brands) {
@@ -101,14 +134,14 @@ function Index() {
       // console.log(d, "each");
     });
 
-    console.log(brand);
+    // console.log(brand);
     const brandData = {
       label: [],
       data: { total_transactions: [], total_volume: [], total_revenue: [] },
     };
 
     for (let key in brand.brandtotal) {
-      console.log(brand.brandtotal[key]);
+      // console.log(brand.brandtotal[key]);
       brandData.label.push(key);
       brandData.data.total_transactions.push(
         brand.brandtotal[key].total_transactions
@@ -117,15 +150,8 @@ function Index() {
       brandData.data.total_revenue.push(brand.brandtotal[key].total_revenue);
     }
 
-    setPieChartData({ ...options1, labels: [...brandData.label] });
-    // options1.labels = ;
-    setSeries1([...brandData.data.total_volume]);
-    console.log(brandData.data.total_volume, "myseries");
-    console.log(series1, "se");
-    console.log(options1, "op");
-    // setShowbrand(brandData);
-    console.log(brandData, "helllo");
-    console.log(brand, "brands");
+    setPieChartData({...options1, ...{labels: brandData.label.length > 0 ? [...brandData.label] : ['']  }});
+    setSeries1(brandData.data.total_volume.length > 0 ? brandData.data.total_volume: [0])
   };
 
   const getMonths = () => {
@@ -183,10 +209,6 @@ function Index() {
     } = await onNotify();
 
     setItems(notifications);
-
-    console.log();
-    console.log();
-
     // notification({
     //   key,
     //   message: notifications[0].message,
@@ -235,7 +257,12 @@ function Index() {
 
   const [stats, setStats] = useState([]);
 
-  useEffect(() => {
+  // useEffect(() => {
+    
+  // }, []);
+
+
+  const getUserInfor = () => {
     const data = {
       method: "POST",
       headers: {
@@ -259,14 +286,15 @@ function Index() {
     )
       .then((response) => response.json(response))
       .then((data) => {
-        setStats(data.response.data);
-        console.log(stats, "asdad");
+        const {machine_users} = data.response.data;
+        console.log(machine_users);
+        setStats(machine_users);
       })
       .catch((error) => console.log("error", error));
     console.log(result, "am i receieving response");
 
     return result;
-  }, []);
+  }
 
   // const metCount = () => {
   //   const data = {
@@ -296,7 +324,17 @@ function Index() {
 
   const [plbottle, setPlbottle] = useState([]);
 
-  useEffect(() => {
+  // useEffect(() => {
+
+  // }, []);
+
+  const [dispbottle, setDispbottle] = useState([]);
+
+  // useEffect(() => {
+
+  // }, []);
+
+  const plasticBottle = () => {
     const data = {
       method: "POST",
       headers: {
@@ -320,17 +358,15 @@ function Index() {
     )
       .then((response) => response.json(response))
       .then((data) => {
-        setPlbottle(data.response.data);
-        console.log(plbottle, "my plastic bottle");
+        const {plastic_saved} = data.response.data;
+        setPlbottle(plastic_saved);
+        console.log(data.response.data, "my plastic bottle");
       })
       .catch((error) => console.log("error", error));
 
     return result;
-  }, []);
-
-  const [dispbottle, setDispbottle] = useState([]);
-
-  useEffect(() => {
+  }
+  const disposebaleBottle = () => {
     const data = {
       method: "POST",
       headers: {
@@ -354,13 +390,15 @@ function Index() {
     )
       .then((response) => response.json(response))
       .then((data) => {
-        setDispbottle(data.response.data);
-        console.log(dispbottle, "my dispense bottle");
+        const {bottle_details} = data.response.data;
+        let totalbottle = 0;
+        bottle_details && bottle_details.map((v, i) => { totalbottle +=v.total_bottles});
+        setDispbottle(totalbottle);
       })
       .catch((error) => console.log("error", error));
 
     return result;
-  }, []);
+  }
 
   const [data, SetData] = useState([]);
   const getTotal = () => {
@@ -485,6 +523,9 @@ function Index() {
       })
     );
     brandsegregate();
+    getUserInfor();
+    disposebaleBottle();
+    plasticBottle();
   }, []);
   // useEffect(() => {
   //   let tempArr = getCombinedData(pieEnabled);
@@ -510,37 +551,7 @@ function Index() {
   //     });
   //   }, 1500);
   // }, [transaction_metrics]);
-  const [options1, setPieChartData] = useState({
-    colors: ["#D5CFE1", "#09814A"],
-    chart: {
-      id: "mychart",
-      width: 380,
-      type: "pie",
-    },
-    states: {
-      hover: {
-        filter: {
-          type: "darken",
-          value: 0.5,
-          // type: 'none',
-        },
-      },
-    },
-    labels: ["Brand 5", "Brand 6"],
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200,
-          },
-          legend: {
-            position: "bottom",
-          },
-        },
-      },
-    ],
-  });
+  const [options1, setPieChartData] = useState(piChartoptions);
   const [series1, setSeries1] = useState([20, 40]);
 
   // BarChart DATA
@@ -558,7 +569,7 @@ function Index() {
       },
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
     },
     stroke: {
       show: true,
@@ -742,18 +753,18 @@ function Index() {
               <div className="firstcard">
                 <div className="card-body">
                   <ul
-                    class="nav nav-pills "
+                    className="nav nav-pills "
                     id="pills-tab"
                     role="tablist"
                     style={{
                       justifyContent: "center",
                     }}
                   >
-                    <li class="nav-item m-1">
+                    <li className="nav-item m-1">
                       <a
                         onClick={() => setBarChartTab("1")}
                         style={{ color: "#1d2023 " }}
-                        class="nav-link active"
+                        className="nav-link active"
                         id="pills-daily-tab"
                         data-toggle="pill"
                         href="#pills-daily"
@@ -764,10 +775,10 @@ function Index() {
                         Daily
                       </a>
                     </li>
-                    <li class="nav-item m-1">
+                    <li className="nav-item m-1">
                       <a
                         onClick={() => setBarChartTab("2")}
-                        class="nav-link"
+                        className="nav-link"
                         id="pills-weekly-tab"
                         data-toggle="pill"
                         href="#pills-weekly"
@@ -779,10 +790,10 @@ function Index() {
                         Weekly
                       </a>
                     </li>
-                    <li class="nav-item m-1">
+                    <li className="nav-item m-1">
                       <a
                         onClick={() => setBarChartTab("3")}
-                        class="nav-link"
+                        className="nav-link"
                         id="pills-montly-tab"
                         data-toggle="pill"
                         href="#pills-montly"
@@ -928,7 +939,7 @@ function Index() {
                         onClick={() => {
                           setEnabled("Volume");
                         }}
-                        class="btn btn-success btn-sm"
+                        className="btn btn-success btn-sm"
                       >
                         Volume
                       </button>
@@ -939,7 +950,7 @@ function Index() {
                         onClick={() => {
                           setEnabled("Transaction");
                         }}
-                        class="btn btn-success btn-sm"
+                        className="btn btn-success btn-sm"
                       >
                         Transaction
                       </button>
@@ -950,7 +961,7 @@ function Index() {
                         onClick={() => {
                           setEnabled("Revenue");
                         }}
-                        class="btn btn-success btn-sm"
+                        className="btn btn-success btn-sm"
                       >
                         Revenue
                       </button>
@@ -1136,12 +1147,12 @@ function Index() {
                               color: "#079a87",
                               fontSize: "60px",
                             }}
-                            class="fas fa-recycle fa-4x"
+                            className="fas fa-recycle fa-4x"
                           ></i>{" "}
                         </div>
                         <h6 className="bottles">Plastics Saved </h6>
                         <a href="#" className="" target="_blank">
-                          {""}
+                          {plbottle}
                           <span className="text-danger">*</span>
                         </a>
                       </h4>
@@ -1170,7 +1181,7 @@ function Index() {
                               color: "#079a87",
                               fontSize: "60px",
                             }}
-                            class="fas fa-hdd fa-x"
+                            className="fas fa-hdd fa-x"
                           ></i>{" "}
                         </div>
                         <h6 className="bottles">Total Active Machines </h6>
@@ -1206,7 +1217,7 @@ function Index() {
                               color: "#079a87",
                               fontSize: "60px",
                             }}
-                            class="fas fa-map-marker-alt fa-4x"
+                            className="fas fa-map-marker-alt fa-4x"
                           ></i>{" "}
                         </div>
                         <h6 className="bottles">Total Active Locations </h6>
@@ -1241,12 +1252,12 @@ function Index() {
                               color: "#079a87",
                               fontSize: "60px",
                             }}
-                            class="fas fa-map-marker-alt fa-4x"
+                            className="fas fa-map-marker-alt fa-4x"
                           ></i>{" "}
                         </div>
                         <h6 className="bottles">Bottles Dispensed </h6>
                         <a href="/" className="similar" target="_blank">
-                          {<dispbottle className="length"></dispbottle>}
+                          {<dispbottle className="length"> {dispbottle} </dispbottle>}
 
                           <span className="text-danger">*</span>
                         </a>
@@ -1264,7 +1275,7 @@ function Index() {
                       <div className="col-md-12 text-center">
                         <h4 className="card-title pt-3">User Statistics</h4>
                         <ul
-                          class="nav nav-pills "
+                          className="nav nav-pills "
                           id="pills-tab"
                           role="tablist"
                           style={{
@@ -1384,8 +1395,8 @@ function Index() {
                               </div>
                             </div>
                           </div>
-
-                          <div id="userStatistics">
+                          { stats && stats.map((value, i) => (
+                          <div key={i} id="userStatistics">
                             <div
                               className="row"
                               style={{
@@ -1398,33 +1409,30 @@ function Index() {
                                     <img src={users188} className="" alt="" />
                                   </li>
                                   <li>
-                                    {/* {stats &&
-                                      stats.machine_users.map((stat, a) => (
-                                        <div key={a}>
-                                          <h2>name</h2>
-                                         
-
-                                          <p>{stat.user_id}</p>
-                                        </div>
-                                      ))} */}
-                                    <h5>Name</h5>
+                                    <p>
+                                      <strong>User ID</strong>
+                                      <br />
+                                      {value.user_id}
+                                    </p>
                                   </li>
                                 </ul>
                               </div>
-                              ;
+                              
                               <div className="col">
                                 <ul>
                                   <li>
-                                    <p>Joined:</p>{" "}
+                                    <p>{value.mobile_number}</p>
                                   </li>
                                   <li>
-                                    <p>12 May, 2022 11:12 am</p>
+                                    <p>{value.created_at_sql}</p>
                                   </li>
                                 </ul>
                               </div>
                             </div>
                           </div>
-                          <div id="userStatistics">
+                          ))
+                          }
+                          {/* <div id="userStatistics">
                             <div
                               className="row"
                               style={{
@@ -1456,8 +1464,8 @@ function Index() {
                                 </ul>
                               </div>
                             </div>
-                          </div>
-                          <div id="userStatistics">
+                          </div> */}
+                          {/* <div id="userStatistics">
                             <div
                               className="row"
                               style={{
@@ -1489,7 +1497,7 @@ function Index() {
                                 </ul>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>

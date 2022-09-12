@@ -14,11 +14,11 @@ function App() {
 		<>
 			<BrowserRouter>
 				<Switch>
-					{routes.map(route => {
+					{routes.map((route , i) => {
 						switch (route.layout) {
 							case 'main':
 								return (
-									<Route exact path={route.path}>
+									<Route key={i}  exact path={route.path}>
 										<Main>
 											<route.component />
 										</Main>
@@ -26,7 +26,7 @@ function App() {
 								);
 							case 'auth':
 								return (
-									<Route exact path={route.path}>
+									<Route key={i} exact path={route.path}>
 										<Auth>
 											<route.component />
 										</Auth>

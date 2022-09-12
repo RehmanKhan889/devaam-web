@@ -35,7 +35,7 @@ function Sidebar({ showToggle }) {
               </nav>
             </header>
             <ul id="sidebarnav">
-              {routes.map((route) => {
+              {routes.map((route, i) => {
                 if (route.isMenu == false) {
                   return null;
                 }
@@ -46,7 +46,7 @@ function Sidebar({ showToggle }) {
                 switch (route.layout) {
                   case "main":
                     return (
-                      <SideBarItems
+                      <SideBarItems key={i}
                         route={route}
                         active={active}
                         setActive={setActive}
