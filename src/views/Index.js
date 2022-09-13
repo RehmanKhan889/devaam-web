@@ -4,6 +4,8 @@ import {
   getAllMetrics,
   getAllTransMetrics,
   getNotifications,
+  getPlasticBottles,
+  getDisposibleBottles
 } from "../store/actions/dashboardActions";
 import { getAllLocations } from "../store/actions/locationsActions";
 import ReactApexChart from "react-apexcharts";
@@ -36,6 +38,7 @@ function Index() {
   );
   const { locations } = useSelector((state) => state.location);
   const { user } = useSelector((state) => state.auth);
+  const  {plastic, disposibleBottle}  = useSelector((state) => state.metrics);
 
   const [brands, setBrands] = useState([]);
 
@@ -323,81 +326,13 @@ function Index() {
   // };
 
   const [plbottle, setPlbottle] = useState([]);
-
-  // useEffect(() => {
-
-  // }, []);
-
   const [dispbottle, setDispbottle] = useState([]);
 
-  // useEffect(() => {
 
-  // }, []);
-
-  const plasticBottle = () => {
-    const data = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        request: {
-          method: "getPlasticSavedByCompany",
-          data: {
-            company_code: 1234,
-          },
-        },
-      }),
-    };
-
-    const result = fetch(
-      `https://davaam-life.herokuapp.com/user/transaction`,
-      data
-    )
-      .then((response) => response.json(response))
-      .then((data) => {
-        const {plastic_saved} = data.response.data;
-        setPlbottle(plastic_saved);
-        console.log(data.response.data, "my plastic bottle");
-      })
-      .catch((error) => console.log("error", error));
-
-    return result;
-  }
-  const disposebaleBottle = () => {
-    const data = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        request: {
-          method: "getBottleDetailsByCompany",
-          data: {
-            company_code: 1234,
-          },
-        },
-      }),
-    };
-
-    const result = fetch(
-      `https://davaam-life.herokuapp.com/details/bottle`,
-      data
-    )
-      .then((response) => response.json(response))
-      .then((data) => {
-        const {bottle_details} = data.response.data;
-        let totalbottle = 0;
-        bottle_details && bottle_details.map((v, i) => { totalbottle +=v.total_bottles});
-        setDispbottle(totalbottle);
-      })
-      .catch((error) => console.log("error", error));
-
-    return result;
+  const getDisposebottleData = () => {
+    let totalbottle = 0;
+    disposibleBottle.map((v, i) => { totalbottle +=v.total_bottles});
+    return totalbottle;
   }
 
   const [data, SetData] = useState([]);
@@ -522,10 +457,12 @@ function Index() {
         company_code: user?.company_code,
       })
     );
+    dispatch(getPlasticBottles({company_code: user?.company_code}));
+    dispatch(getDisposibleBottles({company_code: user?.company_code}));
     brandsegregate();
     getUserInfor();
-    disposebaleBottle();
-    plasticBottle();
+    // disposebaleBottle();
+    // plasticBottle();
   }, []);
   // useEffect(() => {
   //   let tempArr = getCombinedData(pieEnabled);
@@ -1152,7 +1089,7 @@ function Index() {
                         </div>
                         <h6 className="bottles">Plastics Saved </h6>
                         <a href="#" className="" target="_blank">
-                          {plbottle}
+                          {plastic}
                           <span className="text-danger">*</span>
                         </a>
                       </h4>
@@ -1257,7 +1194,7 @@ function Index() {
                         </div>
                         <h6 className="bottles">Bottles Dispensed </h6>
                         <a href="/" className="similar" target="_blank">
-                          {<dispbottle className="length"> {dispbottle} </dispbottle>}
+                          {<dispbottle className="length"> {getDisposebottleData()} </dispbottle>}
 
                           <span className="text-danger">*</span>
                         </a>

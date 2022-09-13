@@ -4,6 +4,7 @@ import LoginRepository from "./LoginRepository";
 import LocationRepository from "./LocationRepository";
 import CompanyRepository from "./CompanyRepository";
 import TransactionRepository from "./TransactionRepository";
+import DisposibleBottlePlastic from "./DisposibleBottlePlastic";
 
 const repositories = {
   machine: MachineRepository,
@@ -12,6 +13,7 @@ const repositories = {
   location: LocationRepository,
   company: CompanyRepository,
   transaction: TransactionRepository,
+  disposibleBottle: DisposibleBottlePlastic,
 };
 
 export const RepositoryFactory = {

@@ -4,6 +4,8 @@ const initState = {
 	single_machine_metrics: [],
 	transaction_metrics: [],
 	notifications: [],
+	plastic: [],
+	disposibleBottle: [],
 };
 
 const metricsReducer = (state = initState, { payload, type }) => {
@@ -18,6 +20,11 @@ const metricsReducer = (state = initState, { payload, type }) => {
 				...state,
 				notifications: payload,
 			};
+		case 'GET_ALL_PLASTIC':
+			return {
+				...state,
+				plastic: payload,
+			};
 		case 'GET_ALL_LOCATIONS':
 			return {
 				...state,
@@ -27,6 +34,11 @@ const metricsReducer = (state = initState, { payload, type }) => {
 			return {
 				...state,
 				single_machine_metrics: payload,
+			};
+		case 'GET_DISPOSIBLE_BOTTLES':
+			return {
+				...state,
+				disposibleBottle: payload,
 			};
 		case 'SET_TRANSACTION_METRICS':
 			return {

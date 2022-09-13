@@ -2,6 +2,7 @@ import { RepositoryFactory } from "../../repository/RepositoryFactory";
 
 let dashboard = RepositoryFactory.get("dashboard");
 let transaction = RepositoryFactory.get("transaction");
+let dispose = RepositoryFactory.get("disposibleBottle");
 
 export const getAllMetrics = (payload) => async (dispatch) => {
   console.log(payload);
@@ -77,6 +78,44 @@ export const getNotifications = (payload) => async (dispatch) => {
     dispatch({
       type: "GET_ALL_NOTIFICATIONS",
       payload: data?.response?.data?.notifications || [],
+    });
+  } catch (error) {
+    console.log("Error");
+  }
+};
+
+
+export const getPlasticBottles = (payload) => async (dispatch) => {
+  try {
+    console.log('done');
+    let { data } = await transaction.get({
+      request: {
+        method: "getPlasticSavedByCompany",
+        data: payload
+      },
+    });
+    console.log(data, 'asdadsa');
+    dispatch({
+      type: "GET_ALL_PLASTIC",
+      payload: data?.response?.data?.plastic_saved || [],
+    });
+  } catch (error) {
+    console.log("Error");
+  }
+};
+
+export const getDisposibleBottles = (payload) => async (dispatch) => {
+  try {
+    let { data } = await dispose.get({
+      request: {
+        method: "getBottleDetailsByCompany",
+        data: payload
+      },
+    });
+
+    dispatch({
+      type: "GET_DISPOSIBLE_BOTTLES",
+      payload: data?.response?.data?.bottle_details || [],
     });
   } catch (error) {
     console.log("Error");
