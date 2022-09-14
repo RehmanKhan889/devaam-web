@@ -11452,6 +11452,7 @@ html body .waves-notransition {
   height: 27rem;
   overflow-y: scroll;
   line-break: auto  ;
+  cursor: pointer ;
 }
 #recentAlerts ul li {
   list-style: none;

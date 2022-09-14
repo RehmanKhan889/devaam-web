@@ -303,6 +303,48 @@ function Index() {
     return result;
   };
 
+
+const [monthlyrec, SetMonthlyrec] =useState([]);  
+
+  const geTransSummary = () => {
+    const data = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        request: {
+          method: "getUserTransactionsByYearlySumaryByCompany",
+          data: {
+            company_code: 1234,
+          },
+        },
+      }),
+    };
+
+    const result = fetch(
+      `https://davaam-life.herokuapp.com/user/transaction`,
+      data
+    )
+      .then((response) => response.json(response))
+      .then((data) => {
+        const { last_week } = data.response.data;
+        console.log(last_week);
+        SetMonthlyrec(last_week);
+      })
+      .catch((error) => console.log("error", error));
+    console.log(result, "am i receieving response");
+
+    return result;
+  };
+
+
+
+
+
+
   // const metCount = () => {
   //   const data = {
   //     method: "POST",
@@ -466,6 +508,7 @@ function Index() {
     dispatch(getDisposibleBottles({ company_code: user?.company_code }));
     brandsegregate();
     getUserInfor();
+    geTransSummary();
     // disposebaleBottle();
     // plasticBottle();
   }, []);
