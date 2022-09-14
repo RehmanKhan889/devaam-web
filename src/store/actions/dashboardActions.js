@@ -84,17 +84,16 @@ export const getNotifications = (payload) => async (dispatch) => {
   }
 };
 
-
 export const getPlasticBottles = (payload) => async (dispatch) => {
   try {
-    console.log('done');
+    console.log("done");
     let { data } = await transaction.get({
       request: {
         method: "getPlasticSavedByCompany",
-        data: payload
+        data: payload,
       },
     });
-    console.log(data, 'asdadsa');
+    console.log(data, "asdadsa");
     dispatch({
       type: "GET_ALL_PLASTIC",
       payload: data?.response?.data?.plastic_saved || [],
@@ -109,7 +108,7 @@ export const getDisposibleBottles = (payload) => async (dispatch) => {
     let { data } = await dispose.get({
       request: {
         method: "getBottleDetailsByCompany",
-        data: payload
+        data: payload,
       },
     });
 
@@ -121,3 +120,23 @@ export const getDisposibleBottles = (payload) => async (dispatch) => {
     console.log("Error");
   }
 };
+
+export const getUserTransactionsByYearlySumary =
+  (payload) => async (dispatch) => {
+    try {
+      let { data } = await transaction.get({
+        request: {
+          method: "getUserTransactionsByYearlySumaryByCompany",
+          data: payload,
+        },
+      });
+
+      console.log(data, "year");
+      dispatch({
+        type: "GET_TRANSACTION_YEARLY",
+        payload: data?.response?.data || [],
+      });
+    } catch (error) {
+      console.log("Error");
+    }
+  };

@@ -6,6 +6,7 @@ import {
   getNotifications,
   getPlasticBottles,
   getDisposibleBottles,
+  getUserTransactionsByYearlySumary,
 } from "../store/actions/dashboardActions";
 import { getAllLocations } from "../store/actions/locationsActions";
 import ReactApexChart from "react-apexcharts";
@@ -38,8 +39,9 @@ function Index() {
   );
   const { locations } = useSelector((state) => state.location);
   const { user } = useSelector((state) => state.auth);
-  const { plastic, disposibleBottle } = useSelector((state) => state.metrics);
-
+  const { plastic, disposibleBottle, yearlytransactions } = useSelector(
+    (state) => state.metrics
+  );
   const [brands, setBrands] = useState([]);
 
   const [pieEnabled, setEnabled] = useState("Volume");
@@ -302,49 +304,6 @@ function Index() {
 
     return result;
   };
-
-
-const [monthlyrec, SetMonthlyrec] =useState([]);  
-
-  const geTransSummary = () => {
-    const data = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        request: {
-          method: "getUserTransactionsByYearlySumaryByCompany",
-          data: {
-            company_code: 1234,
-          },
-        },
-      }),
-    };
-
-    const result = fetch(
-      `https://davaam-life.herokuapp.com/user/transaction`,
-      data
-    )
-      .then((response) => response.json(response))
-      .then((data) => {
-        const { last_week } = data.response.data;
-        console.log(last_week);
-        SetMonthlyrec(last_week);
-      })
-      .catch((error) => console.log("error", error));
-    console.log(result, "am i receieving response");
-
-    return result;
-  };
-
-
-
-
-
-
   // const metCount = () => {
   //   const data = {
   //     method: "POST",
@@ -506,9 +465,12 @@ const [monthlyrec, SetMonthlyrec] =useState([]);
     );
     dispatch(getPlasticBottles({ company_code: user?.company_code }));
     dispatch(getDisposibleBottles({ company_code: user?.company_code }));
+    dispatch(
+      getUserTransactionsByYearlySumary({ company_code: user?.company_code })
+    );
     brandsegregate();
     getUserInfor();
-    geTransSummary();
+
     // disposebaleBottle();
     // plasticBottle();
   }, []);
@@ -536,6 +498,18 @@ const [monthlyrec, SetMonthlyrec] =useState([]);
   //     });
   //   }, 1500);
   // }, [transaction_metrics]);
+
+  const generateGraphdata = (type) => {
+    const yearlydata = yearlytransactions[`${type}`];
+    const revenue = yearlydata.Revenue;
+    const transaction = yearlydata.Transaction;
+    console.log(yearlydata);
+    // console.log(yearlytransactions, "helo");
+    revenue.map((d, i) => {
+      console.log(d, i);
+    });
+  };
+
   const [options1, setPieChartData] = useState(piChartoptions);
   const [series1, setSeries1] = useState([20, 40]);
 
@@ -823,6 +797,7 @@ const [monthlyrec, SetMonthlyrec] =useState([]);
                     <div className="col-md-8 offset-md-2 m-auto">
                       <h4 style={{ fontFamily: "Open Sans" }}>Total Revenue</h4>
                       <h3>
+                        {generateGraphdata("user_transaction")}
                         {getCombinedData("Revenue")
                           .map((item) => item.volume)
                           .toString()}
