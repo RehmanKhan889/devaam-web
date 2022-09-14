@@ -11878,3 +11878,15 @@ font-size: 14px;
     height: 100%!important;
   }
 }
+
+.clicker {
+  cursor:pointer;
+  }
+  
+  .hiddendiv{
+  display:none;
+  }
+  
+  .clicker:focus + .hiddendiv{
+  display:block;
+  }

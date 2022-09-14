@@ -5,7 +5,7 @@ import {
   getAllTransMetrics,
   getNotifications,
   getPlasticBottles,
-  getDisposibleBottles
+  getDisposibleBottles,
 } from "../store/actions/dashboardActions";
 import { getAllLocations } from "../store/actions/locationsActions";
 import ReactApexChart from "react-apexcharts";
@@ -38,7 +38,7 @@ function Index() {
   );
   const { locations } = useSelector((state) => state.location);
   const { user } = useSelector((state) => state.auth);
-  const  {plastic, disposibleBottle}  = useSelector((state) => state.metrics);
+  const { plastic, disposibleBottle } = useSelector((state) => state.metrics);
 
   const [brands, setBrands] = useState([]);
 
@@ -102,7 +102,7 @@ function Index() {
     ],
   };
   const brandsegregate = () => {
-    console.log('date selected...');
+    console.log("date selected...");
     // return;
     const brand = {
       labels: [],
@@ -153,8 +153,13 @@ function Index() {
       brandData.data.total_revenue.push(brand.brandtotal[key].total_revenue);
     }
 
-    setPieChartData({...options1, ...{labels: brandData.label.length > 0 ? [...brandData.label] : ['']  }});
-    setSeries1(brandData.data.total_volume.length > 0 ? brandData.data.total_volume: [0])
+    setPieChartData({
+      ...options1,
+      ...{ labels: brandData.label.length > 0 ? [...brandData.label] : [""] },
+    });
+    setSeries1(
+      brandData.data.total_volume.length > 0 ? brandData.data.total_volume : [0]
+    );
   };
 
   const getMonths = () => {
@@ -261,9 +266,8 @@ function Index() {
   const [stats, setStats] = useState([]);
 
   // useEffect(() => {
-    
-  // }, []);
 
+  // }, []);
 
   const getUserInfor = () => {
     const data = {
@@ -289,7 +293,7 @@ function Index() {
     )
       .then((response) => response.json(response))
       .then((data) => {
-        const {machine_users} = data.response.data;
+        const { machine_users } = data.response.data;
         console.log(machine_users);
         setStats(machine_users);
       })
@@ -297,7 +301,7 @@ function Index() {
     console.log(result, "am i receieving response");
 
     return result;
-  }
+  };
 
   // const metCount = () => {
   //   const data = {
@@ -328,12 +332,13 @@ function Index() {
   const [plbottle, setPlbottle] = useState([]);
   const [dispbottle, setDispbottle] = useState([]);
 
-
   const getDisposebottleData = () => {
     let totalbottle = 0;
-    disposibleBottle.map((v, i) => { totalbottle +=v.total_bottles});
+    disposibleBottle.map((v, i) => {
+      totalbottle += v.total_bottles;
+    });
     return totalbottle;
-  }
+  };
 
   const [data, SetData] = useState([]);
   const getTotal = () => {
@@ -457,8 +462,8 @@ function Index() {
         company_code: user?.company_code,
       })
     );
-    dispatch(getPlasticBottles({company_code: user?.company_code}));
-    dispatch(getDisposibleBottles({company_code: user?.company_code}));
+    dispatch(getPlasticBottles({ company_code: user?.company_code }));
+    dispatch(getDisposibleBottles({ company_code: user?.company_code }));
     brandsegregate();
     getUserInfor();
     // disposebaleBottle();
@@ -712,7 +717,7 @@ function Index() {
                         Daily
                       </a>
                     </li>
-                    <li className="nav-item m-1">
+                    {/* <li className="nav-item m-1">
                       <a
                         onClick={() => setBarChartTab("2")}
                         className="nav-link"
@@ -726,7 +731,7 @@ function Index() {
                       >
                         Weekly
                       </a>
-                    </li>
+                    </li> */}
                     <li className="nav-item m-1">
                       <a
                         onClick={() => setBarChartTab("3")}
@@ -748,13 +753,13 @@ function Index() {
                     <div>
                       <h6 className="card-subtitle">Revenue</h6>
                     </div>
-                    <div className="ms-auto no-block align-items-center">
+                    {/* <div className="ms-auto no-block align-items-center">
                       <input
                         type="date"
                         value={moment().format("YYYY-MM-DD")}
                         className="__input"
                       />
-                    </div>
+                    </div> */}
                   </div>
                   <div className="amp-pxl mt-4">
                     <div id="chart">
@@ -773,7 +778,7 @@ function Index() {
 
                   <div className="row">
                     <div className="col-md-8 offset-md-2 m-auto">
-                      <h4 style={{ fontFamily: "Open Sans" }}>Total Refills</h4>
+                      <h4 style={{ fontFamily: "Open Sans" }}>Total Revenue</h4>
                       <h3>
                         {getCombinedData("Revenue")
                           .map((item) => item.volume)
@@ -957,50 +962,54 @@ function Index() {
                         </p>
                       </a>
                     </div>
-                    <div id="unseenNotification">
-                      <ul className="d-flex">
-                        <li>
-                          <div id="bellhead">
-                            {/* {items &&
+                    <div class="clicker" tabindex="1">
+                      <div id="unseenNotification">
+                        <ul className="d-flex">
+                          <li>
+                            <div id="bellhead">
+                              {/* {items &&
                               items.map((item) => (
                                 <> */}
-                            <img
-                              // onMouseOver={onNotify}
-                              onClick={openNotification}
-                              src={notificationBell}
-                              className="img-fluid"
-                              alt="bell"
-                              // description={item.myuser}
-                            />
-                            {/* </>
+                              <img
+                                // onMouseOver={onNotify}
+                                onClick={openNotification}
+                                src={notificationBell}
+                                className="img-fluid"
+                                alt="bell"
+                                // description={item.myuser}
+                              />
+                              {/* </>
                               ))} */}
-                          </div>
-                        </li>
-                      </ul>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                    <div id="recentAlerts">
-                      <ul className="d-flex">
-                        <li>
-                          <div id="bellhead">
-                            {/* <img
+                    <div class="hiddendiv">
+                      <div id="recentAlerts">
+                        <ul className="d-flex">
+                          <li>
+                            <div id="bellhead">
+                              {/* <img
                               src={greenIcon}
                               className="img-fluid"
                               alt="bell"
                               text="new notifications"
                             /> */}
-                          </div>
-                        </li>
-                        <li>
-                          {items &&
-                            items.map((item, i) => (
-                              <div key={i}>
-                                {/* <h5>{item.brand_name}</h5> */}
+                            </div>
+                          </li>
+                          <li>
+                            {items &&
+                              items.map((item, i) => (
+                                <div key={i}>
+                                  {/* <h5>{item.brand_name}</h5> */}
 
-                                <p>{item.message}</p>
-                              </div>
-                            ))}
-                        </li>
-                      </ul>
+                                  <p>{item.message}</p>
+                                </div>
+                              ))}
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                     {/* <div id="recentAlerts">
                       <ul className="d-flex">
@@ -1194,7 +1203,12 @@ function Index() {
                         </div>
                         <h6 className="bottles">Bottles Dispensed </h6>
                         <a href="/" className="similar" target="_blank">
-                          {<dispbottle className="length"> {getDisposebottleData()} </dispbottle>}
+                          {
+                            <dispbottle className="length">
+                              {" "}
+                              {getDisposebottleData()}{" "}
+                            </dispbottle>
+                          }
 
                           <span className="text-danger">*</span>
                         </a>
@@ -1332,43 +1346,47 @@ function Index() {
                               </div>
                             </div>
                           </div>
-                          { stats && stats.map((value, i) => (
-                          <div key={i} id="userStatistics">
-                            <div
-                              className="row"
-                              style={{
-                                alignItems: "center",
-                              }}
-                            >
-                              <div className="col">
-                                <ul>
-                                  <li>
-                                    <img src={users188} className="" alt="" />
-                                  </li>
-                                  <li>
-                                    <p>
-                                      <strong>User ID</strong>
-                                      <br />
-                                      {value.user_id}
-                                    </p>
-                                  </li>
-                                </ul>
+                          {stats &&
+                            stats.map((value, i) => (
+                              <div key={i} id="userStatistics">
+                                <div
+                                  className="row"
+                                  style={{
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <div className="col">
+                                    <ul>
+                                      <li>
+                                        <img
+                                          src={users188}
+                                          className=""
+                                          alt=""
+                                        />
+                                      </li>
+                                      <li>
+                                        <p>
+                                          <strong>User ID</strong>
+                                          <br />
+                                          {value.user_id}
+                                        </p>
+                                      </li>
+                                    </ul>
+                                  </div>
+
+                                  <div className="col">
+                                    <ul>
+                                      <li>
+                                        <p>{value.mobile_number}</p>
+                                      </li>
+                                      <li>
+                                        <p>{value.created_at_sql}</p>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
                               </div>
-                              
-                              <div className="col">
-                                <ul>
-                                  <li>
-                                    <p>{value.mobile_number}</p>
-                                  </li>
-                                  <li>
-                                    <p>{value.created_at_sql}</p>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          ))
-                          }
+                            ))}
                           {/* <div id="userStatistics">
                             <div
                               className="row"
