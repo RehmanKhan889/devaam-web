@@ -501,13 +501,13 @@ function Index() {
 
   const generateGraphdata = (type) => {
     const yearlydata = yearlytransactions[`${type}`];
-    const revenue = yearlydata.Revenue;
-    const transaction = yearlydata.Transaction;
-    console.log(yearlydata);
-    // console.log(yearlytransactions, "helo");
-    revenue.map((d, i) => {
-      console.log(d, i);
-    });
+    // const revenue = yearlydata.Revenue;
+    // const transaction = yearlydata.Transaction;
+  //  console.log(yearlydata);
+    // // console.log(yearlytransactions, "helo");
+    // revenue.map((d, i) => {
+      // console.log(d, i);
+    // });
   };
 
   const [options1, setPieChartData] = useState(piChartoptions);
