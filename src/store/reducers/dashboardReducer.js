@@ -7,6 +7,8 @@ const initState = {
   plastic: [],
   disposibleBottle: [],
   yearlytransactions: [],
+  lastweek: [],
+  usertransaction: [],
 };
 
 const metricsReducer = (state = initState, { payload, type }) => {
@@ -50,6 +52,16 @@ const metricsReducer = (state = initState, { payload, type }) => {
       return {
         ...state,
         transaction_metrics: payload,
+      };
+    case "SET_LAST_WEEK":
+      return {
+        ...state,
+        lastweek: payload,
+      };
+    case "SET_USER_TRANSACTION":
+      return {
+        ...state,
+        usertransaction: payload,
       };
 
     default:

@@ -39,7 +39,7 @@ function Index() {
   );
   const { locations } = useSelector((state) => state.location);
   const { user } = useSelector((state) => state.auth);
-  const { plastic, disposibleBottle, yearlytransactions } = useSelector(
+  const { plastic, disposibleBottle, yearlytransactions, lastweek,usertransaction } = useSelector(
     (state) => state.metrics
   );
   const [brands, setBrands] = useState([]);
@@ -206,7 +206,7 @@ function Index() {
       setMyuser(company_code);
     }
 
-    console.log(getTotal());
+    // console.log(getTotal());
   }, []);
 
   const key = "updatable";
@@ -474,6 +474,37 @@ function Index() {
     // disposebaleBottle();
     // plasticBottle();
   }, []);
+
+  useEffect(()=> {
+    const dataWeek = lastweek;
+    const dataUser = usertransaction;
+    
+    console.log(usertransaction, 'asdads');
+    setOptionsBar1({...optionsBar1, xaxis:{categories: dataWeek?.revenue?.label} });
+    
+    setSeriesBar1([
+      {
+        name: "Transaction",
+        data: dataWeek?.transaction?.data || [],
+      },
+      {
+        name: "Revenue",
+        data: dataWeek?.revenue?.data || [],
+      },
+    ])
+
+    setOptions3({...options3, xaxis:{categories: dataUser?.revenue?.label} })
+    setSeries3([
+      {
+        name: "Transaction",
+        data: dataUser?.transaction?.data || [],
+      },
+      {
+        name: "Revenue",
+        data: dataUser?.revenue?.data || [],
+      },
+    ])
+  }, [lastweek, usertransaction])
   // useEffect(() => {
   //   let tempArr = getCombinedData(pieEnabled);
   //   console.log(tempArr);
@@ -783,8 +814,8 @@ function Index() {
                       <BarChart
                         options1={optionsBar1}
                         series1={seriesBar1}
-                        options2={options2}
-                        series2={series2}
+                        // options2={options2}
+                        // series2={series2}
                         options3={options3}
                         series3={series3}
                         tab={barChartTab}
@@ -795,19 +826,17 @@ function Index() {
 
                   <div className="row">
                     <div className="col-md-8 offset-md-2 m-auto">
-                      <h4 style={{ fontFamily: "Open Sans" }}>Total Revenue</h4>
+                      <h4 style={{ fontFamily: "Open Sans" }}>Total Revenue PKR</h4>
                       <h3>
-                        {generateGraphdata("user_transaction")}
-                        {getCombinedData("Revenue")
-                          .map((item) => item.volume)
-                          .toString()}
-                        {getCombinedData("Revenue")
-                          .map((item) => item.volume)
-                          .toString() == ""
-                          ? "0"
-                          : ""}{" "}
-                        Pkr
+                        {/* {generateGraphdata("user_transaction")} */}
+                        {getCombinedData("Revenue").length > 0 && 
+                          getCombinedData("Revenue").map((item) => item.volume)
+                          .reduce((t, n)=> t+n).toString()}
                       </h3>
+
+                      <h4 style={{ fontFamily: "Open Sans" }}>Total Transaction PKR</h4>
+                      {getCombinedData("Transaction").length > 0 && 
+                        getCombinedData("Transaction").map((item) => item.volume).reduce((t, n)=> t+n).toString() }
                     </div>
                   </div>
                 </div>
@@ -1222,10 +1251,10 @@ function Index() {
                         <h6 className="bottles">Bottles Dispensed </h6>
                         <a href="/" className="similar" target="_blank">
                           {
-                            <dispbottle className="length">
+                            <div className="length">
                               {" "}
                               {getDisposebottleData()}{" "}
-                            </dispbottle>
+                            </div>
                           }
 
                           <span className="text-danger">*</span>
