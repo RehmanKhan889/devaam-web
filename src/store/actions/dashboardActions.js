@@ -37,16 +37,56 @@ export const getAllTransMetrics = (payload) => async (dispatch) => {
         data: payload,
       },
     });
-    console.log(data?.response?.data?.user_transaction);
+    console.log(data?.response?.data);
     dispatch({
       type: "SET_TRANSACTION_METRICS",
-      payload: data?.response?.data?.user_transaction || [],
+      payload: data?.response?.data || [],
     });
+
+   const lastweek = generateGraphdata('last_week', data?.response?.data);
+   const usertransaction = generateGraphdata('user_transaction', data?.response?.data);
+  console.log(lastweek, usertransaction);
+   dispatch({
+    type: "SET_LAST_WEEK",
+    payload: lastweek || [],
+  });
+
+  dispatch({
+    type: "SET_USER_TRANSACTION",
+    payload: usertransaction || [],
+  });
+
   } catch (error) {
     console.log(error.message);
     console.log("Error");
   }
 };
+
+
+const generateGraphdata = (type, yearlytransactions) => {
+  // return new Promise((res, rej)=> {
+   const yearlydata = yearlytransactions[`${type}`];
+   const revenue = yearlydata?.Revenue;
+   const graphData = {revenue: {label: [], data: []}, transaction: {label: [], data: []}};
+   console.log(yearlydata);
+   const transaction = yearlydata.Transaction;
+
+   transaction.map((d, i) => {
+     const keyobj = Object.keys(d)[0];
+     const data = d[`${keyobj}`];
+     graphData.transaction.label.push(keyobj);
+     graphData.transaction.data.push(data);
+   });
+
+   revenue.map((d, i) => {
+     const keyobj = Object.keys(d)[0];
+     const data = d[`${keyobj}`];
+     graphData.revenue.label.push(keyobj);
+     graphData.revenue.data.push(data);
+   });
+   return graphData;
+  //  })
+ };
 
 export const getMetricsByMachine = (payload) => async (dispatch) => {
   try {

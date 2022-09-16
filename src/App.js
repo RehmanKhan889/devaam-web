@@ -14,21 +14,21 @@ function App() {
 		<>
 			<BrowserRouter>
 				<Switch>
-					{routes.map((route , i) => {
-						switch (route.layout) {
+					{routes.map((rou , i) => {
+						switch (rou.layout) {
 							case 'main':
 								return (
-									<Route key={i}  exact path={route.path}>
+									<Route key={i}  exact path={rou.path}>
 										<Main>
-											<route.component />
+											<rou.component/>
 										</Main>
 									</Route>
 								);
 							case 'auth':
 								return (
-									<Route key={i} exact path={route.path}>
+									<Route key={i} exact path={rou.path}>
 										<Auth>
-											<route.component />
+											<rou.component />
 										</Auth>
 									</Route>
 								);
