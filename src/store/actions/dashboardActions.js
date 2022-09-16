@@ -5,7 +5,7 @@ let transaction = RepositoryFactory.get("transaction");
 let dispose = RepositoryFactory.get("disposibleBottle");
 
 export const getAllMetrics = (payload) => async (dispatch) => {
-  console.log(payload);
+  // console.log(payload);
   try {
     let { data } = await dashboard.get({
       request: {
@@ -37,7 +37,7 @@ export const getAllTransMetrics = (payload) => async (dispatch) => {
         data: payload,
       },
     });
-    console.log(data?.response?.data);
+    // console.log(data?.response?.data);
     dispatch({
       type: "SET_TRANSACTION_METRICS",
       payload: data?.response?.data || [],
@@ -45,7 +45,7 @@ export const getAllTransMetrics = (payload) => async (dispatch) => {
 
    const lastweek = generateGraphdata('last_week', data?.response?.data);
    const usertransaction = generateGraphdata('user_transaction', data?.response?.data);
-  console.log(lastweek, usertransaction);
+  // console.log(lastweek, usertransaction);
    dispatch({
     type: "SET_LAST_WEEK",
     payload: lastweek || [],
@@ -68,7 +68,7 @@ const generateGraphdata = (type, yearlytransactions) => {
    const yearlydata = yearlytransactions[`${type}`];
    const revenue = yearlydata?.Revenue;
    const graphData = {revenue: {label: [], data: []}, transaction: {label: [], data: []}};
-   console.log(yearlydata);
+  //  console.log(yearlydata);
    const transaction = yearlydata.Transaction;
 
    transaction.map((d, i) => {

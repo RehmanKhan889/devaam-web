@@ -829,16 +829,14 @@ function Index() {
                       <h4 style={{ fontFamily: "Open Sans" }}>Total Revenue</h4>
                       <h3>
                         {/* {generateGraphdata("user_transaction")} */}
-                        {getCombinedData("Revenue")
-                          .map((item) => item.volume)
-                          .toString()}
-                        {getCombinedData("Revenue")
-                          .map((item) => item.volume)
-                          .toString() == ""
-                          ? "0"
-                          : ""}{" "}
-                        Pkr
+                        {getCombinedData("Revenue").length > 0 && 
+                          getCombinedData("Revenue").map((item) => item.volume)
+                          .reduce((t, n)=> t+n).toString()} PKR
                       </h3>
+
+                      <h4 style={{ fontFamily: "Open Sans" }}>Total Transaction</h4>
+                      {getCombinedData("Transaction").length > 0 && 
+                        getCombinedData("Transaction").map((item) => item.volume).reduce((t, n)=> t+n).toString() }
                     </div>
                   </div>
                 </div>
