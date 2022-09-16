@@ -1009,7 +1009,7 @@ function Index() {
                         </p>
                       </a>
                     </div>
-                    <div class="clicker" tabindex="1">
+                    <div className="clicker" tabIndex="1">
                       <div id="unseenNotification">
                         <ul className="d-flex">
                           <li>
@@ -1032,7 +1032,7 @@ function Index() {
                         </ul>
                       </div>
                     </div>
-                    <div class="hiddendiv">
+                    <div className="hiddendiv">
                       <div id="recentAlerts">
                         <ul className="d-flex">
                           <li>
