@@ -6430,6 +6430,11 @@ fieldset:disabled .btn {
 }
 .m-auto {
   margin: auto !important;
+  margin: auto !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  justify-content: space-between;
 }
 .mx-0 {
   margin-right: 0 !important;

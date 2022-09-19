@@ -815,15 +815,15 @@ function Index() {
 
                   <div className="row">
                     <div className="col-md-8 offset-md-2 m-auto">
-                      <h4 style={{ fontFamily: "Open Sans" }}>Total Revenue</h4>
+                      <h4 style={{ fontFamily: "Open Sans" }}>Total Revenue PKR</h4>
                       <h3>
                         {/* {generateGraphdata("user_transaction")} */}
                         {getCombinedData("Revenue").length > 0 && 
                           getCombinedData("Revenue").map((item) => item.volume)
-                          .reduce((t, n)=> t+n).toString()} PKR
+                          .reduce((t, n)=> t+n).toString()}
                       </h3>
 
-                      <h4 style={{ fontFamily: "Open Sans" }}>Total Transaction</h4>
+                      <h4 style={{ fontFamily: "Open Sans" }}>Total Transaction PKR</h4>
                       {getCombinedData("Transaction").length > 0 && 
                         getCombinedData("Transaction").map((item) => item.volume).reduce((t, n)=> t+n).toString() }
                     </div>
