@@ -479,7 +479,7 @@ function Index() {
     const dataWeek = lastweek;
     const dataUser = usertransaction;
     
-    console.log(usertransaction, 'asdads');
+    // console.log(usertransaction, 'asdads');
     setOptionsBar1({...optionsBar1, xaxis:{categories: dataWeek?.revenue?.label} });
     
     setSeriesBar1([
@@ -529,17 +529,6 @@ function Index() {
   //     });
   //   }, 1500);
   // }, [transaction_metrics]);
-
-  const generateGraphdata = (type) => {
-    const yearlydata = yearlytransactions[`${type}`];
-    const revenue = yearlydata?.Revenue;
-    const transaction = yearlydata?.Transaction;
-    console.log(yearlydata);
-    // console.log(yearlytransactions, "helo");
-    revenue.map((d, i) => {
-      console.log(d, i);
-    });
-  };
 
   const [options1, setPieChartData] = useState(piChartoptions);
   const [series1, setSeries1] = useState([20, 40]);

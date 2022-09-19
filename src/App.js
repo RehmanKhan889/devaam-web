@@ -18,18 +18,18 @@ function App() {
 						switch (rou.layout) {
 							case 'main':
 								return (
-									<Route key={i}  exact path={rou.path} component={() => <Main><rou.component/></Main>}>
-										{/* <Main>
+									<Route key={i}  exact path={rou.path}>
+										<Main>
 											<rou.component/>
-										</Main> */}
+										</Main>
 									</Route>
 								);
 							case 'auth':
 								return (
-									<Route key={i} exact path={rou.path} component={() => <App><rou.component /></App>} >
-										{/* <Auth>
+									<Route key={i} exact path={rou.path}  >
+										<Auth>
 											<rou.component />
-										</Auth> */}
+										</Auth>
 									</Route>
 								);
 						}
