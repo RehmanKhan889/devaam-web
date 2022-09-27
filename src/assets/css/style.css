@@ -10324,7 +10324,7 @@ div#locationCard {
   display: flex;
   align-items: center;
   letter-spacing: 0.4px;
-  text-decoration-line: underline;
+  /* text-decoration-line: underline; */
   color: #2b2b2b;
 }
 .firstcard h3 {
@@ -10340,13 +10340,13 @@ div#locationCard {
 .firstcard p {
   font-family: "Poppins";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 14px;
   line-height: 16px;
   display: flex;
   align-items: center;
   letter-spacing: 0.4px;
-  color: #4aaf05;
+  /* color: #4aaf05; */
 }
 
 .left-sidebar {
@@ -11539,6 +11539,9 @@ html body .waves-notransition {
   background: rgba(67, 204, 186, 0.1);
   border: 0.764704px solid #e2e2e2;
   border-radius: 38.2352px;
+  width: 89%;
+  margin-left: 1.3rem;
+
 }
 #userStatistics ul {
   margin: 0.5rem 0;
@@ -11896,3 +11899,9 @@ font-size: 14px;
   .clicker:focus + .hiddendiv{
   display:block;
   }
+
+.user-scroll{
+  max-height: 19.5rem;
+  overflow-y: scroll;
+}
+

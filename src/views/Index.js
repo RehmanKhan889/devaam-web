@@ -39,10 +39,15 @@ function Index() {
   );
   const { locations } = useSelector((state) => state.location);
   const { user } = useSelector((state) => state.auth);
-  const { plastic, disposibleBottle, yearlytransactions, lastweek,usertransaction } = useSelector(
-    (state) => state.metrics
-  );
+  const {
+    plastic,
+    disposibleBottle,
+    yearlytransactions,
+    lastweek,
+    usertransaction,
+  } = useSelector((state) => state.metrics);
   const [brands, setBrands] = useState([]);
+  const [clickscroll, setClickScroll] = useState(false);
 
   const [pieEnabled, setEnabled] = useState("Volume");
 
@@ -211,7 +216,8 @@ function Index() {
 
   const key = "updatable";
   const openNotification = async () => {
-    document.getElementsByClassName("notify-pannel");
+    // document.getElementsByClassName("notify-pannel");
+
     const {
       response: {
         data: { notifications },
@@ -219,6 +225,7 @@ function Index() {
     } = await onNotify();
 
     setItems(notifications);
+    setClickScroll(true);
     // notification({
     //   key,
     //   message: notifications[0].message,
@@ -475,13 +482,16 @@ function Index() {
     // plasticBottle();
   }, []);
 
-  useEffect(()=> {
+  useEffect(() => {
     const dataWeek = lastweek;
     const dataUser = usertransaction;
-    
+
     // console.log(usertransaction, 'asdads');
-    setOptionsBar1({...optionsBar1, xaxis:{categories: dataWeek?.revenue?.label} });
-    
+    setOptionsBar1({
+      ...optionsBar1,
+      xaxis: { categories: dataWeek?.revenue?.label },
+    });
+
     setSeriesBar1([
       {
         name: "Transaction",
@@ -491,9 +501,12 @@ function Index() {
         name: "Revenue",
         data: dataWeek?.revenue?.data || [],
       },
-    ])
+    ]);
 
-    setOptions3({...options3, xaxis:{categories: dataUser?.revenue?.label} })
+    setOptions3({
+      ...options3,
+      xaxis: { categories: dataUser?.revenue?.label },
+    });
     setSeries3([
       {
         name: "Transaction",
@@ -503,8 +516,8 @@ function Index() {
         name: "Revenue",
         data: dataUser?.revenue?.data || [],
       },
-    ])
-  }, [lastweek, usertransaction])
+    ]);
+  }, [lastweek, usertransaction]);
   // useEffect(() => {
   //   let tempArr = getCombinedData(pieEnabled);
   //   console.log(tempArr);
@@ -815,17 +828,26 @@ function Index() {
 
                   <div className="row">
                     <div className="col-md-8 offset-md-2 m-auto">
-                      <h4 style={{ fontFamily: "Open Sans" }}>Total Revenue PKR</h4>
-                      <h3>
+                      <p style={{ fontFamily: "Open Sans" }}>Total Revenue</p>
+                      <p>
                         {/* {generateGraphdata("user_transaction")} */}
-                        {getCombinedData("Revenue").length > 0 && 
-                          getCombinedData("Revenue").map((item) => item.volume)
-                          .reduce((t, n)=> t+n).toString()}
-                      </h3>
+                        {getCombinedData("Revenue").length > 0 &&
+                          getCombinedData("Revenue")
+                            .map((item) => item.volume)
+                            .reduce((t, n) => t + n)
+                            .toString()}
+                      </p>
 
-                      <h4 style={{ fontFamily: "Open Sans" }}>Total Transaction PKR</h4>
-                      {getCombinedData("Transaction").length > 0 && 
-                        getCombinedData("Transaction").map((item) => item.volume).reduce((t, n)=> t+n).toString() }
+                      <p style={{ fontFamily: "Open Sans" }}>
+                        Total Transaction
+                      </p>
+                      <p>
+                        {getCombinedData("Transaction").length > 0 &&
+                          getCombinedData("Transaction")
+                            .map((item) => item.volume)
+                            .reduce((t, n) => t + n)
+                            .toString()}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -898,7 +920,7 @@ function Index() {
                     style={{ fontFamily: "Open Sans" }}
                     className="card-title"
                   >
-                    Total {pieEnabled} Dispensed
+                    Total {pieEnabled}
                   </h4>
                   <h6 className="card-subtitle">{getTotal()}</h6>
                   <br />
@@ -1021,7 +1043,10 @@ function Index() {
                         </ul>
                       </div>
                     </div>
-                    <div className="hiddendiv">
+                    <div
+                      className="hiddendiv"
+                      style={{ display: clickscroll ? "block" : "none" }}
+                    >
                       <div id="recentAlerts">
                         <ul className="d-flex">
                           <li>
@@ -1309,7 +1334,7 @@ function Index() {
                     </div>
 
                     <div className="row ">
-                      <div className="card-body p-0 m-2">
+                      <div className="card-body" style={{ margin: "1.5rem" }}>
                         <div className=" align-items-center">
                           <div className="row">
                             <div className="col-md-12">
@@ -1382,47 +1407,51 @@ function Index() {
                               </div>
                             </div>
                           </div>
-                          {stats &&
-                            stats.map((value, i) => (
-                              <div key={i} id="userStatistics">
-                                <div
-                                  className="row"
-                                  style={{
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <div className="col">
-                                    <ul>
+                          <div className="user-scroll">
+                            {stats &&
+                              stats.map((value, i) => (
+                                <div key={i} id="userStatistics">
+                                  <div
+                                    className="row"
+                                    style={{
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <div className="">
+                                      <ul>
+                                        <li>
+                                          <img
+                                            src={users188}
+                                            className=""
+                                            alt=""
+                                          />
+                                        </li>
+                                        <li>
+                                          <p>
+                                            <strong>Phone No</strong>
+                                            <br />
+                                            {value.mobile_number}
+                                          </p>
+                                          <p style={{ marginleft: "3rem" }}>
+                                            {value.created_at_sql}
+                                          </p>
+                                        </li>
+                                      </ul>
+                                    </div>
+
+                                    <div className="col">
+                                      {/* <ul>
                                       <li>
-                                        <img
-                                          src={users188}
-                                          className=""
-                                          alt=""
-                                        />
-                                      </li>
-                                      <li>
-                                        <p>
-                                          <strong>User ID</strong>
-                                          <br />
-                                          {value.user_id}
+                                        <p style={{ marginleft: "3rem" }}>
+                                          {value.created_at_sql}
                                         </p>
                                       </li>
-                                    </ul>
-                                  </div>
-
-                                  <div className="col">
-                                    <ul>
-                                      <li>
-                                        <p>{value.mobile_number}</p>
-                                      </li>
-                                      <li>
-                                        <p>{value.created_at_sql}</p>
-                                      </li>
-                                    </ul>
+                                    </ul> */}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            ))}
+                              ))}
+                          </div>
                           {/* <div id="userStatistics">
                             <div
                               className="row"
