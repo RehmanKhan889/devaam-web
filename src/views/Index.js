@@ -226,6 +226,12 @@ function Index() {
 
     setItems(notifications);
     setClickScroll(true);
+    window.onload = function(){
+      document.getElementById('close').onclick = function(){
+          this.parentNode.parentNode.remove();
+          return false;
+      };
+  }
     // notification({
     //   key,
     //   message: notifications[0].message,
@@ -1025,6 +1031,7 @@ function Index() {
                         <ul className="d-flex">
                           <li>
                             <div id="bellhead">
+
                               {/* {items &&
                               items.map((item) => (
                                 <> */}
