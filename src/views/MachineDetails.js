@@ -5,38 +5,41 @@ import Notifications from "../components/Modals/Notifications";
 import Details from "../components/Details";
 import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import { useParams } from "react-router-dom";
-import { getMetricsByMachine } from "../store/actions/dashboardActions";
+import {
+  getMachineDetails,
+  getMetricsByMachine,
+} from "../store/actions/dashboardActions";
 import { useDispatch, useSelector } from "react-redux";
 import ReactApexChart from "react-apexcharts";
 import { getCombinedData } from "../helpers/getCombinedData";
-import Barcode from '../assets/images/dawaam/barcode.png';
-import SerialNO from '../assets/images/dawaam/binary-code 1.png';
-import MachineType from '../assets/images/dawaam/machine -type.png';
-import MotorType from '../assets/images/dawaam/motor-type.png';
-import Nozzles from '../assets/images/dawaam/Nozzles.png';
-import ITSystem from '../assets/images/dawaam/ITSystem.png';
-import calendarsvgrepo from '../assets/images/dawaam/calendar-svgrepo-com 1.png';
-import batteryIcon from '../assets/images/dawaam/battery.png';
-import Replenished from '../assets/images/dawaam/Replenished.png';
-import StockLeft from '../assets/images/dawaam/StockLeft.png';
-import Tank1 from '../assets/images/dawaam/Tank1.png';
-import Tank2 from '../assets/images/dawaam/Tank2.png';
-import Tank3 from '../assets/images/dawaam/Tank3.png';
-import Tank4 from '../assets/images/dawaam/Tank4.png';
-import systemUpdate from '../assets/images/dawaam/systemUpdate.png';
-import machineCircle from '../assets/images/dawaam/machineCircle.png';
-import moment from 'moment';
+import Barcode from "../assets/images/dawaam/barcode.png";
+import SerialNO from "../assets/images/dawaam/binary-code 1.png";
+import MachineType from "../assets/images/dawaam/machine -type.png";
+import MotorType from "../assets/images/dawaam/motor-type.png";
+import Nozzles from "../assets/images/dawaam/Nozzles.png";
+import ITSystem from "../assets/images/dawaam/ITSystem.png";
+import calendarsvgrepo from "../assets/images/dawaam/calendar-svgrepo-com 1.png";
+import batteryIcon from "../assets/images/dawaam/battery.png";
+import Replenished from "../assets/images/dawaam/Replenished.png";
+import StockLeft from "../assets/images/dawaam/StockLeft.png";
+import Tank1 from "../assets/images/dawaam/Tank1.png";
+import Tank2 from "../assets/images/dawaam/Tank2.png";
+import Tank3 from "../assets/images/dawaam/Tank3.png";
+import Tank4 from "../assets/images/dawaam/Tank4.png";
+import systemUpdate from "../assets/images/dawaam/systemUpdate.png";
+import machineCircle from "../assets/images/dawaam/machineCircle.png";
+import moment from "moment";
 
-import tankGroup from '../assets/images/dawaam/tankGroup.png';
-import technicalSupport from '../assets/images/dawaam/technical-support.png';
-import bucket from '../assets/images/dawaam/bucket.png';
-import toolBox from '../assets/images/dawaam/tool-box.png';
-import clock from '../assets/images/dawaam/clock.png';
-import numberOrder from '../assets/images/dawaam/numberOrder.png';
-import typicalOrder from '../assets/images/dawaam/typicalOrder.png';
-import singleUser from '../assets/images/dawaam/singleUser.png';
-import allUser from '../assets/images/dawaam/allUser.png';
-import users188 from '../assets/images/dawaam/users188.png';
+import tankGroup from "../assets/images/dawaam/tankGroup.png";
+import technicalSupport from "../assets/images/dawaam/technical-support.png";
+import bucket from "../assets/images/dawaam/bucket.png";
+import toolBox from "../assets/images/dawaam/tool-box.png";
+import clock from "../assets/images/dawaam/clock.png";
+import numberOrder from "../assets/images/dawaam/numberOrder.png";
+import typicalOrder from "../assets/images/dawaam/typicalOrder.png";
+import singleUser from "../assets/images/dawaam/singleUser.png";
+import allUser from "../assets/images/dawaam/allUser.png";
+import users188 from "../assets/images/dawaam/users188.png";
 // import { useSearchParams } from 'react-router-dom';
 import Group292 from "../assets/images/dawaam/Group292.svg";
 import Group258 from "../assets/images/dawaam/Group258.svg";
@@ -53,6 +56,12 @@ function MachineDetails() {
   const [pieEnabled, setEnabled] = useState("Volume");
   const { single_machine_metrics } = useSelector((state) => state.metrics);
 
+  const { user } = useSelector((state) => state.auth);
+  const { stock_level, machine_details, sales_level } = useSelector(
+    (state) => state.machine
+  );
+  console.log(stock_level, machine_details, sales_level, "my stocks eeee");
+
   const [options1, setPieChartData] = useState({
     colors: ["#D5CFE1", "#09814A"],
     chart: {
@@ -64,10 +73,10 @@ function MachineDetails() {
     states: {
       hover: {
         filter: {
-          type: 'darken',
+          type: "darken",
           value: 0.5,
           // type: 'none',
-        }
+        },
       },
     },
     responsive: [
@@ -84,7 +93,7 @@ function MachineDetails() {
       },
     ],
   });
-  console.log(window.location.pathname)
+  console.log(window.location.pathname);
 
   const params = useParams();
   // console.log(window.location.search)
@@ -96,9 +105,38 @@ function MachineDetails() {
     setNotiModal(!notiModal);
     // console.log("asd", props.history);
   };
-  // useEffect(() => {
-  //   dispatch(getMetricsByMachine({ machine_id: params?.id }));
-  // }, []);
+  useEffect(() => {
+    console.log(params.id, "hello one");
+    dispatch(
+      getMachineDetails({
+        company_code: user?.company_code,
+        machine_id: params?.id,
+      })
+    );
+  }, []);
+
+  // const [pieDates, setPieDate] = useState({
+  //   start_date: moment().format("YYYY-MM-DD"),
+  //   end_date: moment().format("YYYY-MM-DD"),
+  // });
+
+  // const handleChange = async (e) => {
+  //   console.log(e.target.value);
+
+  //   await setPieDate((prevState) => ({
+  //     ...prevState,
+  //     [e.target.name]: e.target.value,
+  //   }));
+  // };
+
+  const getSales = () =>{
+    sales_level();
+  }
+
+  // const getStocksLevelPage = () => {
+  //   const mystocks = machine_details.machine_page.stock_levels_page;
+  //   return mystocks;
+  // };
 
   // useEffect(() => {
   //   let tempArr = getCombinedData(single_machine_metrics, pieEnabled);
@@ -142,10 +180,10 @@ function MachineDetails() {
     states: {
       hover: {
         filter: {
-          type: 'darken',
+          type: "darken",
           value: 0.5,
           // type: 'none',
-        }
+        },
       },
     },
     xaxis: {
@@ -212,16 +250,14 @@ function MachineDetails() {
     states: {
       hover: {
         filter: {
-          type: 'darken',
+          type: "darken",
           value: 0.5,
           // type: 'none',
-        }
+        },
       },
     },
     xaxis: {
-      categories: [
-        "Week1", "Week2", "Week3", "Week4",
-      ],
+      categories: ["Week1", "Week2", "Week3", "Week4"],
     },
     yaxis: {
       title: {
@@ -274,16 +310,14 @@ function MachineDetails() {
     states: {
       hover: {
         filter: {
-          type: 'darken',
+          type: "darken",
           value: 0.5,
           // type: 'none',
-        }
+        },
       },
     },
     xaxis: {
-      categories: [
-        "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
-      ],
+      categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     },
     yaxis: {
       title: {
@@ -325,18 +359,22 @@ function MachineDetails() {
                   role="tablist"
                   aria-orientation="vertical"
                 >
-                  {!flag && <Button
-                    className={`nav-link ${tab == "1" ? "btn-active " : ""}`}
-                    onClick={() => setTab("1")}
-                  >
-                    Machine
-                  </Button>}
-                  {!flag && <Button
-                    className={`nav-link ${tab == "2" ? "btn-active" : ""}`}
-                    onClick={() => setTab("2")}
-                  >
-                    Stock Levels
-                  </Button>}
+                  {!flag && (
+                    <Button
+                      className={`nav-link ${tab == "1" ? "btn-active " : ""}`}
+                      onClick={() => setTab("1")}
+                    >
+                      Machine
+                    </Button>
+                  )}
+                  {!flag && (
+                    <Button
+                      className={`nav-link ${tab == "2" ? "btn-active" : ""}`}
+                      onClick={() => setTab("2")}
+                    >
+                      Stock Levels
+                    </Button>
+                  )}
                   {/* <Button
                     className={`nav-link ${tab == "3" ? "btn-active" : ""}`}
                     onClick={() => setTab("3")}
@@ -350,31 +388,35 @@ function MachineDetails() {
                   >
                     Sales & Usage
                   </Button>
-                  {!flag && <Button
-                    className={`nav-link ${tab == "5" ? "btn-active" : ""}`}
-                    onClick={() => setTab("5")}
-                  >
-                    Tank <br />
-                    Management
-                  </Button>}
-                  {!flag && <Button
+                  {!flag && (
+                    <Button
+                      className={`nav-link ${tab == "5" ? "btn-active" : ""}`}
+                      onClick={() => setTab("5")}
+                    >
+                      Tank <br />
+                      Management
+                    </Button>
+                  )}
+                  {/* {!flag && <Button
                     className={`nav-link ${tab == "6" ? "btn-active" : ""}`}
                     onClick={() => setTab("6")}
                   >
                     Warnings
-                  </Button>}
-                  {!flag && <Button
+                  </Button>} */}
+                  {/* {!flag && <Button
                     className={`nav-link ${tab == "7" ? "btn-active" : ""}`}
                     onClick={() => setTab("7")}
                   >
                     Maintenance
-                  </Button>}
-                  {!flag && <Button
-                    className={`nav-link ${tab == "8" ? "btn-active" : ""}`}
-                    onClick={() => setTab("8")}
-                  >
-                    Bottle Details
-                  </Button>}
+                  </Button>} */}
+                  {!flag && (
+                    <Button
+                      className={`nav-link ${tab == "8" ? "btn-active" : ""}`}
+                      onClick={() => setTab("8")}
+                    >
+                      Bottle Details
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
@@ -384,7 +426,9 @@ function MachineDetails() {
             <div className="row pt-4">
               <div className="col-md-4"></div>
               <div className="col-md-4"></div>
-              <div className="col-md-4"><CompanyCard /></div>
+              <div className="col-md-4">
+                <CompanyCard />
+              </div>
             </div>
           </div>
           <div className="tab-content" id="v-pills-tabContent">
@@ -400,72 +444,105 @@ function MachineDetails() {
                     <div className="secondcard">
                       <div id="secondcard" className="card-body">
                         <Details />
-                        <div style={{
-                          border: '1px solid #FFFFFF',
-                          boxShadow: '30px 70px 120px rgba(27, 49, 66, 0.13)',
-                          borderRadius: '15px',
-                          marginTop: '2rem',
-                        }}>
-                          <div style={{
-                            background: '#FFFFFF',
-                            border: '1px solid #E5E5E5',
-                            borderRadius: '16px',
-                            margin: '1rem',
-                          }}>
+                        <div
+                          style={{
+                            border: "1px solid #FFFFFF",
+                            boxShadow: "30px 70px 120px rgba(27, 49, 66, 0.13)",
+                            borderRadius: "15px",
+                            marginTop: "2rem",
+                            overflowY: "scroll",
+                            maxHeight: "29rem",
+                          }}
+                        >
+                          <div
+                            style={{
+                              background: "#FFFFFF",
+                              border: "1px solid #E5E5E5",
+                              borderRadius: "16px",
+                              margin: "1rem",
+                            }}
+                          >
                             <div className="row pt-5 ">
                               <div className="col-lg-10 offset-lg-1">
                                 <div className="row">
                                   <div className="col-md-12 ">
                                     <div className="dateDeployed  px-3 px-md-0">
-                                      <ul className="d-flex p-0" style={{
-                                        alignItems: 'center',
-                                      }}>
-                                        <li className="px-2" style={{
-                                          listStyle: 'none',
-                                        }}>
+                                      <ul
+                                        className="d-flex p-0"
+                                        style={{
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        <li
+                                          className="px-2"
+                                          style={{
+                                            listStyle: "none",
+                                          }}
+                                        >
                                           <img src={calendarsvgrepo} />
                                         </li>
-                                        <li className="pr-2" style={{
-                                          listStyle: 'none',
-                                        }}>
+                                        <li
+                                          className="pr-2"
+                                          style={{
+                                            listStyle: "none",
+                                          }}
+                                        >
                                           <strong>Date Deployed:</strong>
                                         </li>
-                                        <li className="pr-3" style={{
-                                          listStyle: 'none',
-                                        }}>
-                                          <span>May 11, 2022   11:12 am</span>
+                                        <li
+                                          className="pr-3"
+                                          style={{
+                                            listStyle: "none",
+                                          }}
+                                        >
+                                          <span>May 11, 2022 11:12 am</span>
                                         </li>
                                       </ul>
                                     </div>
                                     <div className="dateDeployed  px-3 px-md-0">
-                                      <ul className="d-flex " style={{
-                                        alignItems: 'center',
-                                      }}>
-                                        <li className="pl-2 pr-3" style={{
-                                          listStyle: 'none',
-                                        }}>
+                                      <ul
+                                        className="d-flex "
+                                        style={{
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        <li
+                                          className="pl-2 pr-3"
+                                          style={{
+                                            listStyle: "none",
+                                          }}
+                                        >
                                           <img src={batteryIcon} />
                                         </li>
-                                        <li className="pr-2" style={{
-                                          listStyle: 'none',
-                                        }}>
+                                        <li
+                                          className="pr-2"
+                                          style={{
+                                            listStyle: "none",
+                                          }}
+                                        >
                                           <strong>Status:</strong>
                                         </li>
-                                        <li className="pr-3" style={{
-                                          listStyle: 'none',
-                                        }}>
-                                          <span style={{
-                                            fontFamily: 'Poppins',
-                                            fontStyle: 'normal',
-                                            fontWeight: '500',
-                                            fontSize: '14px',
-                                            lineHeight: '21px',
-                                            alignItems: 'center',
-                                            textAlign: 'center',
+                                        <li
+                                          className="pr-3"
+                                          style={{
+                                            listStyle: "none",
+                                          }}
+                                        >
+                                          <span
+                                            style={{
+                                              fontFamily: "Poppins",
+                                              fontStyle: "normal",
+                                              fontWeight: "500",
+                                              fontSize: "14px",
+                                              lineHeight: "21px",
+                                              alignItems: "center",
+                                              textAlign: "center",
 
-                                            color: '#09B39D',
-
-                                          }}><b>Active</b></span>
+                                              color: "#09B39D",
+                                            }}
+                                          >
+                                            <b>Active</b>
+                                          </span>
                                         </li>
                                       </ul>
                                     </div>
@@ -473,307 +550,470 @@ function MachineDetails() {
                                 </div>
                                 <div className="row px-2 g-3">
                                   <div className="col-md-3 col-sm-6 mb-md-0 mb-3 ">
-                                    <div className="card px-1 px-md-0" style={{
-                                      borderRadius: '0',
-                                    }}>
-                                      <div className="" style={{
-                                        background: '#CFF2EE',
-                                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        paddingTop: '10px',
-                                        paddingBottom: '5px',
-
-                                      }}>
-                                        <img class="card-img-top" src={Barcode} alt="Card image cap" style={{
-                                          width: '50%',
-                                          margin: 'auto',
-                                        }} />
+                                    <div
+                                      className="card px-1 px-md-0"
+                                      style={{
+                                        borderRadius: "0",
+                                      }}
+                                    >
+                                      <div
+                                        className=""
+                                        style={{
+                                          background: "#CFF2EE",
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          paddingTop: "10px",
+                                          paddingBottom: "5px",
+                                        }}
+                                      >
+                                        <img
+                                          class="card-img-top"
+                                          src={Barcode}
+                                          alt="Card image cap"
+                                          style={{
+                                            width: "50%",
+                                            margin: "auto",
+                                          }}
+                                        />
                                       </div>
-                                      <div class="" style={{
-                                        background: '#CFF2EE',
-                                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-
-                                      }}>
-                                        <h5 class="card-title" style={{
-                                          fontFamily: 'Open Sans',
-                                          fontStyle: 'normal',
-                                          fontWeight: '600',
-                                          fontSize: '16px',
-                                          lineHeight: '24px',
-                                          alignItems: 'center',
-                                          textAlign: 'center',
-                                          color: '#1d2023',
-                                        }}>Barcode</h5>
+                                      <div
+                                        class=""
+                                        style={{
+                                          background: "#CFF2EE",
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                        }}
+                                      >
+                                        <h5
+                                          class="card-title"
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            fontStyle: "normal",
+                                            fontWeight: "600",
+                                            fontSize: "16px",
+                                            lineHeight: "24px",
+                                            alignItems: "center",
+                                            textAlign: "center",
+                                            color: "#1d2023",
+                                          }}
+                                        >
+                                          Barcode
+                                        </h5>
                                       </div>
-                                      <div class="card-body" style={{
-                                        padding: '30px 0px',
-                                        margin: 'auto',
-                                      }}>
-                                        <p class="card-text" style={{
-                                          fontFamily: 'Open Sans',
-                                          fontStyle: 'normal',
-                                          fontWeight: '400',
-                                          fontSize: '14px',
-                                          lineHeight: '21px',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          textAlign: 'center',
+                                      <div
+                                        class="card-body"
+                                        style={{
+                                          padding: "30px 0px",
+                                          margin: "auto",
+                                        }}
+                                      >
+                                        <p
+                                          class="card-text"
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            fontStyle: "normal",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineHeight: "21px",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            textAlign: "center",
 
-                                          color: '#1d2023',
-                                        }}>barcode here</p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-3 col-sm-6 mb-md-0 mb-3">
-                                    <div className="card px-1 px-md-0" style={{
-                                      borderRadius: '0',
-                                    }}>
-                                      <div className="" style={{
-                                        background: '#CFF2EE',
-                                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        paddingTop: '10px',
-                                        paddingBottom: '5px',
-                                      }}>
-                                        <img class="card-img-top" src={SerialNO} alt="Card image cap" style={{
-                                          width: '50%',
-                                          margin: 'auto',
-                                        }} />
-                                      </div>
-                                      <div class="" style={{
-                                        background: '#CFF2EE',
-                                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-
-                                      }}>
-                                        <h5 class="card-title" style={{
-                                          fontFamily: 'Open Sans',
-                                          fontStyle: 'normal',
-                                          fontWeight: '600',
-                                          fontSize: '16px',
-                                          lineHeight: '24px',
-                                          alignItems: 'center',
-                                          textAlign: 'center',
-                                          color: '#1d2023',
-                                        }}>Serial NO#</h5>
-                                      </div>
-                                      <div class="card-body" style={{
-                                        padding: '30px 0px',
-                                        margin: 'auto',
-                                      }}>
-                                        <p class="card-text" style={{
-                                          fontFamily: 'Open Sans',
-                                          fontStyle: 'normal',
-                                          fontWeight: '400',
-                                          fontSize: '14px',
-                                          lineHeight: '21px',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          textAlign: 'center',
-
-                                          color: '#1d2023 ',
-                                        }}>serial number here</p>
+                                            color: "#1d2023",
+                                          }}
+                                        >
+                                          barcode here
+                                        </p>
                                       </div>
                                     </div>
                                   </div>
                                   <div className="col-md-3 col-sm-6 mb-md-0 mb-3">
-                                    <div className="card px-1 px-md-0" style={{
-                                      borderRadius: '0',
-                                    }}>
-                                      <div className="" style={{
-                                        background: '#CFF2EE',
-                                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        paddingTop: '5px',
-
-                                      }}>
-                                        <img class="card-img-top" src={MachineType} alt="Card image cap" style={{
-                                          width: '35%',
-                                          margin: 'auto',
-                                        }} />
+                                    <div
+                                      className="card px-1 px-md-0"
+                                      style={{
+                                        borderRadius: "0",
+                                      }}
+                                    >
+                                      <div
+                                        className=""
+                                        style={{
+                                          background: "#CFF2EE",
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          paddingTop: "10px",
+                                          paddingBottom: "5px",
+                                        }}
+                                      >
+                                        <img
+                                          class="card-img-top"
+                                          src={SerialNO}
+                                          alt="Card image cap"
+                                          style={{
+                                            width: "50%",
+                                            margin: "auto",
+                                          }}
+                                        />
                                       </div>
-                                      <div class="" style={{
-                                        background: '#CFF2EE',
-                                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        paddingTop: '5px',
-
-                                      }}>
-                                        <h5 class="card-title" style={{
-                                          fontFamily: 'Open Sans',
-                                          fontStyle: 'normal',
-                                          fontWeight: '600',
-                                          fontSize: '16px',
-                                          lineHeight: '24px',
-                                          alignItems: 'center',
-                                          textAlign: 'center',
-                                          color: '#1d2023',
-                                        }}>Machine Type</h5>
+                                      <div
+                                        class=""
+                                        style={{
+                                          background: "#CFF2EE",
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                        }}
+                                      >
+                                        <h5
+                                          class="card-title"
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            fontStyle: "normal",
+                                            fontWeight: "600",
+                                            fontSize: "16px",
+                                            lineHeight: "24px",
+                                            alignItems: "center",
+                                            textAlign: "center",
+                                            color: "#1d2023",
+                                          }}
+                                        >
+                                          Serial NO#
+                                        </h5>
                                       </div>
-                                      <div class="card-body" style={{
-                                        padding: '30px 0px',
-                                        margin: 'auto',
-                                      }}>
-                                        <p class="card-text" style={{
-                                          fontFamily: 'Open Sans',
-                                          fontStyle: 'normal',
-                                          fontWeight: '400',
-                                          fontSize: '14px',
-                                          lineHeight: '21px',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          textAlign: 'center',
+                                      <div
+                                        class="card-body"
+                                        style={{
+                                          padding: "30px 0px",
+                                          margin: "auto",
+                                        }}
+                                      >
+                                        <p
+                                          class="card-text"
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            fontStyle: "normal",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineHeight: "21px",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            textAlign: "center",
 
-                                          color: '#1d2023 ',
-                                        }}>Machine Type here</p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-3 col-sm-6 mb-md-0 mb-3">
-                                    <div className="card px-1 px-md-0" style={{
-                                      borderRadius: '0',
-                                    }}>
-                                      <div className="" style={{
-                                        background: '#CFF2EE',
-                                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        paddingTop: '10px',
-                                        paddingBottom: '5px',
-
-                                      }}>
-                                        <img class="card-img-top" src={MotorType} alt="Card image cap" style={{
-                                          width: '50%',
-                                          margin: 'auto',
-                                        }} />
-                                      </div>
-                                      <div class="" style={{
-                                        background: '#CFF2EE',
-                                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-
-                                      }}>
-                                        <h5 class="card-title" style={{
-                                          fontFamily: 'Open Sans',
-                                          fontStyle: 'normal',
-                                          fontWeight: '600',
-                                          fontSize: '16px',
-                                          lineHeight: '24px',
-                                          alignItems: 'center',
-                                          textAlign: 'center',
-                                          color: '#1d2023',
-                                        }}>Motor Type</h5>
-                                      </div>
-                                      <div class="card-body" style={{
-                                        padding: '30px 0px',
-                                        margin: 'auto',
-                                      }}>
-                                        <p class="card-text" style={{
-                                          fontFamily: 'Open Sans',
-                                          fontStyle: 'normal',
-                                          fontWeight: '400',
-                                          fontSize: '14px',
-                                          lineHeight: '21px',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          textAlign: 'center',
-
-                                          color: '#1d2023 ',
-                                        }}>motor type here</p>
+                                            color: "#1d2023 ",
+                                          }}
+                                        >
+                                          serial number here
+                                        </p>
                                       </div>
                                     </div>
                                   </div>
                                   <div className="col-md-3 col-sm-6 mb-md-0 mb-3">
-                                    <div className="card px-1 px-md-0" style={{
-                                      borderRadius: '0',
-                                    }}>
-                                      <div className="" style={{
-                                        background: '#CFF2EE',
-                                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        paddingTop: '10px',
-                                        paddingBottom: '5px',
-
-                                      }}>
-                                        <img class="card-img-top" src={Nozzles} alt="Card image cap" style={{
-                                          width: '50%',
-                                          margin: 'auto',
-                                        }} />
+                                    <div
+                                      className="card px-1 px-md-0"
+                                      style={{
+                                        borderRadius: "0",
+                                      }}
+                                    >
+                                      <div
+                                        className=""
+                                        style={{
+                                          background: "#CFF2EE",
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          paddingTop: "5px",
+                                        }}
+                                      >
+                                        <img
+                                          class="card-img-top"
+                                          src={MachineType}
+                                          alt="Card image cap"
+                                          style={{
+                                            width: "35%",
+                                            margin: "auto",
+                                          }}
+                                        />
                                       </div>
-                                      <div class="" style={{
-                                        background: '#CFF2EE',
-                                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-
-                                      }}>
-                                        <h5 class="card-title" style={{
-                                          fontFamily: 'Open Sans',
-                                          fontStyle: 'normal',
-                                          fontWeight: '600',
-                                          fontSize: '16px',
-                                          lineHeight: '24px',
-                                          alignItems: 'center',
-                                          textAlign: 'center',
-                                          color: '#1d2023',
-                                        }}>Nozzles</h5>
+                                      <div
+                                        class=""
+                                        style={{
+                                          background: "#CFF2EE",
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          paddingTop: "5px",
+                                        }}
+                                      >
+                                        <h5
+                                          class="card-title"
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            fontStyle: "normal",
+                                            fontWeight: "600",
+                                            fontSize: "16px",
+                                            lineHeight: "24px",
+                                            alignItems: "center",
+                                            textAlign: "center",
+                                            color: "#1d2023",
+                                          }}
+                                        >
+                                          Machine Type
+                                        </h5>
                                       </div>
-                                      <div class="card-body" style={{
-                                        padding: '30px 0px',
-                                        margin: 'auto',
-                                      }}>
-                                        <p class="card-text" style={{
-                                          fontFamily: 'Open Sans',
-                                          fontStyle: 'normal',
-                                          fontWeight: '400',
-                                          fontSize: '14px',
-                                          lineHeight: '21px',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          textAlign: 'center',
+                                      <div
+                                        class="card-body"
+                                        style={{
+                                          padding: "30px 0px",
+                                          margin: "auto",
+                                        }}
+                                      >
+                                        <p
+                                          class="card-text"
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            fontStyle: "normal",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineHeight: "21px",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            textAlign: "center",
 
-                                          color: '#1d2023 ',
-                                        }}>number of nozzles</p>
+                                            color: "#1d2023 ",
+                                          }}
+                                        >
+                                          Machine Type here
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-3n col-sm-6 mb-md-0 mb-3">
+                                    <div
+                                      className="card px-1 px-md-0"
+                                      style={{
+                                        borderRadius: "0",
+                                      }}
+                                    >
+                                      <div
+                                        className=""
+                                        style={{
+                                          background: "#CFF2EE",
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          paddingTop: "10px",
+                                          paddingBottom: "5px",
+                                        }}
+                                      >
+                                        <img
+                                          class="card-img-top"
+                                          src={MotorType}
+                                          alt="Card image cap"
+                                          style={{
+                                            width: "50%",
+                                            margin: "auto",
+                                          }}
+                                        />
+                                      </div>
+                                      <div
+                                        class=""
+                                        style={{
+                                          background: "#CFF2EE",
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                        }}
+                                      >
+                                        <h5
+                                          class="card-title"
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            fontStyle: "normal",
+                                            fontWeight: "600",
+                                            fontSize: "16px",
+                                            lineHeight: "24px",
+                                            alignItems: "center",
+                                            textAlign: "center",
+                                            color: "#1d2023",
+                                          }}
+                                        >
+                                          Motor Type
+                                        </h5>
+                                      </div>
+                                      <div
+                                        class="card-body"
+                                        style={{
+                                          padding: "30px 0px",
+                                          margin: "auto",
+                                        }}
+                                      >
+                                        <p
+                                          class="card-text"
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            fontStyle: "normal",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineHeight: "21px",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            textAlign: "center",
+
+                                            color: "#1d2023 ",
+                                          }}
+                                        >
+                                          motor type here
+                                        </p>
                                       </div>
                                     </div>
                                   </div>
                                   <div className="col-md-3 col-sm-6 mb-md-0 mb-3">
-                                    <div className="card px-1 px-md-0" style={{
-                                      borderRadius: '0',
-                                    }}>
-                                      <div className="" style={{
-                                        background: '#CFF2EE',
-                                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        paddingTop: '10px',
-                                        paddingBottom: '5px',
-
-                                      }}>
-                                        <img class="card-img-top" src={ITSystem} alt="Card image cap" style={{
-                                          width: '50%',
-                                          margin: 'auto',
-                                        }} />
+                                    <div
+                                      className="card px-1 px-md-0"
+                                      style={{
+                                        borderRadius: "0",
+                                      }}
+                                    >
+                                      <div
+                                        className=""
+                                        style={{
+                                          background: "#CFF2EE",
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          paddingTop: "10px",
+                                          paddingBottom: "5px",
+                                        }}
+                                      >
+                                        <img
+                                          class="card-img-top"
+                                          src={Nozzles}
+                                          alt="Card image cap"
+                                          style={{
+                                            width: "50%",
+                                            margin: "auto",
+                                          }}
+                                        />
                                       </div>
-                                      <div class="" style={{
-                                        background: '#CFF2EE',
-                                        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-
-                                      }}>
-                                        <h5 class="card-title" style={{
-                                          fontFamily: 'Open Sans',
-                                          fontStyle: 'normal',
-                                          fontWeight: '600',
-                                          fontSize: '16px',
-                                          lineHeight: '24px',
-                                          alignItems: 'center',
-                                          textAlign: 'center',
-                                          color: '#1d2023',
-                                        }}>IT System</h5>
+                                      <div
+                                        class=""
+                                        style={{
+                                          background: "#CFF2EE",
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                        }}
+                                      >
+                                        <h5
+                                          class="card-title"
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            fontStyle: "normal",
+                                            fontWeight: "600",
+                                            fontSize: "16px",
+                                            lineHeight: "24px",
+                                            alignItems: "center",
+                                            textAlign: "center",
+                                            color: "#1d2023",
+                                          }}
+                                        >
+                                          Nozzles
+                                        </h5>
                                       </div>
-                                      <div class="card-body" style={{
-                                        padding: '30px 0px',
-                                        margin: 'auto',
-                                      }}>
-                                        <p class="card-text" style={{
-                                          fontFamily: 'Open Sans',
-                                          fontStyle: 'normal',
-                                          fontWeight: '400',
-                                          fontSize: '14px',
-                                          lineHeight: '21px',
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          textAlign: 'center',
+                                      <div
+                                        class="card-body"
+                                        style={{
+                                          padding: "30px 0px",
+                                          margin: "auto",
+                                        }}
+                                      >
+                                        <p
+                                          class="card-text"
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            fontStyle: "normal",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineHeight: "21px",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            textAlign: "center",
 
-                                          color: '#1d2023 ',
-                                        }}>details here</p>
+                                            color: "#1d2023 ",
+                                          }}
+                                        >
+                                          number of nozzles
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-3 col-sm-6 mb-md-0 mb-3">
+                                    <div
+                                      className="card px-1 px-md-0"
+                                      style={{
+                                        borderRadius: "0",
+                                      }}
+                                    >
+                                      <div
+                                        className=""
+                                        style={{
+                                          background: "#CFF2EE",
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          paddingTop: "10px",
+                                          paddingBottom: "5px",
+                                        }}
+                                      >
+                                        <img
+                                          class="card-img-top"
+                                          src={ITSystem}
+                                          alt="Card image cap"
+                                          style={{
+                                            width: "50%",
+                                            margin: "auto",
+                                          }}
+                                        />
+                                      </div>
+                                      <div
+                                        class=""
+                                        style={{
+                                          background: "#CFF2EE",
+                                          boxShadow:
+                                            "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                        }}
+                                      >
+                                        <h5
+                                          class="card-title"
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            fontStyle: "normal",
+                                            fontWeight: "600",
+                                            fontSize: "16px",
+                                            lineHeight: "24px",
+                                            alignItems: "center",
+                                            textAlign: "center",
+                                            color: "#1d2023",
+                                          }}
+                                        >
+                                          IT System
+                                        </h5>
+                                      </div>
+                                      <div
+                                        class="card-body"
+                                        style={{
+                                          padding: "30px 0px",
+                                          margin: "auto",
+                                        }}
+                                      >
+                                        <p
+                                          class="card-text"
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            fontStyle: "normal",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineHeight: "21px",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            textAlign: "center",
+
+                                            color: "#1d2023 ",
+                                          }}
+                                        >
+                                          details here
+                                        </p>
                                       </div>
                                     </div>
                                   </div>
@@ -800,58 +1040,91 @@ function MachineDetails() {
                     <div className="secondcard">
                       <div id="secondcard" className="card-body">
                         <Details />
-                        <div style={{
-                          border: '1px solid #FFFFFF',
-                          boxShadow: '30px 70px 120px rgba(27, 49, 66, 0.13)',
-                          borderRadius: '15px',
-                          marginTop: '2rem',
-                        }}>
-                          <div style={{
-                            background: '#FFFFFF',
-                            border: '1px solid #E5E5E5',
-                            borderRadius: '16px',
-                            margin: '1rem',
-                          }}>
+                        <div
+                          style={{
+                            border: "1px solid #FFFFFF",
+                            boxShadow: "30px 70px 120px rgba(27, 49, 66, 0.13)",
+                            borderRadius: "15px",
+                            marginTop: "2rem",
+                            overflowY: "scroll",
+                            maxHeight: "28rem",
+                          }}
+                        >
+                          <div
+                            style={{
+                              background: "#FFFFFF",
+                              border: "1px solid #E5E5E5",
+                              borderRadius: "16px",
+                              margin: "1rem",
+                            }}
+                          >
                             <div className="row pt-md-5 pt-3">
                               <div className="col-lg-10 offset-lg-1">
-
                                 <div className="row g-3 px-md-0 px-3">
                                   <div className="col-md-3">
                                     <div id="tankCard">
                                       <div class="card">
                                         <div className="cardContent">
-                                          <img class="card-img-top" src={Tank1} alt="Card image cap" />
+                                          <img
+                                            class="card-img-top"
+                                            src={Tank1}
+                                            alt="Card image cap"
+                                          />
                                         </div>
-                                        <div className="tank1Content" style={{
-                                          background: '#CFF2EE',
-                                          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        }}>
+                                        <div
+                                          className="tank1Content"
+                                          style={{
+                                            background: "#CFF2EE",
+                                            boxShadow:
+                                              "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          }}
+                                        >
                                           <h5 class="card-title">Tank 1</h5>
                                         </div>
+
                                         <div class="card-body">
-                                          <img class="pb-2" src={StockLeft} alt="Card image cap" />
-                                          <h5 class="card-title">Stock Left</h5>
-                                          <p class="card-text">Current Volume:</p>
+                                          <img
+                                            class="pb-2"
+                                            src={StockLeft}
+                                            alt="Card image cap"
+                                          />
+                                          <h5 class="card-title">
+                                            {stock_level[1]?.name}
+                                          </h5>
+                                          <p class="card-text">
+                                            {stock_level[1]?.current_volume}
+                                          </p>
                                           <span className="m-0">
-                                            <b className="p-0">5000 ML</b>
+                                            <b className="p-0">
+                                              {stock_level[1]?.last_refill_date}
+                                            </b>
+                                          </span>
+                                        </div>
+
+                                        <div class="card-body">
+                                          <img
+                                            class="pb-2"
+                                            src={Replenished}
+                                            alt="Card image cap"
+                                          />
+                                          <h5 class="card-title">
+                                            Replenished:
+                                          </h5>
+                                          <p class="card-text">
+                                            Last Replenished
+                                          </p>
+                                          <span className="m-0">
+                                            dd / mm / yyyy <br /> 11:22 am
                                           </span>
                                         </div>
                                         <div class="card-body">
-
-                                          <img class="pb-2" src={Replenished} alt="Card image cap" />
-                                          <h5 class="card-title" >Replenished:</h5>
-                                          <p class="card-text" >Last Replenished</p>
-                                          <span className="m-0" >dd / mm / yyyy <br /> 11:22 am</span>
-
-                                        </div>
-                                        <div class="card-body">
-
                                           <h5 class="card-title">
                                             <strong>Brand name</strong>
                                           </h5>
                                           <p class="card-text">Product name</p>
-                                          <span className="m-0">Product type</span>
-
+                                          <span className="m-0">
+                                            Product type
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -860,38 +1133,64 @@ function MachineDetails() {
                                     <div id="tankCard">
                                       <div class="card">
                                         <div className="cardContent">
-                                          <img class="card-img-top" src={Tank2} alt="Card image cap" />
+                                          <img
+                                            class="card-img-top"
+                                            src={Tank2}
+                                            alt="Card image cap"
+                                          />
                                         </div>
-                                        <div className="tank1Content" style={{
-                                          background: '#CFF2EE',
-                                          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        }}>
+                                        <div
+                                          className="tank1Content"
+                                          style={{
+                                            background: "#CFF2EE",
+                                            boxShadow:
+                                              "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          }}
+                                        >
                                           <h5 class="card-title">Tank 2</h5>
                                         </div>
                                         <div class="card-body">
-                                          <img class="pb-2" src={StockLeft} alt="Card image cap" />
-                                          <h5 class="card-title">Stock Left</h5>
-                                          <p class="card-text">Current Volume:</p>
+                                          <img
+                                            class="pb-2"
+                                            src={StockLeft}
+                                            alt="Card image cap"
+                                          />
+                                          <h5 class="card-title">
+                                            {stock_level[2]?.name}
+                                          </h5>
+                                          <p class="card-text">
+                                            {stock_level[2]?.current_volume}
+                                          </p>
                                           <span className="m-0">
-                                            <b className="p-0">2000 ML</b>
+                                            <b className="p-0">
+                                              {stock_level[2]?.last_refill_date}
+                                            </b>
                                           </span>
                                         </div>
                                         <div class="card-body">
-
-                                          <img class="pb-2" src={Replenished} alt="Card image cap" />
-                                          <h5 class="card-title" >Replenished:</h5>
-                                          <p class="card-text" >Last Replenished</p>
-                                          <span className="m-0" >dd / mm / yyyy <br /> 11:22 am</span>
-
+                                          <img
+                                            class="pb-2"
+                                            src={Replenished}
+                                            alt="Card image cap"
+                                          />
+                                          <h5 class="card-title">
+                                            Replenished:
+                                          </h5>
+                                          <p class="card-text">
+                                            Last Replenished
+                                          </p>
+                                          <span className="m-0">
+                                            dd / mm / yyyy <br /> 11:22 am
+                                          </span>
                                         </div>
                                         <div class="card-body">
-
                                           <h5 class="card-title">
                                             <strong>Brand name</strong>
                                           </h5>
                                           <p class="card-text">Product name</p>
-                                          <span className="m-0">Product type</span>
-
+                                          <span className="m-0">
+                                            Product type
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -900,38 +1199,66 @@ function MachineDetails() {
                                     <div id="tankCard">
                                       <div class="card">
                                         <div className="cardContent">
-                                          <img class="card-img-top" src={Tank3} alt="Card image cap" />
+                                          <img
+                                            class="card-img-top"
+                                            src={Tank3}
+                                            alt="Card image cap"
+                                          />
                                         </div>
-                                        <div className="tank1Content" style={{
-                                          background: '#CFF2EE',
-                                          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        }}>
+                                        <div
+                                          className="tank1Content"
+                                          style={{
+                                            background: "#CFF2EE",
+                                            boxShadow:
+                                              "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          }}
+                                        >
                                           <h5 class="card-title">Tank 3</h5>
                                         </div>
                                         <div class="card-body">
-                                          <img class="pb-2" src={StockLeft} alt="Card image cap" />
-                                          <h5 class="card-title">Stock Left</h5>
-                                          <p class="card-text">Current Volume:</p>
+                                          <img
+                                            class="pb-2"
+                                            src={StockLeft}
+                                            alt="Card image cap"
+                                          />
+                                          <h5 class="card-title">
+                                            {" "}
+                                            {stock_level[3]?.name}
+                                          </h5>
+                                          <p class="card-text">
+                                            {stock_level[3]?.current_volume}
+                                          </p>
                                           <span className="m-0">
-                                            <b className="p-0">4000 ML</b>
+                                            <b className="p-0">
+                                              {" "}
+                                              {stock_level[3]?.last_refill_date}
+                                            </b>
                                           </span>
                                         </div>
                                         <div class="card-body">
-
-                                          <img class="pb-2" src={Replenished} alt="Card image cap" />
-                                          <h5 class="card-title" >Replenished:</h5>
-                                          <p class="card-text" >Last Replenished</p>
-                                          <span className="m-0" >dd / mm / yyyy <br /> 11:22 am</span>
-
+                                          <img
+                                            class="pb-2"
+                                            src={Replenished}
+                                            alt="Card image cap"
+                                          />
+                                          <h5 class="card-title">
+                                            Replenished:
+                                          </h5>
+                                          <p class="card-text">
+                                            Last Replenished
+                                          </p>
+                                          <span className="m-0">
+                                            dd / mm / yyyy <br /> 11:22 am
+                                          </span>
                                         </div>
                                         <div class="card-body">
-
                                           <h5 class="card-title">
                                             <strong>Brand name</strong>
                                           </h5>
                                           <p class="card-text">Product name</p>
-                                          <span className="m-0">Product type</span>
-
+                                          <span className="m-0">
+                                            Product type
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -940,38 +1267,64 @@ function MachineDetails() {
                                     <div id="tankCard">
                                       <div class="card">
                                         <div className="cardContent">
-                                          <img class="card-img-top" src={Tank4} alt="Card image cap" />
+                                          <img
+                                            class="card-img-top"
+                                            src={Tank4}
+                                            alt="Card image cap"
+                                          />
                                         </div>
-                                        <div className="tank1Content" style={{
-                                          background: '#CFF2EE',
-                                          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        }}>
+                                        <div
+                                          className="tank1Content"
+                                          style={{
+                                            background: "#CFF2EE",
+                                            boxShadow:
+                                              "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          }}
+                                        >
                                           <h5 class="card-title">Tank 4</h5>
                                         </div>
                                         <div class="card-body">
-                                          <img class="pb-2" src={StockLeft} alt="Card image cap" />
-                                          <h5 class="card-title">Stock Left</h5>
-                                          <p class="card-text">Current Volume:</p>
+                                          <img
+                                            class="pb-2"
+                                            src={StockLeft}
+                                            alt="Card image cap"
+                                          />
+                                          <h5 class="card-title">
+                                            {stock_level[4]?.name}
+                                          </h5>
+                                          <p class="card-text">
+                                            {stock_level[4]?.current_volume}
+                                          </p>
                                           <span className="m-0">
-                                            <b className="p-0">1000 ML</b>
+                                            <b className="p-0">
+                                              {stock_level[4]?.last_refill_date}
+                                            </b>
                                           </span>
                                         </div>
                                         <div class="card-body">
-
-                                          <img class="pb-2" src={Replenished} alt="Card image cap" />
-                                          <h5 class="card-title" >Replenished:</h5>
-                                          <p class="card-text" >Last Replenished</p>
-                                          <span className="m-0" >dd / mm / yyyy <br /> 11:22 am</span>
-
+                                          <img
+                                            class="pb-2"
+                                            src={Replenished}
+                                            alt="Card image cap"
+                                          />
+                                          <h5 class="card-title">
+                                            Replenished:
+                                          </h5>
+                                          <p class="card-text">
+                                            Last Replenished
+                                          </p>
+                                          <span className="m-0">
+                                            dd / mm / yyyy <br /> 11:22 am
+                                          </span>
                                         </div>
                                         <div class="card-body">
-
                                           <h5 class="card-title">
                                             <strong>Brand name</strong>
                                           </h5>
                                           <p class="card-text">Product name</p>
-                                          <span className="m-0">Product type</span>
-
+                                          <span className="m-0">
+                                            Product type
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -999,26 +1352,33 @@ function MachineDetails() {
                     <div className="secondcard">
                       <div id="secondcard" className="card-body">
                         <Details />
-                        <div style={{
-                          border: '1px solid #FFFFFF',
-                          boxShadow: '30px 70px 120px rgba(27, 49, 66, 0.13)',
-                          borderRadius: '15px',
-                          marginTop: '2rem',
-                        }}>
-                          <div style={{
-                            background: '#FFFFFF',
-                            border: '1px solid #E5E5E5',
-                            borderRadius: '16px',
-                            margin: '1rem',
-                          }}>
+                        <div
+                          style={{
+                            border: "1px solid #FFFFFF",
+                            boxShadow: "30px 70px 120px rgba(27, 49, 66, 0.13)",
+                            borderRadius: "15px",
+                            marginTop: "2rem",
+                          }}
+                        >
+                          <div
+                            style={{
+                              background: "#FFFFFF",
+                              border: "1px solid #E5E5E5",
+                              borderRadius: "16px",
+                              margin: "1rem",
+                            }}
+                          >
                             <div className="row pt-5">
                               <div className="col-lg-10 offset-lg-1">
-                                <div className="row" style={{
-                                  alignItems: 'baseline',
-                                }}>
+                                <div
+                                  className="row"
+                                  style={{
+                                    alignItems: "baseline",
+                                  }}
+                                >
                                   <div className="col-lg-6">
                                     <div className="dateDeployed">
-                                      {flag &&
+                                      {flag && (
                                         <Row className="justify-content-end">
                                           <Col md="6" xs="6">
                                             <FormGroup className="text-left">
@@ -1033,32 +1393,54 @@ function MachineDetails() {
                                             </FormGroup>
                                           </Col>
                                         </Row>
-                                      }
+                                      )}
                                     </div>
                                   </div>
                                   <div className="col-lg-6 m-0 p-0">
                                     <div className="dateDeployed">
-                                      <ul className="d-flex p-0" style={{
-                                        alignItems: 'center',
-                                      }}>
-                                        <li className="pl-2 pr-3" style={{
-                                          listStyle: 'none',
-                                        }}>
+                                      <ul
+                                        className="d-flex p-0"
+                                        style={{
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        <li
+                                          className="pl-2 pr-3"
+                                          style={{
+                                            listStyle: "none",
+                                          }}
+                                        >
                                           <img src={systemUpdate} />
                                         </li>
-                                        <li className="" style={{
-                                          listStyle: 'none',
-                                        }}>
+                                        <li
+                                          className=""
+                                          style={{
+                                            listStyle: "none",
+                                          }}
+                                        >
                                           <ul className="m-0 p-0">
-                                            <li className="" style={{
-                                              listStyle: 'none',
-                                            }}>
-                                              <span className="span-machine">Number of times machine used</span>
+                                            <li
+                                              className=""
+                                              style={{
+                                                listStyle: "none",
+                                              }}
+                                            >
+                                              <span className="span-machine">
+                                                Number of times machine used
+                                              </span>
                                             </li>
-                                            <li className="" style={{
-                                              listStyle: 'none',
-                                            }}>
-                                              <strong className="" style={{ color: '#09B39D' }}>#123456</strong>
+                                            <li
+                                              className=""
+                                              style={{
+                                                listStyle: "none",
+                                              }}
+                                            >
+                                              <strong
+                                                className=""
+                                                style={{ color: "#09B39D" }}
+                                              >
+                                                #123456
+                                              </strong>
                                             </li>
                                           </ul>
                                         </li>
@@ -1071,20 +1453,36 @@ function MachineDetails() {
                                     <div id="tankCard">
                                       <div class="card">
                                         <div className="cardContent">
-                                          <img class="card-img-top" src={Tank1} alt="Card image cap" />
+                                          <img
+                                            class="card-img-top"
+                                            src={Tank1}
+                                            alt="Card image cap"
+                                          />
                                         </div>
-                                        <div className="tank1Content" style={{
-                                          background: '#CFF2EE',
-                                          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        }}>
+                                        <div
+                                          className="tank1Content"
+                                          style={{
+                                            background: "#CFF2EE",
+                                            boxShadow:
+                                              "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          }}
+                                        >
                                           <h5 class="card-title">Tank 1</h5>
                                         </div>
                                         <div class="card-body">
-
-                                          <img class="pb-2" src={Replenished} alt="Card image cap" />
-                                          <h5 class="card-title" ><strong>Total Product Dispensed:</strong></h5>
-                                          <span className="m-0 amount" >#amount in ML</span>
-
+                                          <img
+                                            class="pb-2"
+                                            src={Replenished}
+                                            alt="Card image cap"
+                                          />
+                                          <h5 class="card-title">
+                                            <strong>
+                                              Total Product Dispensed:
+                                            </strong>
+                                          </h5>
+                                          <span className="m-0 amount">
+                                            #amount in ML
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -1093,20 +1491,36 @@ function MachineDetails() {
                                     <div id="tankCard">
                                       <div class="card">
                                         <div className="cardContent">
-                                          <img class="card-img-top" src={Tank2} alt="Card image cap" />
+                                          <img
+                                            class="card-img-top"
+                                            src={Tank2}
+                                            alt="Card image cap"
+                                          />
                                         </div>
-                                        <div className="tank1Content" style={{
-                                          background: '#CFF2EE',
-                                          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        }}>
+                                        <div
+                                          className="tank1Content"
+                                          style={{
+                                            background: "#CFF2EE",
+                                            boxShadow:
+                                              "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          }}
+                                        >
                                           <h5 class="card-title">Tank 2</h5>
                                         </div>
                                         <div class="card-body">
-
-                                          <img class="pb-2" src={Replenished} alt="Card image cap" />
-                                          <h5 class="card-title" ><strong>Total Product Dispensed:</strong></h5>
-                                          <span className="m-0 amount" >#amount in ML</span>
-
+                                          <img
+                                            class="pb-2"
+                                            src={Replenished}
+                                            alt="Card image cap"
+                                          />
+                                          <h5 class="card-title">
+                                            <strong>
+                                              Total Product Dispensed:
+                                            </strong>
+                                          </h5>
+                                          <span className="m-0 amount">
+                                            #amount in ML
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -1115,20 +1529,36 @@ function MachineDetails() {
                                     <div id="tankCard">
                                       <div class="card">
                                         <div className="cardContent">
-                                          <img class="card-img-top" src={Tank3} alt="Card image cap" />
+                                          <img
+                                            class="card-img-top"
+                                            src={Tank3}
+                                            alt="Card image cap"
+                                          />
                                         </div>
-                                        <div className="tank1Content" style={{
-                                          background: '#CFF2EE',
-                                          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        }}>
+                                        <div
+                                          className="tank1Content"
+                                          style={{
+                                            background: "#CFF2EE",
+                                            boxShadow:
+                                              "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          }}
+                                        >
                                           <h5 class="card-title">Tank 3</h5>
                                         </div>
                                         <div class="card-body">
-
-                                          <img class="pb-2" src={Replenished} alt="Card image cap" />
-                                          <h5 class="card-title" ><strong>Total Product Dispensed:</strong></h5>
-                                          <span className="m-0 amount" >#amount in ML</span>
-
+                                          <img
+                                            class="pb-2"
+                                            src={Replenished}
+                                            alt="Card image cap"
+                                          />
+                                          <h5 class="card-title">
+                                            <strong>
+                                              Total Product Dispensed:
+                                            </strong>
+                                          </h5>
+                                          <span className="m-0 amount">
+                                            #amount in ML
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -1137,20 +1567,36 @@ function MachineDetails() {
                                     <div id="tankCard">
                                       <div class="card">
                                         <div className="cardContent">
-                                          <img class="card-img-top" src={Tank4} alt="Card image cap" />
+                                          <img
+                                            class="card-img-top"
+                                            src={Tank4}
+                                            alt="Card image cap"
+                                          />
                                         </div>
-                                        <div className="tank1Content" style={{
-                                          background: '#CFF2EE',
-                                          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        }}>
+                                        <div
+                                          className="tank1Content"
+                                          style={{
+                                            background: "#CFF2EE",
+                                            boxShadow:
+                                              "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          }}
+                                        >
                                           <h5 class="card-title">Tank 4</h5>
                                         </div>
                                         <div class="card-body">
-
-                                          <img class="pb-2" src={Replenished} alt="Card image cap" />
-                                          <h5 class="card-title" ><strong>Total Product Dispensed:</strong></h5>
-                                          <span className="m-0 amount" >#amount in ML</span>
-
+                                          <img
+                                            class="pb-2"
+                                            src={Replenished}
+                                            alt="Card image cap"
+                                          />
+                                          <h5 class="card-title">
+                                            <strong>
+                                              Total Product Dispensed:
+                                            </strong>
+                                          </h5>
+                                          <span className="m-0 amount">
+                                            #amount in ML
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -1176,35 +1622,71 @@ function MachineDetails() {
                 <div className="row justify-content-center">
                   <div className="col-lg-10 pt-5">
                     <div className="secondcard">
-                      <div id="secondcard" className="card-body">
+                      <div id="secondcard">
                         <Details />
-                        <div className='row'>
-                          <div className='col-md-6 offset-md-3 text-center'>
-                            <ul class="nav nav-pills " id="pills-tab" role="tablist" style={{
-                              justifyContent: 'center',
-                            }}>
+                        <div className="row">
+                          <div className="col-md-6 offset-md-3 text-center">
+                            <ul
+                              class="nav nav-pills "
+                              id="pills-tab"
+                              role="tablist"
+                              style={{
+                                justifyContent: "center",
+                              }}
+                            >
                               <li class="nav-item m-1">
-                                <a class="nav-link active" id="pills-sales-tab" data-toggle="pill" href="#pills-sales" role="tab" aria-controls="pills-sales" aria-selected="true">Sales</a>
+                                <a
+                                  class="nav-link active"
+                                  id="pills-sales-tab"
+                                  data-toggle="pill"
+                                  href="#pills-sales"
+                                  role="tab"
+                                  aria-controls="pills-sales"
+                                  aria-selected="true"
+                                >
+                                  Sales
+                                </a>
                               </li>
                               <li class="nav-item m-1">
-                                <a class="nav-link" id="pills-Usage-tab" data-toggle="pill" href="#pills-Usage" role="tab" aria-controls="pills-Usage" aria-selected="false">Usage</a>
+                                <a
+                                  class="nav-link"
+                                  id="pills-Usage-tab"
+                                  data-toggle="pill"
+                                  href="#pills-Usage"
+                                  role="tab"
+                                  aria-controls="pills-Usage"
+                                  aria-selected="false"
+                                >
+                                  Usage
+                                </a>
                               </li>
                             </ul>
                           </div>
                         </div>
-                        <div className='row'>
-                          <div className='col-md-12'>
+
+                        <div className="row">
+                          <div
+                            className="col-md-12"
+                            style={{
+                              overflowY: "scroll",
+                              maxHeight: "28rem",
+                            }}
+                          >
                             <div class="tab-content" id="pills-tabContent">
-                              <div class="tab-pane fade show active" id="pills-sales" role="tabpanel" aria-labelledby="pills-sales-tab">
+                              <div
+                                class="tab-pane fade show active"
+                                id="pills-sales"
+                                role="tabpanel"
+                                aria-labelledby="pills-sales-tab"
+                              >
                                 <div className="row pt-5">
                                   <div className="col-lg-6 col-md-12 pt-5">
-
                                     {/* <div>
                                         <h6 className='card-subtitle'>
                                           Revenue
                                         </h6>
                                       </div> */}
-                                    {flag &&
+                                    {flag && (
                                       <Row className="justify-content-end">
                                         <Col md="6" xs="6">
                                           <FormGroup className="text-left">
@@ -1219,7 +1701,7 @@ function MachineDetails() {
                                           </FormGroup>
                                         </Col>
                                       </Row>
-                                    }
+                                    )}
 
                                     <div
                                       className="amp-pxl mt-4"
@@ -1227,11 +1709,22 @@ function MachineDetails() {
                                         height: "350px",
                                       }}
                                     >
-                                      <BarChart options1={optionsBar1} series1={seriesBar1} options2={options2} series2={series2} options3={options3} series3={series3} tab={"2"}></BarChart>
+                                      <BarChart
+                                        options1={optionsBar1}
+                                        series1={seriesBar1}
+                                        options2={options2}
+                                        series2={series2}
+                                        options3={options3}
+                                        series3={series3}
+                                        tab={"2"}
+                                      ></BarChart>
                                       <div className="chartist-tooltip"></div>
                                     </div>
                                     <div className="row">
-                                      <div className="col-lg-6 col-md-12" style={{ margin: 'auto' }}>
+                                      <div
+                                        className="col-lg-6 col-md-12"
+                                        style={{ margin: "auto" }}
+                                      >
                                         <p>Total Transactions</p>
                                         <h3>
                                           {getCombinedData(
@@ -1271,7 +1764,73 @@ function MachineDetails() {
                                     </p>
 
                                     <br />
-                                    <div className="d-flex justify-content-center" id="" >
+                                    {/* <div className="row">
+                                      <div className="col-md-6">
+                                        <div
+                                          className="row"
+                                          style={{ alignItems: "center" }}
+                                        >
+                                          <div
+                                            style={{ color: "#1d2023 " }}
+                                            className="col-md-12"
+                                          >
+                                            <span className="to_from">To</span>
+                                          </div>
+                                          <div className="col-md-12">
+                                            <input
+                                              type="date"
+                                              name="start_date"
+                                              value={pieDates.start_date}
+                                              onChange={(e) => handleChange(e)}
+                                              className="__input"
+                                              style={{
+                                                background: "#5ab9a2",
+                                                padding: " 7px",
+                                                color: "#fff",
+                                                fontSize: "14px",
+                                                borderRadius: "12px",
+                                              }}
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div
+                                        className="col-md-6"
+                                        style={{ color: "#1d2023 " }}
+                                      >
+                                        <div
+                                          className="row"
+                                          style={{ alignItems: "center" }}
+                                        >
+                                          <div className="col-md-12">
+                                            <span className="to_from">
+                                              From
+                                            </span>
+                                          </div>
+                                          <div className="col-md-12">
+                                            <input
+                                              type="date"
+                                              name="end_date"
+                                              value={pieDates.end_date}
+                                              onChange={(e) => handleChange(e)}
+                                              className="__input"
+                                              style={{
+                                                background: "#5ab9a2",
+                                                padding: " 7px",
+                                                color: "#fff",
+                                                fontSize: "14px",
+                                                borderRadius: "12px",
+                                              }}
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div> */}
+                                  
+                                    <div
+                                      className="d-flex justify-content-center"
+                                      id=""
+                                    >
                                       <ReactApexChart
                                         options={options1}
                                         series={series1}
@@ -1289,9 +1848,14 @@ function MachineDetails() {
                                   </div>
                                 </div>
                               </div>
-                              <div class="tab-pane fade" id="pills-Usage" role="tabpanel" aria-labelledby="pills-Usage-tab">
+                              <div
+                                class="tab-pane fade"
+                                id="pills-Usage"
+                                role="tabpanel"
+                                aria-labelledby="pills-Usage-tab"
+                              >
                                 <div className="row pt-5 justify-content-center">
-                                  <div className="col-md-3">
+                                  {/* <div className="col-md-3">
                                     <p>
                                       Enter customer mobile number
                                       <br /> to see specific details
@@ -1302,8 +1866,7 @@ function MachineDetails() {
                                       placeholder="****-*******"
                                       id="phoneinput"
                                     />
-                                 
-                                    <br /> <br/>
+                                    <br /> <br />
                                     <a
                                       href="/machines"
                                       className="btn btn-danger"
@@ -1311,25 +1874,41 @@ function MachineDetails() {
                                       {" "}
                                       Process
                                     </a>
-                                  </div>
-                                  <div className="col-lg-1" />
-                                  <div className="col-lg-3 col-sm-4 mt-lg-0 mt-4 ">
+                                  </div> */}
+
+                                  <div className="col-lg-3 mt-2 ">
                                     <div id="usageSec">
                                       <div class="card">
                                         <div className="cardContent">
-                                          <img class="card-img-top" src={typicalOrder} alt="Card image cap" />
+                                          <img
+                                            class="card-img-top"
+                                            src={typicalOrder}
+                                            alt="Card image cap"
+                                          />
                                         </div>
-                                        <div className="tank1Content" style={{
-                                          background: '#CFF2EE',
-                                          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        }}>
-                                          <h5 class="card-title">Typical Order Sizes</h5>
+                                        <div
+                                          className="tank1Content"
+                                          style={{
+                                            background: "#CFF2EE",
+                                            boxShadow:
+                                              "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          }}
+                                        >
+                                          <h5 class="card-title">
+                                            Typical Order Sizes
+                                          </h5>
                                         </div>
                                         <div class="card-body">
-                                          <img class="pb-2" src={allUser} alt="Card image cap" />
+                                          <img
+                                            class="pb-2"
+                                            src={allUser}
+                                            alt="Card image cap"
+                                          />
                                           <br />
                                           <br />
-                                          <p class="card-text">All users combined:</p>
+                                          <p class="card-text">
+                                            All users combined:
+                                          </p>
                                           <span className="m-0">
                                             <b className="p-0">20,000 ML</b>
                                           </span>
@@ -1337,67 +1916,96 @@ function MachineDetails() {
                                       </div>
                                     </div>
                                   </div>
+
                                   <div className="col-lg-3 col-sm-4 mt-lg-0 mt-4">
                                     <div id="usageSec1">
                                       <div class="card">
                                         <div className="cardContent">
-                                          <img class="card-img-top" src={numberOrder} alt="Card image cap" />
+                                          <img
+                                            class="card-img-top"
+                                            src={numberOrder}
+                                            alt="Card image cap"
+                                          />
                                         </div>
-                                        <div className="tank1Content" style={{
-                                          background: '#CFF2EE',
-                                          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.12)',
-                                        }}>
-                                          <h5 class="card-title">Number of Orders</h5>
+                                        <div
+                                          className="tank1Content"
+                                          style={{
+                                            background: "#CFF2EE",
+                                            boxShadow:
+                                              "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          }}
+                                        >
+                                          <h5 class="card-title">
+                                            Number of Orders
+                                          </h5>
                                         </div>
                                         <div class="card-body">
-                                          <img class="pb-2" src={allUser} alt="Card image cap" />
+                                          <img
+                                            class="pb-2"
+                                            src={allUser}
+                                            alt="Card image cap"
+                                          />
                                           <br />
                                           <br />
-                                          <p class="card-text">All users combined:</p>
+                                          <p class="card-text">
+                                            All users combined:
+                                          </p>
                                           <span className="m-0">
-                                            <b className="p-0">#number of orders</b>
+                                            <b className="p-0">
+                                              #number of orders
+                                            </b>
                                           </span>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                                  <br />
-                                  <br />
-                                  <div className="row justify-content-center justify-content-lg-start pt-5">
-                                    <div className="col-lg-5 "></div>
-                                  <div className="col-lg-3 col-sm-4  ">
-                                    <div id="usageSec">
-                                      <div class="card">
-                                        <div class="card-body">
-                                          <img class="pb-2" src={singleUser} alt="Card image cap" />
-                                          <br />
-                                          <br />
-                                          <p class="card-text">All users combined:</p>
-                                          <span className="m-0">
-                                            <b className="p-0">20,000 ML</b>
-                                          </span>
-                                        </div>
+                              </div>
+                              <div className="row justify-content-center justify-content-lg-start pt-5">
+                                <div className="col-lg-5 "></div>
+                                <div className="col-lg-3 col-sm-4  ">
+                                  <div id="usageSec">
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <img
+                                          class="pb-2"
+                                          src={singleUser}
+                                          alt="Card image cap"
+                                        />
+                                        <br />
+                                        <br />
+                                        <p class="card-text">
+                                          All users combined:
+                                        </p>
+                                        <span className="m-0">
+                                          <b className="p-0">20,000 ML</b>
+                                        </span>
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="col-lg-3 col-sm-4 ">
-                                    <div id="usageSec">
-                                      <div class="card">
-                                        <div class="card-body">
-                                          <img class="pb-2" src={singleUser} alt="Card image cap" />
-                                          <br />
-                                          <br />
-                                          <p class="card-text">All users combined:</p>
-                                          <span className="m-0">
-                                            <b className="p-0">20,000 ML</b>
-                                          </span>
-                                        </div>
+                                </div>
+                                <div className="col-lg-3 col-sm-4 ">
+                                  <div id="usageSec">
+                                    <div class="card">
+                                      <div class="card-body">
+                                        <img
+                                          class="pb-2"
+                                          src={singleUser}
+                                          alt="Card image cap"
+                                        />
+                                        <br />
+                                        <br />
+                                        <p class="card-text">
+                                          All users combined:
+                                        </p>
+                                        <span className="m-0">
+                                          <b className="p-0">20,000 ML</b>
+                                        </span>
                                       </div>
                                     </div>
+                                  </div>
                                 </div>
-                                </div>
-                                
+
                                 {/* <div className="row pt-5">
                                   <div className="col-md-3"></div>
                                   <div className="col-md-6">
@@ -1519,24 +2127,27 @@ function MachineDetails() {
                     <div className="secondcard">
                       <div id="secondcard" className="card-body">
                         <Details />
-                        <div style={{
-                          border: '1px solid #FFFFFF',
-                          boxShadow: '30px 70px 120px rgba(27, 49, 66, 0.13)',
-                          borderRadius: '15px',
-                          marginTop: '2rem',
-                        }}
+                        <div
+                          style={{
+                            border: "1px solid #FFFFFF",
+                            boxShadow: "30px 70px 120px rgba(27, 49, 66, 0.13)",
+                            borderRadius: "15px",
+                            marginTop: "2rem",
+                          }}
                         >
-                          <div style={{
-                            background: '#FFFFFF',
-                            border: '1px solid #E5E5E5',
-                            borderRadius: '16px',
-                            margin: '1rem',
-                          }}>
+                          <div
+                            style={{
+                              background: "#FFFFFF",
+                              border: "1px solid #E5E5E5",
+                              borderRadius: "16px",
+                              margin: "1rem",
+                            }}
+                          >
                             <div className="row pt-5">
                               <div className="col-lg-12 offset-lg-0">
                                 <div className="row g-3">
                                   <div className="col-md-12">
-                                    <div className='table-content tank-management-table p-3'>
+                                    <div className="table-content tank-management-table p-3">
                                       <table class="table table-borderless ">
                                         <thead>
                                           <tr>
@@ -1544,8 +2155,12 @@ function MachineDetails() {
                                             <th scope="col">Barcode</th>
                                             <th scope="col">Product Type</th>
                                             <th scope="col">Brand Name</th>
-                                            <th scope="col">Product Bach N0#</th>
-                                            <th scope="col">Product Deployed</th>
+                                            <th scope="col">
+                                              Product Bach N0#
+                                            </th>
+                                            <th scope="col">
+                                              Product Deployed
+                                            </th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -1605,7 +2220,7 @@ function MachineDetails() {
               </div>
             )}
 
-            {tab == "6" && (
+            {/* {tab == "6" && (
               <div
                 className="tab-pane fade show active"
                 id="warnings"
@@ -1649,7 +2264,7 @@ function MachineDetails() {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
 
             {tab == "7" && (
               <div
@@ -1663,57 +2278,84 @@ function MachineDetails() {
                     <div className="secondcard">
                       <div id="secondcard" className="card-body">
                         <Details />
-                        <div style={{
-                          border: '1px solid #FFFFFF',
-                          boxShadow: '30px 70px 120px rgba(27, 49, 66, 0.13)',
-                          borderRadius: '15px',
-                          marginTop: '2rem',
-                        }}>
-                          <div style={{
-                            background: '#FFFFFF',
-                            border: '1px solid #E5E5E5',
-                            borderRadius: '16px',
-                            margin: '1rem',
-                          }}>
-
+                        <div
+                          style={{
+                            border: "1px solid #FFFFFF",
+                            boxShadow: "30px 70px 120px rgba(27, 49, 66, 0.13)",
+                            borderRadius: "15px",
+                            marginTop: "2rem",
+                          }}
+                        >
+                          <div
+                            style={{
+                              background: "#FFFFFF",
+                              border: "1px solid #E5E5E5",
+                              borderRadius: "16px",
+                              margin: "1rem",
+                            }}
+                          >
                             <div className="row md-py-5 py-3 px-md-0 px-3">
                               <div className="col-lg-10 offset-lg-1">
                                 <div className="row px-3">
                                   <div className="col-md-4">
                                     <div id="maintenanceCard">
                                       <div class="card">
-                                        <div className="technicalSupport" >
-                                          <img class="card-img-top" src={technicalSupport} alt="Card image cap" />
+                                        <div className="technicalSupport">
+                                          <img
+                                            class="card-img-top"
+                                            src={technicalSupport}
+                                            alt="Card image cap"
+                                          />
                                         </div>
                                         <div class="card-body">
                                           <div class="">
-                                            <h5 class="card-title">Machine Last Serviced:</h5>
+                                            <h5 class="card-title">
+                                              Machine Last Serviced:
+                                            </h5>
                                             <div className="dateDeployed">
-                                              <ul className="d-flex p-0" style={{
-                                                alignItems: 'center',
-                                              }}>
-                                                <li className="pr-2" style={{
-                                                  listStyle: 'none',
-                                                }}>
+                                              <ul
+                                                className="d-flex p-0"
+                                                style={{
+                                                  alignItems: "center",
+                                                }}
+                                              >
+                                                <li
+                                                  className="pr-2"
+                                                  style={{
+                                                    listStyle: "none",
+                                                  }}
+                                                >
                                                   <img src={calendarsvgrepo} />
                                                 </li>
-                                                <li className="pr-3" style={{
-                                                  listStyle: 'none',
-                                                }}>
+                                                <li
+                                                  className="pr-3"
+                                                  style={{
+                                                    listStyle: "none",
+                                                  }}
+                                                >
                                                   <span>dd / mm / yyyy</span>
                                                 </li>
                                               </ul>
-                                              <ul className="d-flex p-0" style={{
-                                                alignItems: 'center',
-                                              }}>
-                                                <li className="pr-2" style={{
-                                                  listStyle: 'none',
-                                                }}>
+                                              <ul
+                                                className="d-flex p-0"
+                                                style={{
+                                                  alignItems: "center",
+                                                }}
+                                              >
+                                                <li
+                                                  className="pr-2"
+                                                  style={{
+                                                    listStyle: "none",
+                                                  }}
+                                                >
                                                   <img src={clock} />
                                                 </li>
-                                                <li className="pr-3" style={{
-                                                  listStyle: 'none',
-                                                }}>
+                                                <li
+                                                  className="pr-3"
+                                                  style={{
+                                                    listStyle: "none",
+                                                  }}
+                                                >
                                                   <span>11:12 am</span>
                                                 </li>
                                               </ul>
@@ -1726,16 +2368,56 @@ function MachineDetails() {
                                   <div className="col-md-4">
                                     <div id="maintenanceCard">
                                       <div class="card">
-                                        <div className="technicalSupport" >
-                                          <img class="card-img-top" src={bucket} alt="Card image cap" />
+                                        <div className="technicalSupport">
+                                          <img
+                                            class="card-img-top"
+                                            src={bucket}
+                                            alt="Card image cap"
+                                          />
                                         </div>
                                         <div class="card-body">
-                                          <h5 class="card-title">Parts Cleaned:</h5>
-                                          <p className="card-text">List of parts below</p>
-                                          <h5 class="card-title text-start" style={{ borderBottom: '2.4px solid #000', padding: '6px 0px', }}>Part name 1</h5>
-                                          <h5 class="card-title text-start" style={{ borderBottom: '2.4px solid #000', padding: '6px 0px', }}>Part name 2</h5>
-                                          <h5 class="card-title text-start" style={{ borderBottom: '2.4px solid #000', padding: '6px 0px', }}>Part name 3</h5>
-                                          <h5 class="card-title text-start" style={{ borderBottom: '2.4px solid #000', padding: '6px 0px', }}>Part name 4</h5>
+                                          <h5 class="card-title">
+                                            Parts Cleaned:
+                                          </h5>
+                                          <p className="card-text">
+                                            List of parts below
+                                          </p>
+                                          <h5
+                                            class="card-title text-start"
+                                            style={{
+                                              borderBottom: "2.4px solid #000",
+                                              padding: "6px 0px",
+                                            }}
+                                          >
+                                            Part name 1
+                                          </h5>
+                                          <h5
+                                            class="card-title text-start"
+                                            style={{
+                                              borderBottom: "2.4px solid #000",
+                                              padding: "6px 0px",
+                                            }}
+                                          >
+                                            Part name 2
+                                          </h5>
+                                          <h5
+                                            class="card-title text-start"
+                                            style={{
+                                              borderBottom: "2.4px solid #000",
+                                              padding: "6px 0px",
+                                            }}
+                                          >
+                                            Part name 3
+                                          </h5>
+                                          <h5
+                                            class="card-title text-start"
+                                            style={{
+                                              borderBottom: "2.4px solid #000",
+                                              padding: "6px 0px",
+                                            }}
+                                          >
+                                            Part name 4
+                                          </h5>
                                         </div>
                                       </div>
                                     </div>
@@ -1743,16 +2425,56 @@ function MachineDetails() {
                                   <div className="col-md-4">
                                     <div id="maintenanceCard">
                                       <div class="card">
-                                        <div className="technicalSupport" >
-                                          <img class="card-img-top" src={toolBox} alt="Card image cap" />
+                                        <div className="technicalSupport">
+                                          <img
+                                            class="card-img-top"
+                                            src={toolBox}
+                                            alt="Card image cap"
+                                          />
                                         </div>
                                         <div class="card-body">
-                                          <h5 class="card-title">Parts Replaced:</h5>
-                                          <p className="card-text">List of parts below</p>
-                                          <h5 class="card-title text-start" style={{ borderBottom: '2.4px solid #000', padding: '6px 0px', }}>Part name 1</h5>
-                                          <h5 class="card-title text-start" style={{ borderBottom: '2.4px solid #000', padding: '6px 0px', }}>Part name 2</h5>
-                                          <h5 class="card-title text-start" style={{ borderBottom: '2.4px solid #000', padding: '6px 0px', }}>Part name 3</h5>
-                                          <h5 class="card-title text-start" style={{ borderBottom: '2.4px solid #000', padding: '6px 0px', }}>Part name 4</h5>
+                                          <h5 class="card-title">
+                                            Parts Replaced:
+                                          </h5>
+                                          <p className="card-text">
+                                            List of parts below
+                                          </p>
+                                          <h5
+                                            class="card-title text-start"
+                                            style={{
+                                              borderBottom: "2.4px solid #000",
+                                              padding: "6px 0px",
+                                            }}
+                                          >
+                                            Part name 1
+                                          </h5>
+                                          <h5
+                                            class="card-title text-start"
+                                            style={{
+                                              borderBottom: "2.4px solid #000",
+                                              padding: "6px 0px",
+                                            }}
+                                          >
+                                            Part name 2
+                                          </h5>
+                                          <h5
+                                            class="card-title text-start"
+                                            style={{
+                                              borderBottom: "2.4px solid #000",
+                                              padding: "6px 0px",
+                                            }}
+                                          >
+                                            Part name 3
+                                          </h5>
+                                          <h5
+                                            class="card-title text-start"
+                                            style={{
+                                              borderBottom: "2.4px solid #000",
+                                              padding: "6px 0px",
+                                            }}
+                                          >
+                                            Part name 4
+                                          </h5>
                                         </div>
                                       </div>
                                     </div>
@@ -1761,8 +2483,13 @@ function MachineDetails() {
                                 <div className="row pt-1 justify-content-center m-md-5 m-0">
                                   <div className="col-md-6 px-0">
                                     <div className="errorHistory">
-                                      <p> Click Below for error specific details</p>
-                                      <button className="btn btn-sm btn-success custom-btn-cls px-md-5 px-2" >Error History</button>
+                                      <p>
+                                        {" "}
+                                        Click Below for error specific details
+                                      </p>
+                                      <button className="btn btn-sm btn-success custom-btn-cls px-md-5 px-2">
+                                        Error History
+                                      </button>
                                     </div>
                                   </div>
                                 </div>
@@ -1782,7 +2509,7 @@ function MachineDetails() {
                 <div className="row justify-content-center pt-5">
                   <div className="row ">
                     <div className="col-lg-10 offset-lg-1">
-                      <Row className="justify-content-end">
+                      {/* <Row className="justify-content-end">
                         <Col md="3" >
                           <FormGroup className="text-left">
                             <Label>From</Label>
@@ -1795,7 +2522,7 @@ function MachineDetails() {
                             <Input type="date" />
                           </FormGroup>
                         </Col>
-                      </Row>
+                      </Row> */}
                       <div className="row">
                         <div className="col-md-3 col-sm-6">
                           <div id="tankCard">
@@ -1820,8 +2547,7 @@ function MachineDetails() {
                                 className="tank1Content"
                                 style={{
                                   background: "#CFF2EE",
-                                  boxShadow:
-                                    "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                 }}
                               ></div>
                               <div
@@ -1829,9 +2555,11 @@ function MachineDetails() {
                                 style={{ background: "#F3F3F3;" }}
                               >
                                 <h5 class="card-title">
-                                  <p style={{
-                                    fontweight: 400,
-                                  }}>
+                                  <p
+                                    style={{
+                                      fontweight: 400,
+                                    }}
+                                  >
                                     No# of bottles
                                     <br />
                                     currently on the shelf
@@ -1866,15 +2594,16 @@ function MachineDetails() {
                                 className="tank1Content"
                                 style={{
                                   background: "#CFF2EE",
-                                  boxShadow:
-                                    "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                 }}
                               ></div>
                               <div class="card-body">
                                 <h5 class="card-title">
-                                  <p style={{
-                                    fontweight: 400,
-                                  }}>
+                                  <p
+                                    style={{
+                                      fontweight: 400,
+                                    }}
+                                  >
                                     No# of new empty
                                     <br />
                                     bottles bought
@@ -1909,15 +2638,16 @@ function MachineDetails() {
                                 className="tank1Content"
                                 style={{
                                   background: "#CFF2EE",
-                                  boxShadow:
-                                    "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                 }}
                               ></div>
                               <div class="card-body">
                                 <h5 class="card-title">
-                                  <p style={{
-                                    fontweight: 400,
-                                  }}>
+                                  <p
+                                    style={{
+                                      fontweight: 400,
+                                    }}
+                                  >
                                     No# of bottles
                                     <br />
                                     refilled
@@ -1953,15 +2683,16 @@ function MachineDetails() {
                                 className="tank1Content"
                                 style={{
                                   background: "#CFF2EE",
-                                  boxShadow:
-                                    "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                 }}
                               ></div>
                               <div class="card-body">
                                 <h5 class="card-title">
-                                  <p style={{
-                                    fontweight: 400,
-                                  }}>
+                                  <p
+                                    style={{
+                                      fontweight: 400,
+                                    }}
+                                  >
                                     Revenue from new
                                     <br />
                                     bottles sold

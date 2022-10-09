@@ -1173,7 +1173,7 @@ function Index() {
                     </div>
                   </div>
                 </div>
-                <div className="col-lg-4  mt-3 mt-md-2 text-center">
+                <div className="col-lg-4 mt-3 mt-md-2 text-center">
                   <div
                     id="bottlescards"
                     // style={{ marginTop: "10px" }}
@@ -1208,7 +1208,7 @@ function Index() {
                   </div>
                 </div>
               </div>
-              d
+              
               <div className="row">
                 <div className="col-lg-4  mt-3 mt-md-2 text-center ">
                   <div

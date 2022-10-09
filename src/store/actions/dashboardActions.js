@@ -3,6 +3,7 @@ import { RepositoryFactory } from "../../repository/RepositoryFactory";
 let dashboard = RepositoryFactory.get("dashboard");
 let transaction = RepositoryFactory.get("transaction");
 let dispose = RepositoryFactory.get("disposibleBottle");
+let machine_details = RepositoryFactory.get("machine");
 
 export const getAllMetrics = (payload) => async (dispatch) => {
   // console.log(payload);
@@ -43,50 +44,54 @@ export const getAllTransMetrics = (payload) => async (dispatch) => {
       payload: data?.response?.data || [],
     });
 
-   const lastweek = generateGraphdata('last_week', data?.response?.data);
-   const usertransaction = generateGraphdata('user_transaction', data?.response?.data);
-  // console.log(lastweek, usertransaction);
-   dispatch({
-    type: "SET_LAST_WEEK",
-    payload: lastweek || [],
-  });
+    const lastweek = generateGraphdata("last_week", data?.response?.data);
+    const usertransaction = generateGraphdata(
+      "user_transaction",
+      data?.response?.data
+    );
+    // console.log(lastweek, usertransaction);
+    dispatch({
+      type: "SET_LAST_WEEK",
+      payload: lastweek || [],
+    });
 
-  dispatch({
-    type: "SET_USER_TRANSACTION",
-    payload: usertransaction || [],
-  });
-
+    dispatch({
+      type: "SET_USER_TRANSACTION",
+      payload: usertransaction || [],
+    });
   } catch (error) {
     console.log(error.message);
     console.log("Error");
   }
 };
 
-
 const generateGraphdata = (type, yearlytransactions) => {
   // return new Promise((res, rej)=> {
-   const yearlydata = yearlytransactions[`${type}`];
-   const revenue = yearlydata?.Revenue;
-   const graphData = {revenue: {label: [], data: []}, transaction: {label: [], data: []}};
+  const yearlydata = yearlytransactions[`${type}`];
+  const revenue = yearlydata?.Revenue;
+  const graphData = {
+    revenue: { label: [], data: [] },
+    transaction: { label: [], data: [] },
+  };
   //  console.log(yearlydata);
-   const transaction = yearlydata.Transaction;
+  const transaction = yearlydata.Transaction;
 
-   transaction.map((d, i) => {
-     const keyobj = Object.keys(d)[0];
-     const data = d[`${keyobj}`];
-     graphData.transaction.label.push(keyobj);
-     graphData.transaction.data.push(data);
-   });
+  transaction.map((d, i) => {
+    const keyobj = Object.keys(d)[0];
+    const data = d[`${keyobj}`];
+    graphData.transaction.label.push(keyobj);
+    graphData.transaction.data.push(data);
+  });
 
-   revenue.map((d, i) => {
-     const keyobj = Object.keys(d)[0];
-     const data = d[`${keyobj}`];
-     graphData.revenue.label.push(keyobj);
-     graphData.revenue.data.push(data);
-   });
-   return graphData;
+  revenue.map((d, i) => {
+    const keyobj = Object.keys(d)[0];
+    const data = d[`${keyobj}`];
+    graphData.revenue.label.push(keyobj);
+    graphData.revenue.data.push(data);
+  });
+  return graphData;
   //  })
- };
+};
 
 export const getMetricsByMachine = (payload) => async (dispatch) => {
   try {
@@ -180,3 +185,33 @@ export const getUserTransactionsByYearlySumary =
       console.log("Error");
     }
   };
+
+export const getMachineDetails = (payload) => async (dispatch) => {
+  try {
+    let { data } = await machine_details.get({
+      request: {
+        method: "getMachineDetails",
+        data: payload,
+      },
+    });
+
+    dispatch({
+      type: "GET_MACHINE_DETAILS",
+      payload: data?.response?.data || [],
+    });
+
+    dispatch({
+      type: "GET_STOCKS_LEVEL_STAGE",
+      payload:
+        data?.response?.data.machine.stock_levels_page || [],
+    });
+
+    dispatch({
+      type: "GET_SALES_PAGE",
+      payload:
+        data?.response?.data.machine.sales_page || [],
+    });
+  } catch (error) {
+    console.log("Error");
+  }
+};

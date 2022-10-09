@@ -40,6 +40,8 @@ function Machines() {
   const [_rev, setRev] = useState("");
   const [_id, setId] = useState("");
 
+  
+
   const onChangeHandler = (name, val) => {
     setMachineData((prevState) => ({ ...prevState, [name]: val }));
     console.log(machineData);
@@ -291,13 +293,16 @@ function Machines() {
                             className="form-control text-center"
                             placeholder="Enter ID Here"
                             id="exampleInputEmail1"
+                            onChange={(e)=> {
+                              setId(e.target.value)}}
                             aria-describedby="emailHelp"
                           />
                           <Link
                             id="btn-primary"
-                            to="/machine_details"
+                            to={`/machine_details/${_id}`}
                             class="btn btn-primary"
                             type="submit"
+
                           >
                             Submit
                           </Link>
