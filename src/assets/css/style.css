@@ -8049,7 +8049,7 @@ fieldset:disabled .btn {
     gap: 3rem !important;
   }
   .justify-content-lg-start {
-    justify-content: flex-start !important;
+    /* justify-content: flex-start !important; */
   }
   .justify-content-lg-end {
     justify-content: flex-end !important;

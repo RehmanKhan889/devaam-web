@@ -129,9 +129,9 @@ function MachineDetails() {
   //   }));
   // };
 
-  const getSales = () =>{
+  const getSales = () => {
     sales_level();
-  }
+  };
 
   // const getStocksLevelPage = () => {
   //   const mystocks = machine_details.machine_page.stock_levels_page;
@@ -783,7 +783,7 @@ function MachineDetails() {
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="col-md-3n col-sm-6 mb-md-0 mb-3">
+                                  <div className="col-md-3 col-sm-6 mb-md-0 mb-3">
                                     <div
                                       className="card px-1 px-md-0"
                                       style={{
@@ -1089,16 +1089,16 @@ function MachineDetails() {
                                             alt="Card image cap"
                                           />
                                           <h5 class="card-title">
-                                            {stock_level[1]?.name}
+                                            {stock_level[1]?.brand_id}
                                           </h5>
                                           <p class="card-text">
                                             {stock_level[1]?.current_volume}
                                           </p>
-                                          <span className="m-0">
+                                          {/* <span className="m-0">
                                             <b className="p-0">
                                               {stock_level[1]?.last_refill_date}
                                             </b>
-                                          </span>
+                                          </span> */}
                                         </div>
 
                                         <div class="card-body">
@@ -1111,20 +1111,22 @@ function MachineDetails() {
                                             Replenished:
                                           </h5>
                                           <p class="card-text">
-                                            Last Replenished
+                                            {stock_level[1]?.last_refill_date}
                                           </p>
-                                          <span className="m-0">
+                                          {/* <span className="m-0">
                                             dd / mm / yyyy <br /> 11:22 am
-                                          </span>
+                                          </span> */}
                                         </div>
                                         <div class="card-body">
                                           <h5 class="card-title">
                                             <strong>Brand name</strong>
                                           </h5>
-                                          <p class="card-text">Product name</p>
-                                          <span className="m-0">
+                                          <p class="card-text">
+                                            {stock_level[1]?.name}
+                                          </p>
+                                          {/* <span className="m-0">
                                             Product type
-                                          </span>
+                                          </span> */}
                                         </div>
                                       </div>
                                     </div>
@@ -1156,16 +1158,16 @@ function MachineDetails() {
                                             alt="Card image cap"
                                           />
                                           <h5 class="card-title">
-                                            {stock_level[2]?.name}
+                                            {stock_level[2]?.brand_id}
                                           </h5>
                                           <p class="card-text">
                                             {stock_level[2]?.current_volume}
                                           </p>
-                                          <span className="m-0">
+                                          {/* <span className="m-0">
                                             <b className="p-0">
                                               {stock_level[2]?.last_refill_date}
                                             </b>
-                                          </span>
+                                          </span> */}
                                         </div>
                                         <div class="card-body">
                                           <img
@@ -1177,20 +1179,22 @@ function MachineDetails() {
                                             Replenished:
                                           </h5>
                                           <p class="card-text">
-                                            Last Replenished
+                                            {stock_level[2]?.last_refill_date}
                                           </p>
-                                          <span className="m-0">
+                                          {/* <span className="m-0">
                                             dd / mm / yyyy <br /> 11:22 am
-                                          </span>
+                                          </span> */}
                                         </div>
                                         <div class="card-body">
                                           <h5 class="card-title">
                                             <strong>Brand name</strong>
                                           </h5>
-                                          <p class="card-text">Product name</p>
-                                          <span className="m-0">
+                                          <p class="card-text">
+                                            {stock_level[2]?.name}
+                                          </p>
+                                          {/* <span className="m-0">
                                             Product type
-                                          </span>
+                                          </span> */}
                                         </div>
                                       </div>
                                     </div>
@@ -1223,17 +1227,17 @@ function MachineDetails() {
                                           />
                                           <h5 class="card-title">
                                             {" "}
-                                            {stock_level[3]?.name}
+                                            {stock_level[3]?.brand_id}
                                           </h5>
                                           <p class="card-text">
                                             {stock_level[3]?.current_volume}
                                           </p>
-                                          <span className="m-0">
+                                          {/* <span className="m-0">
                                             <b className="p-0">
                                               {" "}
                                               {stock_level[3]?.last_refill_date}
                                             </b>
-                                          </span>
+                                          </span> */}
                                         </div>
                                         <div class="card-body">
                                           <img
@@ -1245,20 +1249,23 @@ function MachineDetails() {
                                             Replenished:
                                           </h5>
                                           <p class="card-text">
-                                            Last Replenished
+                                            {stock_level[3]?.last_refill_date}
                                           </p>
-                                          <span className="m-0">
+                                          {/* <span className="m-0">
                                             dd / mm / yyyy <br /> 11:22 am
-                                          </span>
+                                          </span> */}
                                         </div>
                                         <div class="card-body">
                                           <h5 class="card-title">
                                             <strong>Brand name</strong>
                                           </h5>
-                                          <p class="card-text">Product name</p>
-                                          <span className="m-0">
+                                          <p class="card-text">
+                                            {" "}
+                                            {stock_level[3]?.name}
+                                          </p>
+                                          {/* <span className="m-0">
                                             Product type
-                                          </span>
+                                          </span> */}
                                         </div>
                                       </div>
                                     </div>
@@ -1290,16 +1297,16 @@ function MachineDetails() {
                                             alt="Card image cap"
                                           />
                                           <h5 class="card-title">
-                                            {stock_level[4]?.name}
+                                            {stock_level[4]?.brand_id}
                                           </h5>
                                           <p class="card-text">
                                             {stock_level[4]?.current_volume}
                                           </p>
-                                          <span className="m-0">
+                                          {/* <span className="m-0">
                                             <b className="p-0">
                                               {stock_level[4]?.last_refill_date}
                                             </b>
-                                          </span>
+                                          </span> */}
                                         </div>
                                         <div class="card-body">
                                           <img
@@ -1311,20 +1318,23 @@ function MachineDetails() {
                                             Replenished:
                                           </h5>
                                           <p class="card-text">
-                                            Last Replenished
+                                            {stock_level[4]?.last_refill_date}
                                           </p>
-                                          <span className="m-0">
+                                          {/* <span className="m-0">
                                             dd / mm / yyyy <br /> 11:22 am
-                                          </span>
+                                          </span> */}
                                         </div>
                                         <div class="card-body">
                                           <h5 class="card-title">
                                             <strong>Brand name</strong>
                                           </h5>
-                                          <p class="card-text">Product name</p>
-                                          <span className="m-0">
+                                          <p class="card-text">
+                                            {" "}
+                                            {stock_level[4]?.name}
+                                          </p>
+                                          {/* <span className="m-0">
                                             Product type
-                                          </span>
+                                          </span> */}
                                         </div>
                                       </div>
                                     </div>
@@ -1826,7 +1836,7 @@ function MachineDetails() {
                                         </div>
                                       </div>
                                     </div> */}
-                                  
+
                                     <div
                                       className="d-flex justify-content-center"
                                       id=""
@@ -1917,7 +1927,7 @@ function MachineDetails() {
                                     </div>
                                   </div>
 
-                                  <div className="col-lg-3 col-sm-4 mt-lg-0 mt-4">
+                                  <div className="col-lg-3 col-sm-4  mt-lg-0 mt-4">
                                     <div id="usageSec1">
                                       <div class="card">
                                         <div className="cardContent">
@@ -1962,7 +1972,6 @@ function MachineDetails() {
                                 </div>
                               </div>
                               <div className="row justify-content-center justify-content-lg-start pt-5">
-                                <div className="col-lg-5 "></div>
                                 <div className="col-lg-3 col-sm-4  ">
                                   <div id="usageSec">
                                     <div class="card">
