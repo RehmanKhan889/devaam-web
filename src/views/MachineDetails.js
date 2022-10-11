@@ -47,8 +47,9 @@ import Group256 from "../assets/images/dawaam/Group256.svg";
 import Group255 from "../assets/images/dawaam/Group255.svg";
 import { Card } from "reactstrap";
 import BarChart from "../helpers/Charts/BarChart";
+import { connect } from "react-redux";
 
-function MachineDetails() {
+function MachineDetails({stock_level, graph_data, sales_per}) {
   const [notiModal, setNotiModal] = useState(false);
   const [tab, setTab] = useState("4");
   const dispatch = useDispatch();
@@ -57,144 +58,16 @@ function MachineDetails() {
   const { single_machine_metrics } = useSelector((state) => state.metrics);
 
   const { user } = useSelector((state) => state.auth);
-  const { stock_level, machine_details, sales_level, graph_data } = useSelector(
-    (state) => state.machine
-  );
-  console.log(stock_level, machine_details, graph_data, "my stocks eeee");
+  // const { stock_level, machine_details, sales_level, graph_data } = useSelector(
+  //   (state) => state.machine
+  // );
+  // console.log(stock_level, machine_details, graph_data, "my stocks eeee");
   const [barChartTab, setBarChartTab] = useState("1");
 
   const Types = { LastfourMonth: "last_four_months", LastWeek: "last_week" };
 
   const [allsales, setAllSales] = useState([]);
 
-  const [options1, setPieChartData] = useState({
-    colors: ["#D5CFE1", "#09814A"],
-    chart: {
-      id: "mychart",
-      width: 380,
-      type: "pie",
-    },
-    labels: ["Brand 5", "Brand 6"],
-    states: {
-      hover: {
-        filter: {
-          type: "darken",
-          value: 0.5,
-          // type: 'none',
-        },
-      },
-    },
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200,
-          },
-          legend: {
-            position: "bottom",
-          },
-        },
-      },
-    ],
-  });
-  console.log(window.location.pathname);
-
-  const params = useParams();
-  // console.log(window.location.search)
-  // const flag = window.location.search.split('=')[1]
-  // console.log(flag)
-  const flag = false; //all sections
-
-  const notiToggle = () => {
-    setNotiModal(!notiModal);
-    // console.log("asd", props.history);
-  };
-  useEffect(() => {
-    console.log(params.id, "hello one");
-    dispatch(
-      getMachineDetails({
-        company_code: user?.company_code,
-        machine_id: params?.id,
-      })
-    );
-
-    console.log(graph_data);
-    // setSeriesBar1({
-    //   ...series1,
-    //   ...{
-    //     labels:
-    //       graph_data.getLast.transaction.label.length > 0
-    //         ? [...graph_data.getLast.transaction.label.length]
-    //         : [""],
-    //   },
-    // });
-  }, []);
-
-  // const [pieDates, setPieDate] = useState({
-  //   start_date: moment().format("YYYY-MM-DD"),
-  //   end_date: moment().format("YYYY-MM-DD"),
-  // });
-
-  // const handleChange = async (e) => {
-  //   console.log(e.target.value);
-
-  //   await setPieDate((prevState) => ({
-  //     ...prevState,
-  //     [e.target.name]: e.target.value,
-  //   }));
-  // };
-
-  // useEffect(() => {
-  //   // getSales();
-  //   // console.log(getSales(Types.LastWeek), "Hello from the other side");
-  // });
-
-  // const getSales = (type) => {
-  //   console.log(sales_level);
-  //   const getSalesData = sales_level[`${type}`];
-  //   console.log(sales_level, "yayyayaayhelloo");
-  //   return;
-  //   const graphData = {
-  //     revenue: { label: [], data: [] },
-  //     transaction: { label: [], data: [] },
-  //   };
-  //   const getRevenue = getSalesData.Revenue.map((v, i) => {
-  //     graphData.revenue.label.push(i);
-  //     graphData.revenue.data.push(v);
-  //   });
-
-  //   const getTransaction = getSalesData.Transaction.map((v, i) => {
-  //     graphData.transaction.label.push(i);
-  //     graphData.transaction.data.push(v);
-  //   });
-
-  //   return graphData;
-  // };
-
-  // const getStocksLevelPage = () => {
-  //   const mystocks = machine_details.machine_page.stock_levels_page;
-  //   return mystocks;
-  // };
-
-  // useEffect(() => {
-  //   let tempArr = getCombinedData(single_machine_metrics, pieEnabled);
-  //   console.log(tempArr);
-  //   // // tempArr.map(temp => {
-  //   setTimeout(() => {
-  //     setSeries1(tempArr.map((item) => item.volume));
-  //     setPieChartData({
-  //       ...options1,
-  //       labels: tempArr.map((item) => item.brand),
-  //     });
-  //   }, 1500);
-  // }, [single_machine_metrics, pieEnabled]);
-  // useEffect(() => {
-  //   if (flag) {
-  //     setTab("3")
-  //   }
-  // }, [flag])
-  // BarChart DATA
   const [options3, setOptions3] = useState({
     colors: ["#D5CFE1", "#09814A"],
     chart: {
@@ -324,6 +197,7 @@ function MachineDetails() {
       data: [76, 85, 101, 98],
     },
   ]);
+  const [salesPercentages, setSalesPercentages] = useState({data: [], label: []});
 
   const [optionsBar1, setOptionsBar1] = useState({
     colors: ["#D5CFE1", "#09814A"],
@@ -377,13 +251,176 @@ function MachineDetails() {
   const [seriesBar1, setSeriesBar1] = useState([
     {
       name: "Transaction",
-      data: [0],
+      data: [0,3,4,4,5,5],
     },
     {
       name: "Revenue",
-      data: [0],
+      data: [0,3,3,3,3,3],
     },
   ]);
+
+  const [options1, setPieChartData] = useState({
+    colors: ["#D5CFE1", "#09814A"],
+    chart: {
+      id: "mychart",
+      width: 380,
+      type: "pie",
+    },
+    labels: ["Brand 5", "Brand 6"],
+    states: {
+      hover: {
+        filter: {
+          type: "darken",
+          value: 0.5,
+          // type: 'none',
+        },
+      },
+    },
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    ],
+  });
+
+  const params = useParams();
+  // console.log(window.location.search)
+  // const flag = window.location.search.split('=')[1]
+  // console.log(flag)
+  const flag = false; //all sections
+
+  const notiToggle = () => {
+    setNotiModal(!notiModal);
+    // console.log("asd", props.history);
+  };
+  useEffect(() => {
+    console.log(params.id, "hello one");
+    dispatch(
+      getMachineDetails({
+        company_code: user?.company_code,
+        machine_id: params?.id,
+      })
+    );
+
+  }, []);
+
+  useEffect(() => {
+    const {getLast, getFourMonth} = graph_data;
+    /** SET LABELS */
+    setOptionsBar1({...optionsBar1, xaxis: {categories: getLast?.revenue.label || [""]}});
+    setOptions3({...options3, xaxis: {categories: getFourMonth?.revenue.label || [""]}});
+
+    // console.log(getLast);
+    setSeriesBar1([{
+        name: "Transaction",
+        data: getLast == undefined ? [""] : getLast.transaction?.data,
+      },
+      {
+        name: "Revenue",
+        data:  getLast == undefined ? [""] : getLast?.revenue?.data,
+      },
+    ])
+    setSeries3([{
+        name: "Transaction",
+        data: getFourMonth == undefined ? [""] : getFourMonth.transaction?.data,
+      },
+      {
+        name: "Revenue",
+        data:  getFourMonth == undefined ? [""] : getFourMonth?.revenue?.data,
+      },
+    ])
+
+    const salesGraph = {
+      label: [],
+      data: []
+    }
+    for (const [key, value] of Object.entries(sales_per?.percent_sales_by_brand || {})) {
+      salesGraph.label.push(key);
+      salesGraph.data.push(value);
+      // console.log(`${key}: ${value}`);
+    }
+    setSalesPercentages({...salesGraph});
+
+    setPieChartData({...options1 , labels: salesGraph.label || [""]});
+    setSeries1(salesGraph?.data);
+    console.log(salesPercentages);
+  },[graph_data])
+
+
+//  console.log(percent_sales_by_brand);
+  // const [pieDates, setPieDate] = useState({
+  //   start_date: moment().format("YYYY-MM-DD"),
+  //   end_date: moment().format("YYYY-MM-DD"),
+  // });
+
+  // const handleChange = async (e) => {
+  //   console.log(e.target.value);
+
+  //   await setPieDate((prevState) => ({
+  //     ...prevState,
+  //     [e.target.name]: e.target.value,
+  //   }));
+  // };
+
+  // useEffect(() => {
+  //   // getSales();
+  //   // console.log(getSales(Types.LastWeek), "Hello from the other side");
+  // });
+
+  // const getSales = (type) => {
+  //   console.log(sales_level);
+  //   const getSalesData = sales_level[`${type}`];
+  //   console.log(sales_level, "yayyayaayhelloo");
+  //   return;
+  //   const graphData = {
+  //     revenue: { label: [], data: [] },
+  //     transaction: { label: [], data: [] },
+  //   };
+  //   const getRevenue = getSalesData.Revenue.map((v, i) => {
+  //     graphData.revenue.label.push(i);
+  //     graphData.revenue.data.push(v);
+  //   });
+
+  //   const getTransaction = getSalesData.Transaction.map((v, i) => {
+  //     graphData.transaction.label.push(i);
+  //     graphData.transaction.data.push(v);
+  //   });
+
+  //   return graphData;
+  // };
+
+  // const getStocksLevelPage = () => {
+  //   const mystocks = machine_details.machine_page.stock_levels_page;
+  //   return mystocks;
+  // };
+
+  // useEffect(() => {
+  //   let tempArr = getCombinedData(single_machine_metrics, pieEnabled);
+  //   console.log(tempArr);
+  //   // // tempArr.map(temp => {
+  //   setTimeout(() => {
+  //     setSeries1(tempArr.map((item) => item.volume));
+  //     setPieChartData({
+  //       ...options1,
+  //       labels: tempArr.map((item) => item.brand),
+  //     });
+  //   }, 1500);
+  // }, [single_machine_metrics, pieEnabled]);
+  // useEffect(() => {
+  //   if (flag) {
+  //     setTab("3")
+  //   }
+  // }, [flag])
+  // BarChart DATA
+  
   // console.log("=>", params?.id);
   return (
     <div className="main-content">
@@ -1816,10 +1853,10 @@ function MachineDetails() {
                                       <BarChart
                                         options1={optionsBar1}
                                         series1={seriesBar1}
-                                        options2={options2}
-                                        series2={series2}
-                                        // options3={options3}
-                                        // series3={series3}
+                                        // options2={options2}
+                                        // series2={series2}
+                                        options3={options3}
+                                        series3={series3}
                                         tab={barChartTab}
                                       ></BarChart>
                                       <div className="chartist-tooltip"></div>
@@ -2823,4 +2860,17 @@ function MachineDetails() {
   );
 }
 
-export default MachineDetails;
+
+const getMachineStates = (state) => (state.machine) ;
+
+const mapToStateProps = (state) => {
+ return {
+  ...state,
+  graph_data: {...getMachineStates(state).graph_data},
+  stock_level: {...getMachineStates(state).stock_level},
+  sales_per: {...getMachineStates(state).sales_level},
+
+ }
+}
+
+export default connect(mapToStateProps)(MachineDetails);
