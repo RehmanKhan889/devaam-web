@@ -5,6 +5,8 @@ let transaction = RepositoryFactory.get("transaction");
 let dispose = RepositoryFactory.get("disposibleBottle");
 let machine_details = RepositoryFactory.get("machine");
 
+const Types = { LastfourMonth: "last_four_months", LastWeek: "last_week" };
+
 export const getAllMetrics = (payload) => async (dispatch) => {
   // console.log(payload);
   try {
@@ -202,16 +204,52 @@ export const getMachineDetails = (payload) => async (dispatch) => {
 
     dispatch({
       type: "GET_STOCKS_LEVEL_STAGE",
-      payload:
-        data?.response?.data.machine.stock_levels_page || [],
+      payload: data?.response?.data.machine.stock_levels_page || [],
     });
 
     dispatch({
       type: "GET_SALES_PAGE",
-      payload:
-        data?.response?.data.machine.sales_page || [],
+      payload: data?.response?.data.machine.sales_page || [],
+    });
+
+    const getLast = getSales(
+      data?.response?.data.machine.sales_page,
+      Types.LastWeek
+    );
+    const getFourMonth = getSales(
+      data?.response?.data.machine.sales_page,
+      Types.LastfourMonth
+    );
+
+    dispatch({
+      type: "GET_SALES_GRAPH",
+      payload: { getLast, getFourMonth } || [],
     });
   } catch (error) {
     console.log("Error");
   }
+};
+
+const getSales = (data, type) => {
+  // console.log(sales_level);
+  const getSalesData = data[`${type}`];
+  // console.log(sales_level, "yayyayaayhelloo");
+  // return;
+  const graphData = {
+    revenue: { label: [], data: [] },
+    transaction: { label: [], data: [] },
+  };
+  const getRevenue = getSalesData.Revenue.map((v, i) => {
+    const label = Object.keys(v)[0];
+    graphData.revenue.label.push(label);
+    graphData.revenue.data.push(v[`${label}`]);
+  });
+
+  const getTransaction = getSalesData.Transaction.map((v, i) => {
+    const label = Object.keys(v)[0];
+    graphData.transaction.label.push(label);
+    graphData.transaction.data.push(v[`${label}`]);
+  });
+
+  return graphData;
 };

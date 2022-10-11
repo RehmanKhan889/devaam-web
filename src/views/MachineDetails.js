@@ -57,10 +57,15 @@ function MachineDetails() {
   const { single_machine_metrics } = useSelector((state) => state.metrics);
 
   const { user } = useSelector((state) => state.auth);
-  const { stock_level, machine_details, sales_level } = useSelector(
+  const { stock_level, machine_details, sales_level, graph_data } = useSelector(
     (state) => state.machine
   );
-  console.log(stock_level, machine_details, sales_level, "my stocks eeee");
+  console.log(stock_level, machine_details, graph_data, "my stocks eeee");
+  const [barChartTab, setBarChartTab] = useState("1");
+
+  const Types = { LastfourMonth: "last_four_months", LastWeek: "last_week" };
+
+  const [allsales, setAllSales] = useState([]);
 
   const [options1, setPieChartData] = useState({
     colors: ["#D5CFE1", "#09814A"],
@@ -113,6 +118,17 @@ function MachineDetails() {
         machine_id: params?.id,
       })
     );
+
+    console.log(graph_data);
+    // setSeriesBar1({
+    //   ...series1,
+    //   ...{
+    //     labels:
+    //       graph_data.getLast.transaction.label.length > 0
+    //         ? [...graph_data.getLast.transaction.label.length]
+    //         : [""],
+    //   },
+    // });
   }, []);
 
   // const [pieDates, setPieDate] = useState({
@@ -129,9 +145,32 @@ function MachineDetails() {
   //   }));
   // };
 
-  const getSales = () => {
-    sales_level();
-  };
+  // useEffect(() => {
+  //   // getSales();
+  //   // console.log(getSales(Types.LastWeek), "Hello from the other side");
+  // });
+
+  // const getSales = (type) => {
+  //   console.log(sales_level);
+  //   const getSalesData = sales_level[`${type}`];
+  //   console.log(sales_level, "yayyayaayhelloo");
+  //   return;
+  //   const graphData = {
+  //     revenue: { label: [], data: [] },
+  //     transaction: { label: [], data: [] },
+  //   };
+  //   const getRevenue = getSalesData.Revenue.map((v, i) => {
+  //     graphData.revenue.label.push(i);
+  //     graphData.revenue.data.push(v);
+  //   });
+
+  //   const getTransaction = getSalesData.Transaction.map((v, i) => {
+  //     graphData.transaction.label.push(i);
+  //     graphData.transaction.data.push(v);
+  //   });
+
+  //   return graphData;
+  // };
 
   // const getStocksLevelPage = () => {
   //   const mystocks = machine_details.machine_page.stock_levels_page;
@@ -338,11 +377,11 @@ function MachineDetails() {
   const [seriesBar1, setSeriesBar1] = useState([
     {
       name: "Transaction",
-      data: [44, 55, 57, 56, 42, 21, 32],
+      data: [0],
     },
     {
       name: "Revenue",
-      data: [76, 85, 101, 98, 31, 23, 42],
+      data: [0],
     },
   ]);
   // console.log("=>", params?.id);
@@ -1696,6 +1735,61 @@ function MachineDetails() {
                                           Revenue
                                         </h6>
                                       </div> */}
+                                    <ul
+                                      className="nav nav-pills "
+                                      id="pills-tab"
+                                      role="tablist"
+                                      style={{
+                                        justifyContent: "center",
+                                      }}
+                                    >
+                                      <li className="nav-item m-1">
+                                        <a
+                                          onClick={() => setBarChartTab("1")}
+                                          style={{ color: "#1d2023 " }}
+                                          className="nav-link active"
+                                          id="pills-daily-tab"
+                                          data-toggle="pill"
+                                          href="#pills-daily"
+                                          role="tab"
+                                          aria-controls="pills-daily"
+                                          aria-selected="true"
+                                        >
+                                          Daily
+                                        </a>
+                                      </li>
+                                      {/* <li className="nav-item m-1">
+                      <a
+                        onClick={() => setBarChartTab("2")}
+                        className="nav-link"
+                        id="pills-weekly-tab"
+                        data-toggle="pill"
+                        href="#pills-weekly"
+                        role="tab"
+                        aria-controls="pills-weekly"
+                        aria-selected="false"
+                        style={{ color: "#1d2023 " }}
+                      >
+                        Weekly
+                      </a>
+                    </li> */}
+                                      <li className="nav-item m-1">
+                                        <a
+                                          onClick={() => setBarChartTab("3")}
+                                          className="nav-link"
+                                          id="pills-montly-tab"
+                                          data-toggle="pill"
+                                          href="#pills-montly"
+                                          role="tab"
+                                          aria-controls="pills-montly"
+                                          aria-selected="false"
+                                          style={{ color: "#1d2023 " }}
+                                        >
+                                          Montly
+                                        </a>
+                                      </li>
+                                    </ul>
+                                    <br />
                                     {flag && (
                                       <Row className="justify-content-end">
                                         <Col md="6" xs="6">
@@ -1724,9 +1818,9 @@ function MachineDetails() {
                                         series1={seriesBar1}
                                         options2={options2}
                                         series2={series2}
-                                        options3={options3}
-                                        series3={series3}
-                                        tab={"2"}
+                                        // options3={options3}
+                                        // series3={series3}
+                                        tab={barChartTab}
                                       ></BarChart>
                                       <div className="chartist-tooltip"></div>
                                     </div>
