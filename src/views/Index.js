@@ -280,10 +280,6 @@ function Index() {
 
   const [stats, setStats] = useState([]);
 
-  // useEffect(() => {
-
-  // }, []);
-
   const getUserInfor = () => {
     const data = {
       method: "POST",
