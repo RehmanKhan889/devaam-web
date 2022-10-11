@@ -49,12 +49,12 @@ import { Card } from "reactstrap";
 import BarChart from "../helpers/Charts/BarChart";
 import { connect } from "react-redux";
 
-function MachineDetails({stock_level, graph_data, sales_per}) {
+function MachineDetails({ stock_level, graph_data, sales_per }) {
   const [notiModal, setNotiModal] = useState(false);
   const [tab, setTab] = useState("4");
   const dispatch = useDispatch();
   const [series1, setSeries1] = useState([60, 40]);
-  const [pieEnabled, setEnabled] = useState("Volume");
+  const [pieEnabled, setEnabled] = useState("Revenue");
   const { single_machine_metrics } = useSelector((state) => state.metrics);
 
   const { user } = useSelector((state) => state.auth);
@@ -197,7 +197,10 @@ function MachineDetails({stock_level, graph_data, sales_per}) {
       data: [76, 85, 101, 98],
     },
   ]);
-  const [salesPercentages, setSalesPercentages] = useState({data: [], label: []});
+  const [salesPercentages, setSalesPercentages] = useState({
+    data: [],
+    label: [],
+  });
 
   const [optionsBar1, setOptionsBar1] = useState({
     colors: ["#D5CFE1", "#09814A"],
@@ -251,11 +254,11 @@ function MachineDetails({stock_level, graph_data, sales_per}) {
   const [seriesBar1, setSeriesBar1] = useState([
     {
       name: "Transaction",
-      data: [0,3,4,4,5,5],
+      data: [0, 3, 4, 4, 5, 5],
     },
     {
       name: "Revenue",
-      data: [0,3,3,3,3,3],
+      data: [0, 3, 3, 3, 3, 3],
     },
   ]);
 
@@ -309,53 +312,61 @@ function MachineDetails({stock_level, graph_data, sales_per}) {
         machine_id: params?.id,
       })
     );
-
   }, []);
 
   useEffect(() => {
-    const {getLast, getFourMonth} = graph_data;
+    const { getLast, getFourMonth } = graph_data;
     /** SET LABELS */
-    setOptionsBar1({...optionsBar1, xaxis: {categories: getLast?.revenue.label || [""]}});
-    setOptions3({...options3, xaxis: {categories: getFourMonth?.revenue.label || [""]}});
+    setOptionsBar1({
+      ...optionsBar1,
+      xaxis: { categories: getLast?.revenue.label || [""] },
+    });
+    setOptions3({
+      ...options3,
+      xaxis: { categories: getFourMonth?.revenue.label || [""] },
+    });
 
     // console.log(getLast);
-    setSeriesBar1([{
+    setSeriesBar1([
+      {
         name: "Transaction",
         data: getLast == undefined ? [""] : getLast.transaction?.data,
       },
       {
         name: "Revenue",
-        data:  getLast == undefined ? [""] : getLast?.revenue?.data,
+        data: getLast == undefined ? [""] : getLast?.revenue?.data,
       },
-    ])
-    setSeries3([{
+    ]);
+    setSeries3([
+      {
         name: "Transaction",
         data: getFourMonth == undefined ? [""] : getFourMonth.transaction?.data,
       },
       {
         name: "Revenue",
-        data:  getFourMonth == undefined ? [""] : getFourMonth?.revenue?.data,
+        data: getFourMonth == undefined ? [""] : getFourMonth?.revenue?.data,
       },
-    ])
+    ]);
 
     const salesGraph = {
       label: [],
-      data: []
-    }
-    for (const [key, value] of Object.entries(sales_per?.percent_sales_by_brand || {})) {
+      data: [],
+    };
+    for (const [key, value] of Object.entries(
+      sales_per?.percent_sales_by_brand || {}
+    )) {
       salesGraph.label.push(key);
       salesGraph.data.push(value);
       // console.log(`${key}: ${value}`);
     }
-    setSalesPercentages({...salesGraph});
+    setSalesPercentages({ ...salesGraph });
 
-    setPieChartData({...options1 , labels: salesGraph.label || [""]});
+    setPieChartData({ ...options1, labels: salesGraph.label || [""] });
     setSeries1(salesGraph?.data);
     console.log(salesPercentages);
-  },[graph_data])
+  }, [graph_data]);
 
-
-//  console.log(percent_sales_by_brand);
+  //  console.log(percent_sales_by_brand);
   // const [pieDates, setPieDate] = useState({
   //   start_date: moment().format("YYYY-MM-DD"),
   //   end_date: moment().format("YYYY-MM-DD"),
@@ -420,7 +431,7 @@ function MachineDetails({stock_level, graph_data, sales_per}) {
   //   }
   // }, [flag])
   // BarChart DATA
-  
+
   // console.log("=>", params?.id);
   return (
     <div className="main-content">
@@ -1772,6 +1783,9 @@ function MachineDetails({stock_level, graph_data, sales_per}) {
                                           Revenue
                                         </h6>
                                       </div> */}
+
+                                    <h6 className="card-subtitle">Revenue</h6>
+
                                     <ul
                                       className="nav nav-pills "
                                       id="pills-tab"
@@ -1986,9 +2000,34 @@ function MachineDetails({stock_level, graph_data, sales_per}) {
                                         width: "auto",
                                       }}
                                     ></div> */}
+                                    <div className="row g-0">
+                                      <div className="col-2 ">
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setEnabled("Transaction");
+                                          }}
+                                          className="btn btn-success btn-sm"
+                                        >
+                                          Transaction
+                                        </button>
+                                      </div>
+                                      <div className="col-2 ">
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setEnabled("Revenue");
+                                          }}
+                                          className="btn btn-success btn-sm"
+                                        >
+                                          Revenue
+                                        </button>
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
+
                               <div
                                 class="tab-pane fade"
                                 id="pills-Usage"
@@ -2860,17 +2899,15 @@ function MachineDetails({stock_level, graph_data, sales_per}) {
   );
 }
 
-
-const getMachineStates = (state) => (state.machine) ;
+const getMachineStates = (state) => state.machine;
 
 const mapToStateProps = (state) => {
- return {
-  ...state,
-  graph_data: {...getMachineStates(state).graph_data},
-  stock_level: {...getMachineStates(state).stock_level},
-  sales_per: {...getMachineStates(state).sales_level},
-
- }
-}
+  return {
+    ...state,
+    graph_data: { ...getMachineStates(state).graph_data },
+    stock_level: { ...getMachineStates(state).stock_level },
+    sales_per: { ...getMachineStates(state).sales_level },
+  };
+};
 
 export default connect(mapToStateProps)(MachineDetails);
