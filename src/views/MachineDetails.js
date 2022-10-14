@@ -67,6 +67,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
   const Types = { LastfourMonth: "last_four_months", LastWeek: "last_week" };
 
   const [allsales, setAllSales] = useState([]);
+  const [sumOfTotal, setSumOfTotal] = useState({totalWeek: {revenue: 0, transaction: 0}, totalMonths: {revenue: 0, transaction: 0}});
 
   const [options3, setOptions3] = useState({
     colors: ["#D5CFE1", "#09814A"],
@@ -326,7 +327,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
       xaxis: { categories: getFourMonth?.revenue.label || [""] },
     });
 
-    // console.log(getLast);
+    console.log(getLast);
     setSeriesBar1([
       {
         name: "Transaction",
@@ -360,12 +361,21 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
       // console.log(`${key}: ${value}`);
     }
     setSalesPercentages({ ...salesGraph });
+    setSumOfTotal({totalWeek: {revenue: sumOfArray(getLast?.revenue?.data || []), transaction: sumOfArray(getLast?.transaction?.data || [] )},
+    totalMonths: {revenue: sumOfArray(getFourMonth?.revenue?.data || []), transaction: sumOfArray(getFourMonth?.transaction?.data)}
+    })
+
+    console.log(sumOfTotal);
 
     setPieChartData({ ...options1, labels: salesGraph.label || [""] });
     setSeries1(salesGraph?.data);
     console.log(salesPercentages);
   }, [graph_data]);
 
+  const sumOfArray = (data) => {
+    console.log(data);
+    return !data ? [] : data.reduce((a,b)=> a+b, 0);
+  }
   //  console.log(percent_sales_by_brand);
   // const [pieDates, setPieDate] = useState({
   //   start_date: moment().format("YYYY-MM-DD"),
@@ -654,7 +664,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         }}
                                       >
                                         <img
-                                          class="card-img-top"
+                                          className="card-img-top"
                                           src={Barcode}
                                           alt="Card image cap"
                                           style={{
@@ -664,7 +674,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         />
                                       </div>
                                       <div
-                                        class=""
+                                        className=""
                                         style={{
                                           background: "#CFF2EE",
                                           boxShadow:
@@ -672,7 +682,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         }}
                                       >
                                         <h5
-                                          class="card-title"
+                                          className="card-title"
                                           style={{
                                             fontFamily: "Open Sans",
                                             fontStyle: "normal",
@@ -688,14 +698,14 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         </h5>
                                       </div>
                                       <div
-                                        class="card-body"
+                                        className="card-body"
                                         style={{
                                           padding: "30px 0px",
                                           margin: "auto",
                                         }}
                                       >
                                         <p
-                                          class="card-text"
+                                          className="card-text"
                                           style={{
                                             fontFamily: "Open Sans",
                                             fontStyle: "normal",
@@ -732,7 +742,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         }}
                                       >
                                         <img
-                                          class="card-img-top"
+                                          className="card-img-top"
                                           src={SerialNO}
                                           alt="Card image cap"
                                           style={{
@@ -742,7 +752,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         />
                                       </div>
                                       <div
-                                        class=""
+                                        className=""
                                         style={{
                                           background: "#CFF2EE",
                                           boxShadow:
@@ -750,7 +760,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         }}
                                       >
                                         <h5
-                                          class="card-title"
+                                          className="card-title"
                                           style={{
                                             fontFamily: "Open Sans",
                                             fontStyle: "normal",
@@ -766,14 +776,14 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         </h5>
                                       </div>
                                       <div
-                                        class="card-body"
+                                        className="card-body"
                                         style={{
                                           padding: "30px 0px",
                                           margin: "auto",
                                         }}
                                       >
                                         <p
-                                          class="card-text"
+                                          className="card-text"
                                           style={{
                                             fontFamily: "Open Sans",
                                             fontStyle: "normal",
@@ -809,7 +819,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         }}
                                       >
                                         <img
-                                          class="card-img-top"
+                                          className="card-img-top"
                                           src={MachineType}
                                           alt="Card image cap"
                                           style={{
@@ -819,7 +829,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         />
                                       </div>
                                       <div
-                                        class=""
+                                        className=""
                                         style={{
                                           background: "#CFF2EE",
                                           boxShadow:
@@ -828,7 +838,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         }}
                                       >
                                         <h5
-                                          class="card-title"
+                                          className="card-title"
                                           style={{
                                             fontFamily: "Open Sans",
                                             fontStyle: "normal",
@@ -844,14 +854,14 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         </h5>
                                       </div>
                                       <div
-                                        class="card-body"
+                                        className="card-body"
                                         style={{
                                           padding: "30px 0px",
                                           margin: "auto",
                                         }}
                                       >
                                         <p
-                                          class="card-text"
+                                          className="card-text"
                                           style={{
                                             fontFamily: "Open Sans",
                                             fontStyle: "normal",
@@ -888,7 +898,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         }}
                                       >
                                         <img
-                                          class="card-img-top"
+                                          className="card-img-top"
                                           src={MotorType}
                                           alt="Card image cap"
                                           style={{
@@ -898,7 +908,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         />
                                       </div>
                                       <div
-                                        class=""
+                                        className=""
                                         style={{
                                           background: "#CFF2EE",
                                           boxShadow:
@@ -906,7 +916,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         }}
                                       >
                                         <h5
-                                          class="card-title"
+                                          className="card-title"
                                           style={{
                                             fontFamily: "Open Sans",
                                             fontStyle: "normal",
@@ -922,14 +932,14 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         </h5>
                                       </div>
                                       <div
-                                        class="card-body"
+                                        className="card-body"
                                         style={{
                                           padding: "30px 0px",
                                           margin: "auto",
                                         }}
                                       >
                                         <p
-                                          class="card-text"
+                                          className="card-text"
                                           style={{
                                             fontFamily: "Open Sans",
                                             fontStyle: "normal",
@@ -966,7 +976,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         }}
                                       >
                                         <img
-                                          class="card-img-top"
+                                          className="card-img-top"
                                           src={Nozzles}
                                           alt="Card image cap"
                                           style={{
@@ -976,7 +986,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         />
                                       </div>
                                       <div
-                                        class=""
+                                        className=""
                                         style={{
                                           background: "#CFF2EE",
                                           boxShadow:
@@ -984,7 +994,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         }}
                                       >
                                         <h5
-                                          class="card-title"
+                                          className="card-title"
                                           style={{
                                             fontFamily: "Open Sans",
                                             fontStyle: "normal",
@@ -1000,14 +1010,14 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         </h5>
                                       </div>
                                       <div
-                                        class="card-body"
+                                        className="card-body"
                                         style={{
                                           padding: "30px 0px",
                                           margin: "auto",
                                         }}
                                       >
                                         <p
-                                          class="card-text"
+                                          className="card-text"
                                           style={{
                                             fontFamily: "Open Sans",
                                             fontStyle: "normal",
@@ -1044,7 +1054,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         }}
                                       >
                                         <img
-                                          class="card-img-top"
+                                          className="card-img-top"
                                           src={ITSystem}
                                           alt="Card image cap"
                                           style={{
@@ -1054,7 +1064,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         />
                                       </div>
                                       <div
-                                        class=""
+                                        className=""
                                         style={{
                                           background: "#CFF2EE",
                                           boxShadow:
@@ -1062,7 +1072,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         }}
                                       >
                                         <h5
-                                          class="card-title"
+                                          className="card-title"
                                           style={{
                                             fontFamily: "Open Sans",
                                             fontStyle: "normal",
@@ -1078,14 +1088,14 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                         </h5>
                                       </div>
                                       <div
-                                        class="card-body"
+                                        className="card-body"
                                         style={{
                                           padding: "30px 0px",
                                           margin: "auto",
                                         }}
                                       >
                                         <p
-                                          class="card-text"
+                                          className="card-text"
                                           style={{
                                             fontFamily: "Open Sans",
                                             fontStyle: "normal",
@@ -1150,10 +1160,10 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                 <div className="row g-3 px-md-0 px-3">
                                   <div className="col-md-3">
                                     <div id="tankCard">
-                                      <div class="card">
+                                      <div className="card">
                                         <div className="cardContent">
                                           <img
-                                            class="card-img-top"
+                                            className="card-img-top"
                                             src={Tank1}
                                             alt="Card image cap"
                                           />
@@ -1166,19 +1176,19 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                               "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                           }}
                                         >
-                                          <h5 class="card-title">Tank 1</h5>
+                                          <h5 className="card-title">Tank 1</h5>
                                         </div>
 
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={StockLeft}
                                             alt="Card image cap"
                                           />
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             {stock_level[1]?.brand_id}
                                           </h5>
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             {stock_level[1]?.current_volume}
                                           </p>
                                           {/* <span className="m-0">
@@ -1188,27 +1198,27 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                           </span> */}
                                         </div>
 
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={Replenished}
                                             alt="Card image cap"
                                           />
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             Replenished:
                                           </h5>
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             {stock_level[1]?.last_refill_date}
                                           </p>
                                           {/* <span className="m-0">
                                             dd / mm / yyyy <br /> 11:22 am
                                           </span> */}
                                         </div>
-                                        <div class="card-body">
-                                          <h5 class="card-title">
+                                        <div className="card-body">
+                                          <h5 className="card-title">
                                             <strong>Brand name</strong>
                                           </h5>
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             {stock_level[1]?.name}
                                           </p>
                                           {/* <span className="m-0">
@@ -1220,10 +1230,10 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                   </div>
                                   <div className="col-md-3">
                                     <div id="tankCard">
-                                      <div class="card">
+                                      <div className="card">
                                         <div className="cardContent">
                                           <img
-                                            class="card-img-top"
+                                            className="card-img-top"
                                             src={Tank2}
                                             alt="Card image cap"
                                           />
@@ -1236,18 +1246,18 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                               "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                           }}
                                         >
-                                          <h5 class="card-title">Tank 2</h5>
+                                          <h5 className="card-title">Tank 2</h5>
                                         </div>
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={StockLeft}
                                             alt="Card image cap"
                                           />
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             {stock_level[2]?.brand_id}
                                           </h5>
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             {stock_level[2]?.current_volume}
                                           </p>
                                           {/* <span className="m-0">
@@ -1256,27 +1266,27 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                             </b>
                                           </span> */}
                                         </div>
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={Replenished}
                                             alt="Card image cap"
                                           />
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             Replenished:
                                           </h5>
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             {stock_level[2]?.last_refill_date}
                                           </p>
                                           {/* <span className="m-0">
                                             dd / mm / yyyy <br /> 11:22 am
                                           </span> */}
                                         </div>
-                                        <div class="card-body">
-                                          <h5 class="card-title">
+                                        <div className="card-body">
+                                          <h5 className="card-title">
                                             <strong>Brand name</strong>
                                           </h5>
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             {stock_level[2]?.name}
                                           </p>
                                           {/* <span className="m-0">
@@ -1288,10 +1298,10 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                   </div>
                                   <div className="col-md-3">
                                     <div id="tankCard">
-                                      <div class="card">
+                                      <div className="card">
                                         <div className="cardContent">
                                           <img
-                                            class="card-img-top"
+                                            className="card-img-top"
                                             src={Tank3}
                                             alt="Card image cap"
                                           />
@@ -1304,19 +1314,19 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                               "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                           }}
                                         >
-                                          <h5 class="card-title">Tank 3</h5>
+                                          <h5 className="card-title">Tank 3</h5>
                                         </div>
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={StockLeft}
                                             alt="Card image cap"
                                           />
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             {" "}
                                             {stock_level[3]?.brand_id}
                                           </h5>
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             {stock_level[3]?.current_volume}
                                           </p>
                                           {/* <span className="m-0">
@@ -1326,27 +1336,27 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                             </b>
                                           </span> */}
                                         </div>
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={Replenished}
                                             alt="Card image cap"
                                           />
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             Replenished:
                                           </h5>
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             {stock_level[3]?.last_refill_date}
                                           </p>
                                           {/* <span className="m-0">
                                             dd / mm / yyyy <br /> 11:22 am
                                           </span> */}
                                         </div>
-                                        <div class="card-body">
-                                          <h5 class="card-title">
+                                        <div className="card-body">
+                                          <h5 className="card-title">
                                             <strong>Brand name</strong>
                                           </h5>
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             {" "}
                                             {stock_level[3]?.name}
                                           </p>
@@ -1359,10 +1369,10 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                   </div>
                                   <div className="col-md-3">
                                     <div id="tankCard">
-                                      <div class="card">
+                                      <div className="card">
                                         <div className="cardContent">
                                           <img
-                                            class="card-img-top"
+                                            className="card-img-top"
                                             src={Tank4}
                                             alt="Card image cap"
                                           />
@@ -1375,18 +1385,18 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                               "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                           }}
                                         >
-                                          <h5 class="card-title">Tank 4</h5>
+                                          <h5 className="card-title">Tank 4</h5>
                                         </div>
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={StockLeft}
                                             alt="Card image cap"
                                           />
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             {stock_level[4]?.brand_id}
                                           </h5>
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             {stock_level[4]?.current_volume}
                                           </p>
                                           {/* <span className="m-0">
@@ -1395,27 +1405,27 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                             </b>
                                           </span> */}
                                         </div>
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={Replenished}
                                             alt="Card image cap"
                                           />
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             Replenished:
                                           </h5>
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             {stock_level[4]?.last_refill_date}
                                           </p>
                                           {/* <span className="m-0">
                                             dd / mm / yyyy <br /> 11:22 am
                                           </span> */}
                                         </div>
-                                        <div class="card-body">
-                                          <h5 class="card-title">
+                                        <div className="card-body">
+                                          <h5 className="card-title">
                                             <strong>Brand name</strong>
                                           </h5>
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             {" "}
                                             {stock_level[4]?.name}
                                           </p>
@@ -1548,10 +1558,10 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                 <div className="row g-3">
                                   <div className="col-md-3">
                                     <div id="tankCard">
-                                      <div class="card">
+                                      <div className="card">
                                         <div className="cardContent">
                                           <img
-                                            class="card-img-top"
+                                            className="card-img-top"
                                             src={Tank1}
                                             alt="Card image cap"
                                           />
@@ -1564,15 +1574,15 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                               "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                           }}
                                         >
-                                          <h5 class="card-title">Tank 1</h5>
+                                          <h5 className="card-title">Tank 1</h5>
                                         </div>
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={Replenished}
                                             alt="Card image cap"
                                           />
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             <strong>
                                               Total Product Dispensed:
                                             </strong>
@@ -1586,10 +1596,10 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                   </div>
                                   <div className="col-md-3">
                                     <div id="tankCard">
-                                      <div class="card">
+                                      <div className="card">
                                         <div className="cardContent">
                                           <img
-                                            class="card-img-top"
+                                            className="card-img-top"
                                             src={Tank2}
                                             alt="Card image cap"
                                           />
@@ -1602,15 +1612,15 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                               "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                           }}
                                         >
-                                          <h5 class="card-title">Tank 2</h5>
+                                          <h5 className="card-title">Tank 2</h5>
                                         </div>
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={Replenished}
                                             alt="Card image cap"
                                           />
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             <strong>
                                               Total Product Dispensed:
                                             </strong>
@@ -1624,10 +1634,10 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                   </div>
                                   <div className="col-md-3">
                                     <div id="tankCard">
-                                      <div class="card">
+                                      <div className="card">
                                         <div className="cardContent">
                                           <img
-                                            class="card-img-top"
+                                            className="card-img-top"
                                             src={Tank3}
                                             alt="Card image cap"
                                           />
@@ -1640,15 +1650,15 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                               "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                           }}
                                         >
-                                          <h5 class="card-title">Tank 3</h5>
+                                          <h5 className="card-title">Tank 3</h5>
                                         </div>
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={Replenished}
                                             alt="Card image cap"
                                           />
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             <strong>
                                               Total Product Dispensed:
                                             </strong>
@@ -1662,10 +1672,10 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                   </div>
                                   <div className="col-md-3">
                                     <div id="tankCard">
-                                      <div class="card">
+                                      <div className="card">
                                         <div className="cardContent">
                                           <img
-                                            class="card-img-top"
+                                            className="card-img-top"
                                             src={Tank4}
                                             alt="Card image cap"
                                           />
@@ -1678,15 +1688,15 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                               "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                           }}
                                         >
-                                          <h5 class="card-title">Tank 4</h5>
+                                          <h5 className="card-title">Tank 4</h5>
                                         </div>
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={Replenished}
                                             alt="Card image cap"
                                           />
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             <strong>
                                               Total Product Dispensed:
                                             </strong>
@@ -1724,16 +1734,16 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                         <div className="row">
                           <div className="col-md-6 offset-md-3 text-center">
                             <ul
-                              class="nav nav-pills "
+                              className="nav nav-pills "
                               id="pills-tab"
                               role="tablist"
                               style={{
                                 justifyContent: "center",
                               }}
                             >
-                              <li class="nav-item m-1">
+                              <li className="nav-item m-1">
                                 <a
-                                  class="nav-link active"
+                                  className="nav-link active"
                                   id="pills-sales-tab"
                                   data-toggle="pill"
                                   href="#pills-sales"
@@ -1744,9 +1754,9 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                   Sales
                                 </a>
                               </li>
-                              <li class="nav-item m-1">
+                              <li className="nav-item m-1">
                                 <a
-                                  class="nav-link"
+                                  className="nav-link"
                                   id="pills-Usage-tab"
                                   data-toggle="pill"
                                   href="#pills-Usage"
@@ -1769,9 +1779,9 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                               maxHeight: "28rem",
                             }}
                           >
-                            <div class="tab-content" id="pills-tabContent">
+                            <div className="tab-content" id="pills-tabContent">
                               <div
-                                class="tab-pane fade show active"
+                                className="tab-pane fade show active"
                                 id="pills-sales"
                                 role="tabpanel"
                                 aria-labelledby="pills-sales-tab"
@@ -1882,21 +1892,11 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                       >
                                         <p>Total Transactions</p>
                                         <h3>
-                                          {getCombinedData(
-                                            single_machine_metrics,
-                                            "Transaction"
-                                          )
-                                            .map((item) => item.volume)
-                                            .toString()}{" "}
-                                          {getCombinedData(
-                                            single_machine_metrics,
-                                            "Transaction"
-                                          )
-                                            .map((item) => item.volume)
-                                            .toString() == ""
-                                            ? "0"
-                                            : ""}
-                                          Pkr
+                                          {barChartTab == '1' ? sumOfTotal?.totalWeek?.transaction :  sumOfTotal?.totalMonths?.transaction} Pkr
+                                        </h3>
+                                        <p>Total Revenue</p>
+                                        <h3>
+                                          {barChartTab == '1' ? sumOfTotal?.totalWeek.revenue : sumOfTotal?.totalMonths.revenue} Pkr
                                         </h3>
                                         {/* <p>
                                           <span>
@@ -2029,7 +2029,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                               </div>
 
                               <div
-                                class="tab-pane fade"
+                                className="tab-pane fade"
                                 id="pills-Usage"
                                 role="tabpanel"
                                 aria-labelledby="pills-Usage-tab"
@@ -2058,10 +2058,10 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
 
                                   <div className="col-lg-3 mt-2 ">
                                     <div id="usageSec">
-                                      <div class="card">
+                                      <div className="card">
                                         <div className="cardContent">
                                           <img
-                                            class="card-img-top"
+                                            className="card-img-top"
                                             src={typicalOrder}
                                             alt="Card image cap"
                                           />
@@ -2074,19 +2074,19 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                               "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                           }}
                                         >
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             Typical Order Sizes
                                           </h5>
                                         </div>
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={allUser}
                                             alt="Card image cap"
                                           />
                                           <br />
                                           <br />
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             All users combined:
                                           </p>
                                           <span className="m-0">
@@ -2099,10 +2099,10 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
 
                                   <div className="col-lg-3 col-sm-4  mt-lg-0 mt-4">
                                     <div id="usageSec1">
-                                      <div class="card">
+                                      <div className="card">
                                         <div className="cardContent">
                                           <img
-                                            class="card-img-top"
+                                            className="card-img-top"
                                             src={numberOrder}
                                             alt="Card image cap"
                                           />
@@ -2115,19 +2115,19 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                               "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                           }}
                                         >
-                                          <h5 class="card-title">
+                                          <h5 className="card-title">
                                             Number of Orders
                                           </h5>
                                         </div>
-                                        <div class="card-body">
+                                        <div className="card-body">
                                           <img
-                                            class="pb-2"
+                                            className="pb-2"
                                             src={allUser}
                                             alt="Card image cap"
                                           />
                                           <br />
                                           <br />
-                                          <p class="card-text">
+                                          <p className="card-text">
                                             All users combined:
                                           </p>
                                           <span className="m-0">
@@ -2144,16 +2144,16 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                               <div className="row justify-content-center justify-content-lg-start pt-5">
                                 <div className="col-lg-3 col-sm-4  ">
                                   <div id="usageSec">
-                                    <div class="card">
-                                      <div class="card-body">
+                                    <div className="card">
+                                      <div className="card-body">
                                         <img
-                                          class="pb-2"
+                                          className="pb-2"
                                           src={singleUser}
                                           alt="Card image cap"
                                         />
                                         <br />
                                         <br />
-                                        <p class="card-text">
+                                        <p className="card-text">
                                           All users combined:
                                         </p>
                                         <span className="m-0">
@@ -2165,16 +2165,16 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                 </div>
                                 <div className="col-lg-3 col-sm-4 ">
                                   <div id="usageSec">
-                                    <div class="card">
-                                      <div class="card-body">
+                                    <div className="card">
+                                      <div className="card-body">
                                         <img
-                                          class="pb-2"
+                                          className="pb-2"
                                           src={singleUser}
                                           alt="Card image cap"
                                         />
                                         <br />
                                         <br />
-                                        <p class="card-text">
+                                        <p className="card-text">
                                           All users combined:
                                         </p>
                                         <span className="m-0">
@@ -2327,7 +2327,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                 <div className="row g-3">
                                   <div className="col-md-12">
                                     <div className="table-content tank-management-table p-3">
-                                      <table class="table table-borderless ">
+                                      <table className="table table-borderless ">
                                         <thead>
                                           <tr>
                                             <th scope="col">#</th>
@@ -2478,17 +2478,17 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                 <div className="row px-3">
                                   <div className="col-md-4">
                                     <div id="maintenanceCard">
-                                      <div class="card">
+                                      <div className="card">
                                         <div className="technicalSupport">
                                           <img
-                                            class="card-img-top"
+                                            className="card-img-top"
                                             src={technicalSupport}
                                             alt="Card image cap"
                                           />
                                         </div>
-                                        <div class="card-body">
-                                          <div class="">
-                                            <h5 class="card-title">
+                                        <div className="card-body">
+                                          <div className="">
+                                            <h5 className="card-title">
                                               Machine Last Serviced:
                                             </h5>
                                             <div className="dateDeployed">
@@ -2546,23 +2546,23 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                   </div>
                                   <div className="col-md-4">
                                     <div id="maintenanceCard">
-                                      <div class="card">
+                                      <div className="card">
                                         <div className="technicalSupport">
                                           <img
-                                            class="card-img-top"
+                                            className="card-img-top"
                                             src={bucket}
                                             alt="Card image cap"
                                           />
                                         </div>
-                                        <div class="card-body">
-                                          <h5 class="card-title">
+                                        <div className="card-body">
+                                          <h5 className="card-title">
                                             Parts Cleaned:
                                           </h5>
                                           <p className="card-text">
                                             List of parts below
                                           </p>
                                           <h5
-                                            class="card-title text-start"
+                                            className="card-title text-start"
                                             style={{
                                               borderBottom: "2.4px solid #000",
                                               padding: "6px 0px",
@@ -2571,7 +2571,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                             Part name 1
                                           </h5>
                                           <h5
-                                            class="card-title text-start"
+                                            className="card-title text-start"
                                             style={{
                                               borderBottom: "2.4px solid #000",
                                               padding: "6px 0px",
@@ -2580,7 +2580,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                             Part name 2
                                           </h5>
                                           <h5
-                                            class="card-title text-start"
+                                            className="card-title text-start"
                                             style={{
                                               borderBottom: "2.4px solid #000",
                                               padding: "6px 0px",
@@ -2589,7 +2589,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                             Part name 3
                                           </h5>
                                           <h5
-                                            class="card-title text-start"
+                                            className="card-title text-start"
                                             style={{
                                               borderBottom: "2.4px solid #000",
                                               padding: "6px 0px",
@@ -2603,23 +2603,23 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                   </div>
                                   <div className="col-md-4">
                                     <div id="maintenanceCard">
-                                      <div class="card">
+                                      <div className="card">
                                         <div className="technicalSupport">
                                           <img
-                                            class="card-img-top"
+                                            className="card-img-top"
                                             src={toolBox}
                                             alt="Card image cap"
                                           />
                                         </div>
-                                        <div class="card-body">
-                                          <h5 class="card-title">
+                                        <div className="card-body">
+                                          <h5 className="card-title">
                                             Parts Replaced:
                                           </h5>
                                           <p className="card-text">
                                             List of parts below
                                           </p>
                                           <h5
-                                            class="card-title text-start"
+                                            className="card-title text-start"
                                             style={{
                                               borderBottom: "2.4px solid #000",
                                               padding: "6px 0px",
@@ -2628,7 +2628,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                             Part name 1
                                           </h5>
                                           <h5
-                                            class="card-title text-start"
+                                            className="card-title text-start"
                                             style={{
                                               borderBottom: "2.4px solid #000",
                                               padding: "6px 0px",
@@ -2637,7 +2637,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                             Part name 2
                                           </h5>
                                           <h5
-                                            class="card-title text-start"
+                                            className="card-title text-start"
                                             style={{
                                               borderBottom: "2.4px solid #000",
                                               padding: "6px 0px",
@@ -2646,7 +2646,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                             Part name 3
                                           </h5>
                                           <h5
-                                            class="card-title text-start"
+                                            className="card-title text-start"
                                             style={{
                                               borderBottom: "2.4px solid #000",
                                               padding: "6px 0px",
@@ -2705,7 +2705,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                       <div className="row">
                         <div className="col-md-3 col-sm-6">
                           <div id="tankCard">
-                            <div class="card">
+                            <div className="card">
                               <div
                                 className="cardContent d-flex justify-content-center align-items-center"
                                 style={{
@@ -2713,7 +2713,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                 }}
                               >
                                 <img
-                                  class="card-img-top"
+                                  className="card-img-top"
                                   src={Group256}
                                   alt="Card image  "
                                   style={{
@@ -2730,10 +2730,10 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                 }}
                               ></div>
                               <div
-                                class="card-body"
+                                className="card-body"
                                 style={{ background: "#F3F3F3;" }}
                               >
-                                <h5 class="card-title">
+                                <h5 className="card-title">
                                   <p
                                     style={{
                                       fontweight: 400,
@@ -2753,7 +2753,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                         </div>
                         <div className="col-md-3 col-sm-6">
                           <div id="tankCard">
-                            <div class="card">
+                            <div className="card">
                               <div
                                 className="cardContent d-flex justify-content-center align-items-center"
                                 style={{
@@ -2761,7 +2761,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                 }}
                               >
                                 <img
-                                  class="card-img-top"
+                                  className="card-img-top"
                                   src={Group255}
                                   alt="Card image cap"
                                   style={{
@@ -2776,8 +2776,8 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                 }}
                               ></div>
-                              <div class="card-body">
-                                <h5 class="card-title">
+                              <div className="card-body">
+                                <h5 className="card-title">
                                   <p
                                     style={{
                                       fontweight: 400,
@@ -2797,7 +2797,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                         </div>
                         <div className="col-md-3 col-sm-6">
                           <div id="tankCard">
-                            <div class="card">
+                            <div className="card">
                               <div
                                 className="cardContent d-flex justify-content-center align-items-center"
                                 style={{
@@ -2805,7 +2805,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                 }}
                               >
                                 <img
-                                  class="card-img-top"
+                                  className="card-img-top"
                                   src={Group258}
                                   alt="Card image cap"
                                   style={{
@@ -2820,8 +2820,8 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                 }}
                               ></div>
-                              <div class="card-body">
-                                <h5 class="card-title">
+                              <div className="card-body">
+                                <h5 className="card-title">
                                   <p
                                     style={{
                                       fontweight: 400,
@@ -2841,7 +2841,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                         </div>
                         <div className="col-md-3 col-sm-6">
                           <div id="tankCard">
-                            <div class="card">
+                            <div className="card">
                               <div
                                 className="cardContent  d-flex justify-content-center align-items-center "
                                 style={{
@@ -2849,7 +2849,7 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                 }}
                               >
                                 <img
-                                  class="card-img-top"
+                                  className="card-img-top"
                                   src={Group292}
                                   alt="Card   cap"
                                   style={{
@@ -2865,8 +2865,8 @@ function MachineDetails({ stock_level, graph_data, sales_per }) {
                                   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.12)",
                                 }}
                               ></div>
-                              <div class="card-body">
-                                <h5 class="card-title">
+                              <div className="card-body">
+                                <h5 className="card-title">
                                   <p
                                     style={{
                                       fontweight: 400,
