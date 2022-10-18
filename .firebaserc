@@ -1,7 +1,8 @@
 {
   "projects": {
-    "default": "davaam-web-app",
-    "firebase deploy": "davaam-web-app"
+    "default": "devaam-web-clone",
+    "firebase deploy": "davaam-web-app",
+    "y": "devaam-web-clone"
   },
   "targets": {},
   "etags": {}

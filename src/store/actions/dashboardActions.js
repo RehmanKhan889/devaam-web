@@ -253,3 +253,24 @@ const getSales = (data, type) => {
 
   return graphData;
 };
+
+
+export const getBottleDispenseByCompany = (payload) => async (dispatch) => {
+  try {
+    console.log("hi there logan");
+    let { data } = await transaction.get({
+      request: {
+        method: "getBottlesDispensedByCompanyMachineIdDate",
+        data: payload,
+      },
+    });
+    console.log(data, "yoooooooooooooo!");
+    dispatch({
+      type: "GET_ALL_BOTTLE_DISPENSE_BY_COMPANY",
+      payload: data?.response?.data || [],
+    });
+  } catch (error) {
+    console.log("Error");
+  }
+};
+
