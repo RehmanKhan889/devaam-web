@@ -1291,10 +1291,12 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                             src={StockLeft}
                                             alt="Card image cap"
                                           />
+                                          
                                           <h5 className="card-title">
-                                            {stock_level[1]?.brand_id}
+                                             
+                                            {stock_level[1]?.current_volume}
                                           </h5>
-                                          <p className="card-text">
+                                          <p     style={{fontWeight: "bold"}}  className="card-text">
                                             {stock_level[1]?.current_volume}
                                           </p>
                                           {/* <span className="m-0">
@@ -1313,7 +1315,7 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                           <h5 className="card-title">
                                             Replenished:
                                           </h5>
-                                          <p className="card-text">
+                                          <p  className="card-text">
                                             {stock_level[1]?.last_refill_date}
                                           </p>
                                           {/* <span className="m-0">
@@ -1361,9 +1363,9 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                             alt="Card image cap"
                                           />
                                           <h5 className="card-title">
-                                            {stock_level[2]?.brand_id}
+                                            {stock_level[2]?.current_volume}
                                           </h5>
-                                          <p className="card-text">
+                                          <p style={{fontWeight: "bold"}} className="card-text">
                                             {stock_level[2]?.current_volume}
                                           </p>
                                           {/* <span className="m-0">
@@ -1430,9 +1432,9 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                           />
                                           <h5 className="card-title">
                                             {" "}
-                                            {stock_level[3]?.brand_id}
+                                            {stock_level[3]?.current_volume}
                                           </h5>
-                                          <p className="card-text">
+                                          <p style={{fontWeight: "bold"}} className="card-text">
                                             {stock_level[3]?.current_volume}
                                           </p>
                                           {/* <span className="m-0">
@@ -1500,9 +1502,9 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                             alt="Card image cap"
                                           />
                                           <h5 className="card-title">
-                                            {stock_level[4]?.brand_id}
+                                            {stock_level[4]?.current_volume}
                                           </h5>
-                                          <p className="card-text">
+                                          <p style={{fontWeight: "bold"}} className="card-text">
                                             {stock_level[4]?.current_volume}
                                           </p>
                                           {/* <span className="m-0">
@@ -1952,7 +1954,7 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                           aria-selected="false"
                                           style={{ color: "#1d2023 " }}
                                         >
-                                          Montly
+                                          Monthly
                                         </a>
                                       </li>
                                     </ul>
@@ -1996,13 +1998,15 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                         className="col-lg-6 col-md-12"
                                         style={{ margin: "auto" }}
                                       >
-                                        <p>Total Transactions</p>
+                                        <p style={{ fontWeight: "bold" }}>
+                                          Total Transactions</p>
                                         <h3>
-                                          {pieGraph?.total_transactions} Pkr
-                                        </h3>
-                                        <p>Total Revenue</p>
-                                        <h3>
-                                          {pieGraph?.total_revenue} Pkr
+                                          {pieGraph?.total_transactions} PKR
+                                        </h3 >
+                                        <p style={{ fontWeight: "bold" }}>
+                                          Total Revenue</p>                                      
+                                            <h3>
+                                          {pieGraph?.total_revenue} PKR
                                         </h3>
                                         {/* <p>
                                           <span>
@@ -2140,7 +2144,7 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                 role="tabpanel"
                                 aria-labelledby="pills-Usage-tab"
                               >
-                                <div className="row pt-5 justify-content-center">
+                                <div className="row pt-5 m-1 justify-content-center">
                                   {/* <div className="col-md-3">
                                     <p>
                                       Enter customer mobile number
@@ -2183,6 +2187,88 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                           <h5 className="card-title">
                                             Typical Order Sizes
                                           </h5>
+                                          <p>{sales_per.total_revenue}</p>
+                                        </div>
+                                        <div className="card-body">
+                                          <img
+                                            className="pb-2"
+                                            src={allUser}
+                                            alt="Card image cap"
+                                          />
+                                          <br />
+                                          <br />
+                                          <p className="card-text">
+                                            All users combined:
+                                          </p>
+                                          <span className="m-0">
+                                            <b className="p-0">{sales_per.unique_users}</b>
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-lg-3 mt-2 ">
+                                    <div id="usageSec">
+                                      <div className="card">
+                                        <div className="cardContent">
+                                          <img
+                                            className="card-img-top"
+                                            src={typicalOrder}
+                                            alt="Card image cap"
+                                          />
+                                        </div>
+                                        <div
+                                          className="tank1Content"
+                                          style={{
+                                            background: "#CFF2EE",
+                                            boxShadow:
+                                              "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          }}
+                                        >
+                                          <h5 className="card-title">
+                                            Total Volume
+                                          </h5>
+                                          <p>{sales_per.total_volume}</p>
+                                        </div>
+                                        <div className="card-body">
+                                          <img
+                                            className="pb-2"
+                                            src={allUser}
+                                            alt="Card image cap"
+                                          />
+                                          <br />
+                                          <br />
+                                          <p className="card-text">
+                                            All users combined:
+                                          </p>
+                                          <span className="m-0">
+                                            <b className="p-0">{sales_per.unique_users}</b>
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-lg-3 mt-2 ">
+                                    <div id="usageSec">
+                                      <div className="card">
+                                        <div className="cardContent">
+                                          <img
+                                            className="card-img-top"
+                                            src={typicalOrder}
+                                            alt="Card image cap"
+                                          />
+                                        </div>
+                                        <div
+                                          className="tank1Content"
+                                          style={{
+                                            background: "#CFF2EE",
+                                            boxShadow:
+                                              "0px 4px 8px rgba(0, 0, 0, 0.12)",
+                                          }}
+                                        >
+                                          <h5 className="card-title">
+                                            Typical Order Volume
+                                          </h5>
                                           <p>{sales_per.typical_order_vol}</p>
                                         </div>
                                         <div className="card-body">
@@ -2204,6 +2290,7 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                     </div>
                                   </div>
 
+
                                   <div className="col-lg-3 col-sm-4  mt-lg-0 mt-4">
                                     <div id="usageSec1">
                                       <div className="card">
@@ -2223,9 +2310,9 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                           }}
                                         >
                                           <h5 className="card-title">
-                                            Number of Orders
+                                            Typical Transaction Size
                                           </h5>
-                                          <p>{sales_per.total_volume}</p>
+                                          <p>{sales_per.typical_transaction_size}</p>
                                         </div>
                                         <div className="card-body">
                                           <img
@@ -2252,7 +2339,7 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                               <div className="row justify-content-center justify-content-lg-start pt-5">
                                 <div className="col-lg-3 col-sm-4  ">
                                   <div id="usageSec">
-                                    <div className="card">
+                                    {/* <div className="card">
                                       <div className="card-body">
                                         <img
                                           className="pb-2"
@@ -2268,12 +2355,12 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                           <b className="p-0">{sales_per.unique_users}</b>
                                         </span>
                                       </div>
-                                    </div>
+                                    </div> */}
                                   </div>
                                 </div>
                                 <div className="col-lg-3 col-sm-4 ">
                                   <div id="usageSec">
-                                    <div className="card">
+                                    {/* <div className="card">
                                       <div className="card-body">
                                         <img
                                           className="pb-2"
@@ -2289,7 +2376,7 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                           <b className="p-0">{sales_per.unique_users}</b>
                                         </span>
                                       </div>
-                                    </div>
+                                    </div> */}
                                   </div>
                                 </div>
 
