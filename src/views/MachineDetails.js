@@ -334,9 +334,12 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
       })
     );
 
-    // dispatch(getBottleDispenseByCompany({   company_code: user?.company_code,
-    //   machine_id: params?.id,
-    // }));
+    dispatch(
+      getBottleDispenseByCompany({
+        company_code: user?.company_code,
+      })
+    );
+
 
   }, []);
 
