@@ -4,6 +4,7 @@ let dashboard = RepositoryFactory.get("dashboard");
 let transaction = RepositoryFactory.get("transaction");
 let dispose = RepositoryFactory.get("disposibleBottle");
 let machine_details = RepositoryFactory.get("machine");
+let bottle_dispense = RepositoryFactory.get('dispensebottlebydate')
 
 const Types = { LastfourMonth: "last_four_months", LastWeek: "last_week" };
 
@@ -254,30 +255,26 @@ const getSales = (data, type) => {
   return graphData;
 };
 
-export const getBottleDispenseByCompany =
-  (payload) => async (dispatch) => {
-          console.log("yasidyasidiasdi");
-
-    try {
-      let { data } = await transaction.get({
-        request: {
-          method: "getBottlesDispensedByCompanyMachineIdDate",
-          data:  {
-            company_code: 1234,
-            machine_id: "0002",
-            start_date: "2022-04-06",
-            end_date: "2022-10-03",
-          },
+export const getBottleDispenseByCompany = (payload) => async (dispatch) => {
+  try {
+    console.log("Heya bottle dispense");
+    let { data } = await bottle_dispense.get({
+      request: {
+        method: "getBottlesDispensedByCompanyMachineIdDate",
+        data: {
+          company_code: payload.company_code,
+          machine_id: "0002",
+          start_date: "2022-04-06",
+          end_date: "2022-10-03",
         },
-      });
-
-      console.log(data, "yasidyasidiasdi");
-      dispatch({
-        type: "GET_BOTTLE_DISPENSE_BY_COMPANY_MACHINE_DATE",
-        payload: data?.response?.data.company_code || [],
-      });
-    } catch (error) {
-      console.log("Error");
-    }
-  };
-
+      },
+    });
+    console.log(data, "asdadsaasjdkjhaskdhaskhdjkashdk");
+    dispatch({
+      type: "GET_BOTTLE_DISPENSE_BY_COMPANY",
+      payload: data?.response?.data || [],
+    });
+  } catch (error) {
+    console.log("Error");
+  }
+};

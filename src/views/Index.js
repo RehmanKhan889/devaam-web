@@ -796,7 +796,7 @@ function Index() {
                         aria-selected="false"
                         style={{ color: "#1d2023 " }}
                       >
-                        Montly
+                        Monthly
                       </a>
                     </li>
                   </ul>
@@ -1140,10 +1140,10 @@ function Index() {
           </div>
           {/* <br />
           <br /> */}
-          <div className="row ">
-            <div className="col-lg-8 col-md-12 ">
+          <div className="row" style={{marginTop: "-5rem" }}>
+            <div className="col-lg-8 col-md-12 " style={{marginTop: "5rem"}}>
               <div className="row">
-                <div className="col-lg-4 mt-3 mt-md-2 text-center">
+                <div className="col-lg-3 mt-3 mt-md-2 text-center">
                   <div id="bottlescards" className="card">
                     <div className="card-body ">
                       <h4 className="card-title  d-flex align-items-center justify-content-center flex-column">
@@ -1169,7 +1169,7 @@ function Index() {
                     </div>
                   </div>
                 </div>
-                <div className="col-lg-4 mt-3 mt-md-2 text-center">
+                <div className="col-lg-3 mt-3 mt-md-2 text-center">
                   <div
                     id="bottlescards"
                     // style={{ marginTop: "10px" }}
@@ -1203,10 +1203,7 @@ function Index() {
                     </div>
                   </div>
                 </div>
-              </div>
-              
-              <div className="row">
-                <div className="col-lg-4  mt-3 mt-md-2 text-center ">
+                <div className="col-lg-3  mt-3 mt-md-2 text-center ">
                   <div
                     id="bottlescards"
                     className="card"
@@ -1241,7 +1238,7 @@ function Index() {
                   </div>
                 </div>
 
-                <div className="col-lg-4  mt-3 mt-md-2 text-center ">
+                <div className="col-lg-3  mt-3 mt-md-2 text-center ">
                   <div
                     id="bottlescards"
                     className="card"
@@ -1280,9 +1277,13 @@ function Index() {
                     </div>
                   </div>
                 </div>
+            
+          </div>
+          
+      
               </div>
-            </div>
-            <div className="col-lg-4 col-sm-12">
+              
+              <div className="col-lg-4 col-sm-12">
               <div className="row">
                 <div className="col-md-12 mt-3 mt-md-2">
                   <div className="unseenNotification">
@@ -1527,16 +1528,17 @@ function Index() {
                   </div>
                 </div>
               </div>
+              </div>
             </div>
-          </div>
-          <br />
-          <br />
+           
           {/* <div className="row">
             
           </div> */}
+
+            </div>
         </div>
       </div>
-    </div>
+  
   );
 }
 

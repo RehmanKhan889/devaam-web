@@ -59,6 +59,7 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
   const [series1, setSeries1] = useState([60, 40]);
   const [pieEnabled, setEnabled] = useState("Revenue");
   const { single_machine_metrics } = useSelector((state) => state.metrics);
+  const [bottledispense, setBottleDispense] = useState([]);
 
   const { user } = useSelector((state) => state.auth);
   // const { stock_level, machine_details, sales_level, graph_data } = useSelector(
@@ -337,11 +338,22 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
     dispatch(
       getBottleDispenseByCompany({
         company_code: user?.company_code,
+        machine_id: params?.id,
+        
+
+
+        
       })
+
     );
+    setBottleDispense();
+    console.log("hey mr bottle dispense");
 
 
-  }, []);
+
+  },
+  
+  []);
 
   const handleChange = async (e) => {
     setPieDate((prevState) => ({
@@ -2931,20 +2943,33 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                 className="card-body"
                                 style={{ background: "#F3F3F3;" }}
                               >
+                               
                                 <h5 className="card-title">
                                   <p
                                     style={{
                                       fontweight: 400,
                                     }}
                                   >
+                                    
                                     No# of bottles
                                     <br />
                                     currently on the shelf
                                   </p>
+                                  
                                 </h5>
-                                <button className="btn btn-outline-info px-4">
-                                  45
-                                </button>
+                                {bottledispense &&
+                              bottledispense.map((shelf, s) => (
+                                
+                                <div key={s}>
+                                  
+                           
+                                  {/* <h5>{item.brand_name}</h5> */}
+
+                                  <p>{shelf.bottles_on_shelf}</p>
+                                
+                                </div>
+                              ))}
+                                <p>kjasdk</p>
                               </div>
                             </div>
                           </div>
@@ -3107,6 +3132,7 @@ const mapToStateProps = (state) => {
     stock_level: { ...getMachineStates(state).stock_level },
     sales_per: { ...getMachineStates(state).sales_level },
     sales_graphData: { ...getMachineStates(state).sales_graph},
+    
   };
 };
 
