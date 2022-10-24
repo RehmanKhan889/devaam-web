@@ -224,7 +224,8 @@ function Index() {
       },
     } = await onNotify();
 
-    setItems(notifications);
+      
+    setStats(notifications);
     setClickScroll(true);
     window.onload = function(){
       document.getElementById('close').onclick = function(){

@@ -59,7 +59,7 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
   const [series1, setSeries1] = useState([60, 40]);
   const [pieEnabled, setEnabled] = useState("Revenue");
   const { single_machine_metrics } = useSelector((state) => state.metrics);
-  const [bottledispense, setBottleDispense] = useState([]);
+  const [bottledispense, setBottleDispense] = useState();
 
   const { user } = useSelector((state) => state.auth);
   // const { stock_level, machine_details, sales_level, graph_data } = useSelector(
@@ -338,22 +338,14 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
     dispatch(
       getBottleDispenseByCompany({
         company_code: user?.company_code,
-        machine_id: params?.id,
-        
-
-
-        
+        machine_id: params?.id,  
       })
-
     );
-    setBottleDispense();
-    console.log("hey mr bottle dispense");
-
-
-
   },
   
   []);
+
+
 
   const handleChange = async (e) => {
     setPieDate((prevState) => ({
@@ -2943,7 +2935,9 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                 className="card-body"
                                 style={{ background: "#F3F3F3;" }}
                               >
-                               
+                                     {bottledispense &&
+                              bottledispense.map((bottle, i) => (
+                                <div key={i}>
                                 <h5 className="card-title">
                                   <p
                                     style={{
@@ -2957,19 +2951,12 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                   </p>
                                   
                                 </h5>
-                                {bottledispense &&
-                              bottledispense.map((shelf, s) => (
-                                
-                                <div key={s}>
-                                  
                            
                                   {/* <h5>{item.brand_name}</h5> */}
 
-                                  <p>{shelf.bottles_on_shelf}</p>
-                                
+                                  <p>{dispensing.empty_bottles_bought}</p>
                                 </div>
                               ))}
-                                <p>kjasdk</p>
                               </div>
                             </div>
                           </div>
