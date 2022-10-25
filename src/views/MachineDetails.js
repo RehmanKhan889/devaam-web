@@ -2954,7 +2954,7 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                            
                                   {/* <h5>{item.brand_name}</h5> */}
 
-                                  {/* <p>{dispensing.empty_bottles_bought}</p> */}
+                                  <p>Hello</p>
                                 </div>
                               ))}
                               </div>
