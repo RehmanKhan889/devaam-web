@@ -6,6 +6,7 @@ import CompanyRepository from "./CompanyRepository";
 import TransactionRepository from "./TransactionRepository";
 import DisposibleBottlePlastic from "./DisposibleBottlePlastic";
 import BottleDispenseByCompanyDate from "./BottleDispenseByCompanyDate";
+
 const repositories = {
   machine: MachineRepository,
   dashboard: DasboardRepository,

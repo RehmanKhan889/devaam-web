@@ -4,8 +4,13 @@ const initState = {
   stock_level: [],
   graph_data: [],
   sales_graph: [],
+  bottleDetails: [],
+  tank_management: [],
   loading: false,
+  
 };
+
+
 
 const machineReducer = (state = initState, { payload, type }) => {
   switch (type) {
@@ -46,9 +51,22 @@ const machineReducer = (state = initState, { payload, type }) => {
         ...state,
         sales_graph: payload,
       };
+      case "GET_BOTTLE_DISPENSE_BY_COMPANY":
+        return {
+          ...state,
+          bottleDetails: payload,
+        };
+        case "GET_TANK_MANAGEMENT":
+          return {
+            ...state,
+            tank_management: payload,
+          };
+  
     default:
       return state;
   }
+ 
 };
+
 
 export default machineReducer;

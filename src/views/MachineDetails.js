@@ -52,7 +52,8 @@ import { Card } from "reactstrap";
 import BarChart from "../helpers/Charts/BarChart";
 import { connect } from "react-redux";
 
-function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData }) {
+function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData, bottleDetailsData, tankDetailsData}) {
+  console.log(tankDetailsData, "hello...")
   const [notiModal, setNotiModal] = useState(false);
   const [tab, setTab] = useState("4");
   const dispatch = useDispatch();
@@ -2546,45 +2547,45 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                         </thead>
                                         <tbody>
                                           <tr>
-                                            <th scope="row">T-1</th>
-                                            <td>12939321321</td>
-                                            <td>Liquid</td>
-                                            <td>Brand Name</td>
-                                            <td>########</td>
-                                            <td>dd / mm / yyyy</td>
+                                            <th scope="row">{tankDetailsData[1]?.brand_id}</th>
+                                            <td>{tankDetailsData[1]?.bar_code} </td>
+                                            <td>{tankDetailsData[1]?.quantity}</td>
+                                            <td>{tankDetailsData[1]?.name}</td>
+                                            <td>{tankDetailsData[1]?.batch_number}</td>
+                                            <td>{tankDetailsData[1]?.created_at_sql}</td>
                                           </tr>
                                           <tr>
-                                            <th scope="row">T-2</th>
-                                            <td>12939321321</td>
-                                            <td>Liquid</td>
-                                            <td>Brand Name</td>
-                                            <td>########</td>
-                                            <td>dd / mm / yyyy</td>
+                                          <th scope="row">{tankDetailsData[2]?.brand_id}</th>
+                                            <td>{tankDetailsData[2]?.bar_code} </td>
+                                            <td>{tankDetailsData[2]?.quantity}</td>
+                                            <td>{tankDetailsData[2]?.name}</td>
+                                            <td>{tankDetailsData[2]?.batch_number}</td>
+                                            <td>{tankDetailsData[2]?.created_at_sql}</td>
                                           </tr>
                                           <tr>
-                                            <th scope="row">T-3</th>
-                                            <td>12939321321</td>
-                                            <td>Liquid</td>
-                                            <td>Brand Name</td>
-                                            <td>########</td>
-                                            <td>dd / mm / yyyy</td>
+                                          <th scope="row">{tankDetailsData[3]?.brand_id}</th>
+                                            <td>{tankDetailsData[3]?.bar_code} </td>
+                                            <td>{tankDetailsData[3]?.quantity}</td>
+                                            <td>{tankDetailsData[3]?.name}</td>
+                                            <td>{tankDetailsData[3]?.batch_number}</td>
+                                            <td>{tankDetailsData[3]?.created_at_sql}</td>
                                           </tr>
                                           <tr>
-                                            <th scope="row">T-4</th>
-                                            <td>12939321321</td>
-                                            <td>Liquid</td>
-                                            <td>Brand Name</td>
-                                            <td>########</td>
-                                            <td>dd / mm / yyyy</td>
+                                          <th scope="row">{tankDetailsData[4]?.brand_id}</th>
+                                            <td>{tankDetailsData[4]?.bar_code} </td>
+                                            <td>{tankDetailsData[4]?.quantity}</td>
+                                            <td>{tankDetailsData[4]?.name}</td>
+                                            <td>{tankDetailsData[4]?.batch_number}</td>
+                                            <td>{tankDetailsData[4]?.created_at_sql}</td>
                                           </tr>
-                                          <tr>
+                                          {/* <tr>
                                             <th scope="row">T-5</th>
                                             <td>12939321321</td>
                                             <td>Liquid</td>
                                             <td>Brand Name</td>
                                             <td>########</td>
                                             <td>dd / mm / yyyy</td>
-                                          </tr>
+                                          </tr> */}
                                         </tbody>
                                       </table>
                                     </div>
@@ -2935,9 +2936,7 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                 className="card-body"
                                 style={{ background: "#F3F3F3;" }}
                               >
-                                     {bottledispense &&
-                              bottledispense.map((bottle, i) => (
-                                <div key={i}>
+                                   
                                 <h5 className="card-title">
                                   <p
                                     style={{
@@ -2954,10 +2953,13 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                            
                                   {/* <h5>{item.brand_name}</h5> */}
 
-                                  <p>Hello</p>
+                                  
+                          
+                             
+                              <button className="btn btn-outline-info px-4">
+                                  {bottleDetailsData && bottleDetailsData.bottles_on_shelf}
+                                </button>
                                 </div>
-                              ))}
-                              </div>
                             </div>
                           </div>
                         </div>
@@ -2999,7 +3001,8 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                   </p>
                                 </h5>
                                 <button className="btn btn-outline-info px-4">
-                                  100
+                               
+                                  {bottleDetailsData && bottleDetailsData.empty_bottles_bought}
                                 </button>
                               </div>
                             </div>
@@ -3043,7 +3046,9 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                   </p>
                                 </h5>
                                 <button className="btn btn-outline-info px-4">
-                                  34
+                               
+                                  {bottleDetailsData && bottleDetailsData.total_bottles_refilled}
+
                                 </button>
                               </div>
                             </div>
@@ -3088,7 +3093,9 @@ function MachineDetails({ stock_level, graph_data, sales_per, sales_graphData })
                                   </p>
                                 </h5>
                                 <button className="btn btn-outline-info px-4">
-                                  30,000 RS
+                          
+                                  {bottleDetailsData && bottleDetailsData.new_bottles_revenue}
+
                                 </button>
                               </div>
                             </div>
@@ -3119,6 +3126,10 @@ const mapToStateProps = (state) => {
     stock_level: { ...getMachineStates(state).stock_level },
     sales_per: { ...getMachineStates(state).sales_level },
     sales_graphData: { ...getMachineStates(state).sales_graph},
+    bottleDetailsData: { ...getMachineStates(state).bottleDetails},
+    tankDetailsData: { ...getMachineStates(state).tank_management},
+
+
     
   };
 };

@@ -226,6 +226,13 @@ export const getMachineDetails = (payload) => async (dispatch) => {
       type: "GET_SALES_GRAPH",
       payload: { getLast, getFourMonth } || [],
     });
+
+    
+    dispatch({
+      type: "GET_TANK_MANAGEMENT",
+      payload: data?.response?.data.machine.tank_management || [],
+    });
+
   } catch (error) {
     console.log("Error");
   }
@@ -269,7 +276,6 @@ export const getBottleDispenseByCompany = (payload) => async (dispatch) => {
         },
       },
     });
-    console.log(data, "asdadsaasjdkjhaskdhaskhdjkashdk");
     dispatch({
       type: "GET_BOTTLE_DISPENSE_BY_COMPANY",
       payload: data?.response?.data || [],
@@ -278,3 +284,5 @@ export const getBottleDispenseByCompany = (payload) => async (dispatch) => {
     console.log("Error");
   }
 };
+
+
