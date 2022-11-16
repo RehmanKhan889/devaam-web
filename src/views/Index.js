@@ -743,7 +743,7 @@ function Index() {
     <div className="main-content">
       <div className="page-wrapper">
         <div className="container dashboard-body">
-          <div className="row p-md-4">
+          <div className="row">
             <div className="col-lg-4 col-md-12 mt-2 mt-md-0 mb-3 mb-md-0">
               <div className="firstcard">
                 <div className="card-body">
